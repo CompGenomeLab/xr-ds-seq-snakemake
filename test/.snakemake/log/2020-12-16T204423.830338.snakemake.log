@@ -1,0 +1,4 @@
+NameError in line 3 of /home/azgarian/Desktop/xr-ds-seq/test/Snakefile:
+name 'pd' is not defined
+  File "/home/azgarian/Desktop/xr-ds-seq/test/Snakefile", line 19, in <module>
+  File "/home/azgarian/Desktop/xr-ds-seq/test/Snakefile", line 3, in csv2df

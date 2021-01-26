@@ -1,0 +1,14 @@
+results/*
+resources/samples/original/*
+resources/ref_genomes/*
+config/configDS.json 
+config/config_DS.yaml 
+config/config.json 
+config/config_XR.yaml
+config/deneme.csv
+dag.svg
+dag2.svg
+dag_ds.svg
+dag_xr.svg
+mydamageseq.sh
+myXRseq.sh

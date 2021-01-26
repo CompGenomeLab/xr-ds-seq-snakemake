@@ -1,0 +1,5 @@
+no,method,sample,layout,adaptor,cutadapt,bowtie2,build,samtools_q_trim,filter,motif
+1,Damage-seq,HDA64A1_ATCACG_sub10k,single-end,-g GACTGGTTCCAATTGAAAGTGCTCTTCCGATCT,--discard-trimmed,,GRCh37;GRCh38,-q 20;-q 10;-q 25,'^([1-9]|1[0-9]|2[0-2]|X)',.{4}(c|t|C|T){2}.{4}
+2,XR-seq,HXA64A1_ATCACG_sub10k,single-end,-a TGGAATTCTCGGGTGCCAAGGAACTCCAGTNNNNNNACGATCTCGTATGCCGTCTTCTGCTTG,,,GRCh37;GRCh38,-q 20,'^([1-9]|1[0-9]|2[0-2]|X)',
+3,Damage-seq,R19034725-CT5H2-HelaD3-5R2h2-B_combined_sub10k,paired-end,-g GACTGGTTCCAATTGAAAGTGCTCTTCCGATCT -G GACTGGTTCCAATTGAAAGTGCTCTTCCGATCT,--discard-trimmed,-X 1000,GRCh37;GRCh38,-q 20 -bf 0x2,'^([1-9]|1[0-9]|2[0-2]|X)',.{4}(c|t|C|T){2}.{4}
+4,XR-seq,HXA64A1_ATCACG_sub10k,single-end,-a TGGAATTCTCGGGTGCCAAGGAACTCCAGTNNNNNNACGATCTCGTATGCCGTCTTCTGCTTG,,,GRCh37,-q 15,'^([1-9]|1[0-9]|2[0-2]|X)',

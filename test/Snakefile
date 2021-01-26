@@ -1,0 +1,95 @@
+import os
+import re
+import pandas as pd
+
+################### Helper Functions ###########################################
+
+def findUnzipped():
+    
+    regex = re.compile('(.*.fq$)|(.*.fastq$)')
+    raw_samples = []
+
+    for root, dirs, files in os.walk("resources/samples"):
+        for file in files:
+            if regex.match(file):
+                print(re.search('(.+?).f', file).group(1))
+                if re.search('(.+?).f', file).group(1) in config["sample"]:
+                    raw_samples.append(file)
+    
+    return raw_samples
+
+def getLayout(sampleList, layoutList, layout):
+    
+    singleList=[]
+    pairedList=[]
+    for i in range(len(sampleList)):
+        if layoutList[i] == "single-end":
+            singleList.append(sampleList[i])
+        elif layoutList[i] == "paired-end":
+            pairedList.append(sampleList[i])
+    
+    if layout == "single":
+        return singleList
+    elif layout == "paired":
+        return pairedList
+
+def csv2df(sample_csv, column_list):
+
+    samples_df = pd.read_csv(sample_csv, sep=",", 
+        dtype=str).set_index(column_list, drop=False)
+
+    samples_df.index = samples_df.index.set_levels(
+        [i.astype(str) for i in samples_df.index.levels])
+    
+    return samples_df
+
+def filtBy(samples_df, *column_value):
+
+    for elem in column_value:
+        column = elem[0]
+        value = elem[1] 
+        samples_df = samples_df[(samples_df[column]==value)]
+
+    return samples_df
+
+
+
+#samples_se=getLayout(config["sample"], config["layout"], "single")
+#samples_pe=getLayout(config["sample"], config["layout"], "paired")
+
+
+
+samples_df = csv2df("config/samples.csv", ["sample","layout","method","genome",
+    "genomeLink"])
+
+
+
+samples_ds = (filtBy(samples_df, ("method","Damage-seq")))["sample"].tolist()
+samples_se = (filtBy(samples_df, ("layout","single-end"), 
+    ("method","Damage-seq")))["sample"].tolist()
+samples_pe = (filtBy(samples_df, ("layout","paired-end"), 
+    ("method","Damage-seq")))["sample"].tolist()
+
+#print(samples_se)
+
+sample = 'HDA64A1_ATCACG'
+
+rule all:
+    input:
+        "results/DS/HDA64A1_ATCACG/HDA64A1_ATCACG_cutadapt.fastq.gz"
+
+
+rule get_patient_output:
+    output:
+        "results/DS/{sample}/{sample}_cutadapt.fastq.gz"
+    shell:
+        """
+        touch {output} | \
+        echo {wildcards}
+        """
+
+
+
+
+
+

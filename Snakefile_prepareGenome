@@ -1,0 +1,17 @@
+#!/bin/env python
+
+#### configuration file ####
+configfile: "config/configGenome.json"
+
+include: "workflow/rules/common.smk"
+
+rule all:
+    input:
+        expand("resources/ref_genomes/{build}/genome_{build}.fa.fai", 
+            build=config["build"]),
+        expand("resources/ref_genomes/{build}/Bowtie2/genome_{build}.rev.2.bt2", 
+            build=config["build"]),
+
+include: "workflow/rules/genome_download.smk"
+include: "workflow/rules/genome_build.smk"
+include: "workflow/rules/genome_indexing.smk"

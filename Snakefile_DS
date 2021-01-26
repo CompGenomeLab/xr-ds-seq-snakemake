@@ -1,0 +1,36 @@
+#!/bin/env python
+
+import sys
+sys.path.append('workflow/scripts')
+from csv2config import csv2Dict, dict2json
+
+methodList = ["DS", "Damage-seq"]
+configname = "config/configDS.json"
+
+config = csv2Dict("config/samples.csv", methodList)
+dict2json(config, configname)
+
+#### configuration file ####
+configfile: configname
+
+include: "workflow/rules/common.smk"
+
+RefAlert(config["build"])
+
+rule all:
+    input:
+        lambda w: allInput(config["method"], config["sample"]),
+
+include: "workflow/rules/zipping_samples.smk"
+include: "workflow/rules/adaptor_handling.smk"
+include: "workflow/rules/align.smk"
+include: "workflow/rules/bam2bed.smk"
+include: "workflow/rules/sort_filter.smk"
+include: "workflow/rules/length_distribution.smk"
+include: "workflow/rules/sep_strands.smk"
+include: "workflow/rules/reposition.smk"
+include: "workflow/rules/bed2fasta.smk"
+include: "workflow/rules/dinucleotide_table.smk"
+include: "workflow/rules/filtbyMotifs.smk"
+include: "workflow/rules/genomecov.smk"
+include: "workflow/rules/bedGraphToBigWig.smk"
