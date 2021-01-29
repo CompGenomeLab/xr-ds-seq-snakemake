@@ -1,5 +1,5 @@
 results/*
-resources/samples/original/*
+resources/samples/*
 resources/ref_genomes/*
 config/configDS.json 
 config/config_DS.yaml 
