@@ -1,0 +1,42 @@
+method: DS
+
+samples: 
+  - "HDA64A1_ATCACG_sub10k"
+
+layout:
+  - "single-end"
+
+adaptor_se: "-g GACTGGTTCCAATTGAAAGTGCTCTTCCGATCT"
+
+adaptor_pe: "-g GACTGGTTCCAATTGAAAGTGCTCTTCCGATCT -G GACTGGTTCCAATTGAAAGTGCTCTTCCGATCT"
+
+cutadapt_se: "--discard-trimmed"
+
+cutadapt_pe: "--discard-trimmed"
+
+bowtie2: "-X 1000"
+
+samtools_q_trim_se: "-q 20"
+
+samtools_q_trim_pe: "-q 20 -bf 0x2"
+
+filter: "'^chr([1-9]|1[0-9]|2[0-2]|X)'"
+
+motif: "'.{4}(c|t|C|T){2}.{4}'"
+
+# Genome parameters 
+
+build: "myGenome"
+
+species: "homo_sapiens"
+
+datatype: "dna"
+
+release: "102"
+
+#######
+
+
+
+  
+

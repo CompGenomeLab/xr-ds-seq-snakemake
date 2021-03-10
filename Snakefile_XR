@@ -1,27 +1,19 @@
 #!/bin/env python
 
-import sys
-sys.path.append('workflow/scripts')
-from csv2config import csv2Dict, dict2json
-
-methodList = ["XR", "XR-seq"]
-configname = "config/configDS.json"
-
-config = csv2Dict("config/samples.csv", methodList)
-dict2json(config, configname)
-
 #### configuration file ####
-configfile: configname
+configfile: "config/config_XR_initial.yaml" 
+configfile: "config/config_XR.yaml"
 
 include: "workflow/rules/common.smk"
-
-RefAlert(config["build"])
     
 rule all:
     input:
-        lambda w: allInput(config["method"], config["sample"]),
+        lambda w: allInput(config["method"], config["build"], config["sample"]),
 
 include: "workflow/rules/zipping_samples.smk"
+include: "workflow/rules/genome_download.smk"
+include: "workflow/rules/genome_build.smk"
+include: "workflow/rules/genome_indexing.smk"
 include: "workflow/rules/adaptor_handling.smk"
 include: "workflow/rules/align.smk"
 include: "workflow/rules/bam2bed.smk"
