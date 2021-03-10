@@ -4,6 +4,14 @@ from os import path
 
 ################### Helper Functions ###########################################
 
+def getMotif(wildcards):
+    
+    if "Oxaliplatin" in wildcards.samples or "Cisplatin" in wildcards.samples: 
+        return "'.{4}(g|G){2}.{4}'"
+    
+    elif "64" in wildcards.samples or "CPD" in wildcards.samples:
+        return "'.{4}(c|t|C|T){2}.{4}'"
+
 def lineNum(file):
     
     linenum = 0

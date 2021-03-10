@@ -5,7 +5,7 @@ rule filtbyMotifs:
     output:
         "results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_{strand}.bed",
     params:
-        lambda wc: config["motif"],
+        lambda w: getMotif,
     log:
         "logs/{samples}/{samples}_{build}_filtbyMotifs_{strand}.log",
     benchmark:
