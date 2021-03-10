@@ -10,3 +10,6 @@ mydamageseq.sh
 myXRseq.sh
 .snakemake/*
 csv2config.py
+config/configXR.json
+config/samples.csv.save
+config/samples.csv
