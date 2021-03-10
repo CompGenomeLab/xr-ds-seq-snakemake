@@ -12,3 +12,8 @@ dag_ds.svg
 dag_xr.svg
 mydamageseq.sh
 myXRseq.sh
+.snakemake/*
+config/configXR.json*
+config/samples.csv.save
+config/samples.csv
+

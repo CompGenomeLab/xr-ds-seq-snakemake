@@ -5,7 +5,7 @@ sys.path.append('workflow/scripts')
 from csv2config import csv2Dict, dict2json
 
 methodList = ["XR", "XR-seq"]
-configname = "config/configDS.json"
+configname = "config/configXR.json"
 
 config = csv2Dict("config/samples.csv", methodList)
 dict2json(config, configname)
