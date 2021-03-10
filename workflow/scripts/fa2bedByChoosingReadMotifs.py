@@ -1,12 +1,20 @@
 #!/usr/bin/env python
 
 import fasta
+import argparse
 import re
 import sys
 
-fastaObject = fasta.fasta(snakemake.input[0])
-output = snakemake.output[0]
-regexMotif = snakemake.params[0]
+parser = argparse.ArgumentParser(description='converts fasta to bed by choosing a motif of interest')
+parser.add_argument('-i', required= False, help='input')
+parser.add_argument('-o', required= False, help='output')
+parser.add_argument('-r', required= True, help='regex motif that is expected')
+
+args = parser.parse_args()
+
+fastaObject = fasta.fasta(args.i)
+output = args.o
+regexMotif = args.r
 pattern = re.compile(regexMotif)
 
 def criterionPass(citerion):

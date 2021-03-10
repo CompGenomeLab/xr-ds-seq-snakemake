@@ -1,15 +1,15 @@
 
 rule bam2bed_se:
     input:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_se.bam"
+        "results/{samples}/{samples}_cutadapt_se_{build}.bam",
     output:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt.bed"
+        "results/{samples}/{samples}_{build}_.bed",
     params:
-        q_trim=lambda w: getSampleInfo(w, config["samtools_q_trim"]) 
+        q_trim=config["samtools_q_trim_se"], 
     log:
-        "results/{dir}/{samples}{v}/log/bam2bed.log"
+        "logs/{samples}/{samples}_{build}_bam2bed.log",
     benchmark:
-        "results/{dir}/{samples}{v}/log/bam2bed.benchmark.txt",
+        "logs/{samples}/{samples}_{build}_bam2bed.benchmark.txt",
     conda:
         "../envs/bam2bed.yaml"
     shell:  
@@ -21,27 +21,29 @@ rule bam2bed_se:
 
 rule bam2bed_pe:
     input:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_pe.bam"
+        "results/{samples}/{samples}_cutadapt_pe_{build}.bam",
     output:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt.bed"
+        bed="results/{samples}/{samples}_{build}_.bed",
+        bam=temp("results/{samples}/{samples}_{build}_sorted.bam"),
     params:
-        q_trim=lambda w: getSampleInfo(w, config["samtools_q_trim"])
+        q_trim=config["samtools_q_trim_pe"],
     log:
-        "results/{dir}/{samples}{v}/log/bam2bed.log"
+        "logs/{samples}/{samples}_{build}_bam2bed.log",
     benchmark:
-        "results/{dir}/{samples}{v}/log/bam2bed.benchmark.txt",
+        "logs/{samples}/{samples}_{build}_bam2bed.benchmark.txt",
     conda:
         "../envs/bam2bed.yaml"
     shell:  
         """
-        samtools sort -n {input} |
-        samtools view {params.q_trim} - |
+        (samtools sort -n {input} > {output.bam}) 2> {log}
+
+        (samtools view {params.q_trim} {output.bam} |
         bedtools bamtobed -bedpe -mate1 |
         awk '{{\
             if ($9=="+")\
-                print $1"\t"$2"\t"$6"\t"$7"\t"$8"\t"$9;\
+                print $1"\\t"$2"\\t"$6"\\t"$7"\\t"$8"\\t"$9;\
             else if ($9=="-")\
-                print $1"\t"$5"\t"$3"\t"$7"\t"$8"\t"$9;\
-            }}' > {output}
+                print $1"\\t"$5"\\t"$3"\\t"$7"\\t"$8"\\t"$9;\
+            }}' > {output.bed}) 2>> {log}
         """
 

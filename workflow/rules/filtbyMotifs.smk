@@ -1,15 +1,20 @@
 
 rule filtbyMotifs:
     input:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_{strand}_10.fa",
+        "results/{samples}/{samples}_{build}_sorted_{strand}_10.fa",
     output:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_{strand}_dipyrimidines.bed",
+        "results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_{strand}.bed",
     params:
-        motif=lambda w: getSampleInfo(w, config["motif"])
+        lambda wc: config["motif"],
     log:
-        "results/{dir}/{samples}{v}/log/filtbyMotifs_{strand}.log",
+        "logs/{samples}/{samples}_{build}_filtbyMotifs_{strand}.log",
     benchmark:
-        "results/{dir}/{samples}{v}/log/filtbyMotifs_{strand}.benchmark.txt",
-    script:  
-        "../scripts/fa2bedByChoosingReadMotifs.py"
+        "logs/{samples}/{samples}_{build}_filtbyMotifs_{strand}.benchmark.txt",
+    shell:  
+        """
+        workflow/scripts/fa2bedByChoosingReadMotifs.py \
+        -i {input} \
+        -o {output} \
+        -r {params}
+        """
 

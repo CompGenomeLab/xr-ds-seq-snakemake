@@ -1,5 +1,5 @@
 
-rule index:
+rule genome_indexing:
     input:
         "resources/ref_genomes/{build}/genome_{build}.fa",
     output:

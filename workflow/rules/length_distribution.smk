@@ -1,17 +1,17 @@
 
 rule length_dist:
     input:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_chr.bed"
+        "results/{samples}/{samples}_{build}_sorted_chr.bed",
     output:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_length_distribution.txt"
+        "results/{samples}/{samples}_{build}_length_distribution.txt",
     log:
-        "results/{dir}/{samples}{v}/log/length_dist.log"
+        "logs/{samples}/{samples}_{build}_length_dist.log",
     benchmark:
-        "results/{dir}/{samples}{v}/log/length_dist.benchmark.txt",
+        "logs/{samples}/{samples}_{build}_length_dist.benchmark.txt",
     shell:  
         """
         awk '{{print $3-$2}}' {input} | sort -k1,1n | uniq -c | 
-        sed 's/\s\s*/ /g' | awk '{{print $2"\t"$1}}' > {output}
+        sed 's/\s\s*/ /g' | awk '{{print $2"\\t"$1}}' > {output}
         """
 
 

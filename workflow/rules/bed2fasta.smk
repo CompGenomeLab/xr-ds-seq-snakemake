@@ -1,49 +1,47 @@
 
 rule bed2fasta_ds:
     input:
-        plus="results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_plus_10.bed",
-        minus="results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_minus_10.bed",
+        plus="results/{samples}/{samples}_{build}_sorted_plus_10.bed",
+        minus="results/{samples}/{samples}_{build}_sorted_minus_10.bed",
+        genome="resources/ref_genomes/{build}/genome_{build}.fa",
     output:
-        plus="results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_plus_10.fa",
-        minus="results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_minus_10.fa",
-        comb="results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_10.fa",
-        bed=temp("results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_10.bed"),
-    params:
-        genome=lambda w: getGenome(w, "genome"),      
+        plus="results/{samples}/{samples}_{build}_sorted_plus_10.fa",
+        minus="results/{samples}/{samples}_{build}_sorted_minus_10.fa",
+        comb="results/{samples}/{samples}_{build}_sorted_10.fa",
+        bed=temp("results/{samples}/{samples}_{build}_sorted_10.bed"),       
     log:
-        "results/{dir}/{samples}{v}/log/bed2fasta_ds.log",
+        "logs/{samples}/{samples}_{build}_bed2fasta_ds.log",
     benchmark:
-        "results/{dir}/{samples}{v}/log/bed2fasta_ds.benchmark.txt",
+        "logs/{samples}/{samples}_{build}_bed2fasta_ds.benchmark.txt",
     conda:
         "../envs/bed2fasta.yaml"
     shell:
         """
         cat {input.plus} {input.minus} > {output.bed}
         
-        bedtools getfasta -fi {params.genome} -bed {output.bed} \
+        bedtools getfasta -fi {input.genome} -bed {output.bed} \
         -fo {output.comb} -s
 
-        bedtools getfasta -fi {params.genome} -bed {input.plus} \
+        bedtools getfasta -fi {input.genome} -bed {input.plus} \
         -fo {output.plus} -s
 
-        bedtools getfasta -fi {params.genome} -bed {input.minus} \
+        bedtools getfasta -fi {input.genome} -bed {input.minus} \
         -fo {output.minus} -s
         """
 
 rule bed2fasta_xr:
     input:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_lengthMode.bed",
+        bed="results/{samples}/{samples}_{build}_lengthMode.bed",
+        genome="resources/ref_genomes/{build}/genome_{build}.fa",
     output:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_lengthMode.fa",
-    params:
-        genome=lambda w: getGenome(w, "genome"),       
+        "results/{samples}/{samples}_{build}_lengthMode.fa",
     log:
-        "results/{dir}/{samples}{v}/log/bed2fasta_xr.log",
+        "logs/{samples}/{samples}_{build}_bed2fasta_xr.log",
     benchmark:
-        "results/{dir}/{samples}{v}/log/bed2fasta_xr.benchmark.txt",
+        "logs/{samples}/{samples}_{build}_bed2fasta_xr.benchmark.txt",
     conda:
         "../envs/bed2fasta.yaml"
     shell:
         """
-        bedtools getfasta -fi {params.genome} -bed {input} -fo {output} -s
+        bedtools getfasta -fi {input.genome} -bed {input.bed} -fo {output} -s
         """

@@ -1,14 +1,14 @@
 
 rule sep_strands:
     input:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_chr.bed",
+        "results/{samples}/{samples}_{build}_sorted_chr.bed",
     output:
-        plus="results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_plus.bed",
-        minus="results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_minus.bed",
+        plus="results/{samples}/{samples}_{build}_sorted_plus.bed",
+        minus="results/{samples}/{samples}_{build}_sorted_minus.bed",
     log:
-        "results/{dir}/{samples}{v}/log/sep_strands.log",
+        "logs/{samples}/{samples}_{build}_sep_strands.log",
     benchmark:
-        "results/{dir}/{samples}{v}/log/sep_strands.benchmark.txt",
+        "logs/{samples}/{samples}_{build}_sep_strands.benchmark.txt",
     shell:  
         """
         awk '{{if($6=="+"){{print}}}}' {input} > {output.plus}

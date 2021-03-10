@@ -1,5 +1,5 @@
 
-rule bowtie2_build:
+rule genome_build:
     input:
         reference="resources/ref_genomes/{build}/genome_{build}.fa",
     output:

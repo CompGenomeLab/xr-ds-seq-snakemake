@@ -1,33 +1,39 @@
 
 rule dinucleotide_table_ds:
     input:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_10.fa",
+        "results/{samples}/{samples}_{build}_sorted_10.fa",
     output:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_dinucleotideTable.txt",
+        "results/{samples}/{samples}_{build}_sorted_dinucleotideTable.txt",
     params:
         k="2",
-        l="",
-        percentage="",
     log:
-        "results/{dir}/{samples}{v}/log/dinucleotide_table_ds.log",
+        "logs/{samples}/{samples}_{build}_dinucleotide_table_ds.log",
     benchmark:
-        "results/{dir}/{samples}{v}/log/dinucleotide_table_ds.benchmark.txt",
-    script:  
-        "../scripts/fa2kmerAbundanceTable.py" 
+        "logs/{samples}/{samples}_{build}_dinucleotide_table_ds.benchmark.txt",
+    shell:  
+        """
+        workflow/scripts/fa2kmerAbundanceTable.py \
+        -i {input} \
+        -k {params.k} \
+        -o {output} 2>{log}
+        """
 
 rule dinucleotide_table_xr:
     input:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_lengthMode.fa",
+        "results/{samples}/{samples}_{build}_lengthMode.fa",
     output:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_dinucleotideTable.txt",
+        "results/{samples}/{samples}_{build}_sorted_dinucleotideTable.txt",
     params:
         k="2",
-        l="",
-        percentage="",
     log:
-        "results/{dir}/{samples}{v}/log/dinucleotide_table_xr.log",
+        "logs/{samples}/{samples}_{build}_dinucleotide_table_xr.log",
     benchmark:
-        "results/{dir}/{samples}{v}/log/dinucleotide_table_xr.benchmark.txt",
-    script:  
-        "../scripts/fa2kmerAbundanceTable.py" 
+        "logs/{samples}/{samples}_{build}_dinucleotide_table_xr.benchmark.txt",
+    shell:  
+        """
+        workflow/scripts/fa2kmerAbundanceTable.py \
+        -i {input} \
+        -k {params.k} \
+        -o {output} 2>{log}
+        """
 

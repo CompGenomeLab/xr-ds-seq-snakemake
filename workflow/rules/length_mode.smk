@@ -1,14 +1,14 @@
 
 rule length_mode:
     input:
-        bed="results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_chr.bed",
-        ld="results/{dir}/{samples}{v}/{samples}_cutadapt_length_distribution.txt",
+        bed="results/{samples}/{samples}_{build}_sorted_chr.bed",
+        ld="results/{samples}/{samples}_{build}_length_distribution.txt",
     output:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_lengthMode.bed",
+        "results/{samples}/{samples}_{build}_lengthMode.bed",
     log:
-        "results/{dir}/{samples}{v}/log/length_mode.log"
+        "logs/{samples}/{samples}_{build}_length_mode.log",
     benchmark:
-        "results/{dir}/{samples}{v}/log/length_mode.benchmark.txt",
+        "logs/{samples}/{samples}_{build}_length_mode.benchmark.txt",
     shell:  
         """
         length="$(awk -v m=0 '{{if(m<$2){{m=$2;l=$1}}}}END{{print l}}' \

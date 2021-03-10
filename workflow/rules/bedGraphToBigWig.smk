@@ -1,36 +1,34 @@
 
 rule bedGraphToBigWig_ds:
     input:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_{strand}_dipyrimidines.bdg",
+        bdg="results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_{strand}.bdg",
+        index="resources/ref_genomes/{build}/genome_{build}.fa.fai",
     output:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_{strand}_dipyrimidines.bw",
-    params:
-        index=lambda w: getGenome(w, "index"),
+        "results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_{strand}.bw",
     log:
-        "results/{dir}/{samples}{v}/log/bedGraphToBigWig_{strand}.log",
+        "logs/{samples}/{samples}_{build}_bedGraphToBigWig_{strand}.log",
     benchmark:
-        "results/{dir}/{samples}{v}/log/bedGraphToBigWig_{strand}.benchmark.txt",
+        "logs/{samples}/{samples}_{build}_bedGraphToBigWig_{strand}.benchmark.txt",
     conda:
         "../envs/bedGraphToBigWig.yaml"
     shell:  
         """
-        bedGraphToBigWig {input} {params.index} {output}
+        bedGraphToBigWig {input.bdg} {input.index} {output}
         """
 
 rule bedGraphToBigWig_xr:
     input:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_{strand}.bdg",
+        bdg="results/{samples}/{samples}_{build}_sorted_xr_{strand}.bdg",
+        index="resources/ref_genomes/{build}/genome_{build}.fa.fai", 
     output:
-        "results/{dir}/{samples}{v}/{samples}_cutadapt_sorted_{strand}.bw",
-    params:
-        index=lambda w: getGenome(w, "index"),
+        "results/{samples}/{samples}_{build}_sorted_xr_{strand}.bw",
     log:
-        "results/{dir}/{samples}{v}/log/bedGraphToBigWig_{strand}.log",
+        "logs/{samples}/{samples}_{build}_bedGraphToBigWig_{strand}.log",
     benchmark:
-        "results/{dir}/{samples}{v}/log/bedGraphToBigWig_{strand}.benchmark.txt",
+        "logs/{samples}/{samples}_{build}_bedGraphToBigWig_{strand}.benchmark.txt",
     conda:
         "../envs/bedGraphToBigWig.yaml"
     shell:  
         """
-        bedGraphToBigWig {input} {params.index} {output}
+        bedGraphToBigWig {input.bdg} {input.index} {output}
         """
