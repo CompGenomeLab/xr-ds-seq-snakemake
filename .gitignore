@@ -1,11 +1,7 @@
 results/*
 resources/samples/*
 resources/ref_genomes/*
-config/configDS.json 
-config/config_DS.yaml 
-config/config.json 
-config/config_XR.yaml
-config/deneme.csv
+logs/*
 dag.svg
 dag2.svg
 dag_ds.svg
