@@ -1,6 +1,0 @@
-{
-    "species": ["homo_sapiens","homo_sapiens"],
-    "datatype": ["dna","dna"],
-    "build": ["GRCh37","GRCh38"],
-    "release": ["102","102"]
-}

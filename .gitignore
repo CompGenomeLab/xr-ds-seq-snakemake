@@ -8,3 +8,5 @@ dag_ds.svg
 dag_xr.svg
 mydamageseq.sh
 myXRseq.sh
+.snakemake/*
+csv2config.py
