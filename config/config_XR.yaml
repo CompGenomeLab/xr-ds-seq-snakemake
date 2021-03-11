@@ -1,5 +1,9 @@
 
 sample: 
-  - "HXA64A1_ATCACG_sub10k"
+  - "GM12878_Cisplatin_XRseq_rep1"
+  - "WT_64_A"
+  - "GM12878_Oxaliplatin_XRseq_rep1"
+  - "WT_CPD_A"
+
 
 build: "GRCh38"

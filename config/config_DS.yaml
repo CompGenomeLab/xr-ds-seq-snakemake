@@ -1,8 +1,6 @@
 
 sample: 
-  - "HDACA6_GCCAAT_sub10k"
-  #- "R19034725-CT5H2-HelaD3-5R2h2-B_combined_sub10k"
-  #- "R19029847-HD2TCD4-HelaD1-5R2h1_combined_sub10k"
-
-
-
+  - "GM12878_Cisplatin_Damageseq_rep1"
+  - "NHF1_64_20J_0h_A"
+  - "NHF1_CPD_10J_1h_A"
+  - "GM12878_Oxaliplatin_Damageseq_rep1"
