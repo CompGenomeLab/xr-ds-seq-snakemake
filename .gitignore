@@ -9,4 +9,5 @@ dag_xr.svg
 mydamageseq.sh
 myXRseq.sh
 .snakemake/*
-csv2config.py
+csv2config.pyslurm*
+workflow/scripts/__pycache__/*
