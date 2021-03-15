@@ -1,6 +1,3 @@
 
 sample: 
-  - "GM12878_Cisplatin_Damageseq_rep1"
-  - "NHF1_64_20J_0h_A"
-  - "NHF1_CPD_10J_1h_A"
-  - "GM12878_Oxaliplatin_Damageseq_rep1"
+  - "HDA64A1_ATCACG_sub10k"

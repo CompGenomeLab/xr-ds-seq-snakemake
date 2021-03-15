@@ -20,7 +20,7 @@ samtools_q_trim_se: "-q 20"
 
 samtools_q_trim_pe: "-q 20 -bf 0x2"
 
-filter: "'^chr([1-9]|1[0-9]|2[0-2]|X)'"
+filter: "'^([1-9]|1[0-9]|2[0-2]|X)'"
 
 # Genome parameters 
 
