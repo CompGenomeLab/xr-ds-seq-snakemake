@@ -15,6 +15,7 @@ rule dinucleotide_table_ds:
         workflow/scripts/fa2kmerAbundanceTable.py \
         -i {input} \
         -k {params.k} \
+        --percentage \
         -o {output} 2>{log}
         """
 
