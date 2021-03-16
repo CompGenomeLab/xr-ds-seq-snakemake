@@ -53,8 +53,7 @@ tool to simulate repair and damage reads.
     cargo install --branch main --git https://github.com/CompGenomeLab/boquila.git
     ```
 
-| Warning: please add the path of the tool to your 
-$PATH to be able to run boquila tool. |
+| Warning: please add the path of the tool to your $PATH to be able to run boquila tool. |
 | --- |
 
 ## Directory Structure (will be updated)
