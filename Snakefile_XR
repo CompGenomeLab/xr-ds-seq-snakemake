@@ -15,6 +15,7 @@ include: "workflow/rules/zipping_samples.smk"
 include: "workflow/rules/genome_download.smk"
 include: "workflow/rules/genome_build.smk"
 include: "workflow/rules/genome_indexing.smk"
+include: "workflow/rules/genome_idx2ron.smk"
 include: "workflow/rules/adaptor_handling.smk"
 include: "workflow/rules/align.smk"
 include: "workflow/rules/bam2bed.smk"
@@ -26,6 +27,6 @@ include: "workflow/rules/bed2fasta.smk"
 include: "workflow/rules/dinucleotide_table.smk"
 include: "workflow/rules/genomecov.smk"
 include: "workflow/rules/bedGraphToBigWig.smk"
-
+include: "workflow/rules/simulation.smk"
 
 

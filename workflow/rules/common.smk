@@ -51,10 +51,13 @@ def allInput(method, build, sampleList):
                 "_" + build + "_sorted_ds_dipyrimidines_plus.bw")
             inputList.append(sampledir + sample + 
                 "_" + build + "_sorted_ds_dipyrimidines_minus.bw")
+            inputList.append(sampledir + sample + 
+                "_" + build + "_ds_sim.fa")
 
         elif method == "XR": 
             inputList.append(sampledir + sample + "_" + build + "_sorted_xr_plus.bw")
             inputList.append(sampledir + sample + "_" + build + "_sorted_xr_minus.bw")
+            inputList.append(sampledir + sample + "_" + build + "_xr_sim.fa")
     
     return inputList
 
