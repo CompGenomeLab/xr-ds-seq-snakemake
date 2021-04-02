@@ -1,4 +1,5 @@
 results/*
+reports/*
 resources/samples/*
 resources/ref_genomes/*
 logs/*
@@ -10,3 +11,5 @@ mydamageseq.sh
 myXRseq.sh
 .snakemake/*
 csv2config.py
+slurm*
+workflow/scripts/__pycache__/*
