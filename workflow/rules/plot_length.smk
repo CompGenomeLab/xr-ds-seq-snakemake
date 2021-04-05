@@ -19,12 +19,3 @@ rule plot_length:
         -s {params} \
         -o {output} 2>{log}
         """
-
-
-
-
-
-
-
-
-

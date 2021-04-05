@@ -14,10 +14,12 @@ rule bam2bed_se:
         "../envs/bam2bed.yaml"
     shell:  
         """
-        (samtools view {params.q_trim} -b {input} |
-        bedtools bamtobed > {output}) 2>{log}
+        (echo "`date -R`: Processing bam file..." && 
+        samtools view {params.q_trim} -b {input} |&
+        bedtools bamtobed > {output} &&
+        echo "`date -R`: Success! Bam file converted to bed format." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
         """
-
 
 rule bam2bed_pe:
     input:
@@ -35,15 +37,20 @@ rule bam2bed_pe:
         "../envs/bam2bed.yaml"
     shell:  
         """
-        (samtools sort -n {input} > {output.bam}) 2> {log}
+        (echo "`date -R`: Sorting bam file..." &&
+        samtools sort -n {input} > {output.bam} &&
+        echo "`date -R`: Success! Bam file is sorted." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
 
-        (samtools view {params.q_trim} {output.bam} |
-        bedtools bamtobed -bedpe -mate1 |
+        (echo "`date -R`: Processing bam file..." &&
+        samtools view {params.q_trim} {output.bam} |&
+        bedtools bamtobed -bedpe -mate1 |&
         awk '{{\
             if ($9=="+")\
                 print $1"\\t"$2"\\t"$6"\\t"$7"\\t"$8"\\t"$9;\
             else if ($9=="-")\
                 print $1"\\t"$5"\\t"$3"\\t"$7"\\t"$8"\\t"$9;\
-            }}' > {output.bed}) 2>> {log}
+            }}' > {output.bed} &&
+        echo "`date -R`: Success! Bam file converted to bed format." || 
+        echo "`date -R`: Process failed...") >> {log} 2>&1
         """
-

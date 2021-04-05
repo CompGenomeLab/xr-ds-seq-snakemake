@@ -15,12 +15,33 @@ rule reposition:
         "../envs/reposition.yaml"
     shell:  
         """
-        bedtools flank -i {input.plus} -g {input.index} -l 6 -r 0 | 
-        bedtools slop -g {input.index} -l 0 -r 4 | 
-        awk '{{ if ($3-$2 == 10) {{ print }} }}' > {output.plus}
+        (echo "`date -R`: Centering {input.plus} at damage site..." &&
+        bedtools flank \
+        -i {input.plus} \
+        -g {input.index} \
+        -l 6 \
+        -r 0 |& 
+        bedtools slop \
+        -g {input.index} \
+        -l 0 \
+        -r 4 |& 
+        awk '{{ if ($3-$2 == 10) {{ print }} }}' \
+        > {output.plus} &&
+        echo "`date -R`: Success!" || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
 
-        bedtools flank -i {input.minus} -g {input.index} -l 0 -r 6 | 
-        bedtools slop -g {input.index} -l 4 -r 0 | 
-        awk '{{ if ($3-$2 == 10) {{ print }} }}' > {output.minus}
+        (echo "`date -R`: Centering {input.minus} at damage site..." &&
+        bedtools flank \
+        -i {input.minus} \
+        -g {input.index} \
+        -l 0 \
+        -r 6 |& 
+        bedtools slop \
+        -g {input.index} \
+        -l 4 \
+        -r 0 |& 
+        awk '{{ if ($3-$2 == 10) {{ print }} }}' \
+        > {output.minus} &&
+        echo "`date -R`: Success!" || 
+        echo "`date -R`: Process failed...") >> {log} 2>&1
         """
-

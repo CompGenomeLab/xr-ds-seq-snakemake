@@ -13,7 +13,10 @@ rule bedGraphToBigWig_ds:
         "../envs/bedGraphToBigWig.yaml"
     shell:  
         """
-        bedGraphToBigWig {input.bdg} {input.index} {output}
+        (echo "`date -R`: Converting bedGraph to bigWig..." &&
+        bedGraphToBigWig {input.bdg} {input.index} {output} &&
+        echo "`date -R`: Success! Conversion is done." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
         """
 
 rule bedGraphToBigWig_xr:
@@ -30,5 +33,8 @@ rule bedGraphToBigWig_xr:
         "../envs/bedGraphToBigWig.yaml"
     shell:  
         """
-        bedGraphToBigWig {input.bdg} {input.index} {output}
+        (echo "`date -R`: Converting bedGraph to bigWig..." &&
+        bedGraphToBigWig {input.bdg} {input.index} {output} &&
+        echo "`date -R`: Success! Conversion is done." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
         """

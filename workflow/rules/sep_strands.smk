@@ -11,6 +11,13 @@ rule sep_strands:
         "logs/{samples}/{samples}_{build}_sep_strands.benchmark.txt",
     shell:  
         """
-        awk '{{if($6=="+"){{print}}}}' {input} > {output.plus}
-        awk '{{if($6=="-"){{print}}}}' {input} > {output.minus}
+        (echo "`date -R`: Separating plus stranded reads..." &&
+        awk '{{if($6=="+"){{print}}}}' {input} > {output.plus} &&
+        echo "`date -R`: Success! Reads are separated." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
+
+        (echo "`date -R`: Separating minus stranded reads..." &&
+        awk '{{if($6=="-"){{print}}}}' {input} > {output.minus} &&
+        echo "`date -R`: Success! Reads are separated." || 
+        echo "`date -R`: Process failed...") >> {log} 2>&1
         """

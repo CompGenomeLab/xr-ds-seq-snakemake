@@ -44,4 +44,3 @@ rule nucleotide_table_xr:
         -k 1 \
         -o {output.nuc} 2>>{log}
         """
-

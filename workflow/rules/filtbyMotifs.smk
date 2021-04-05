@@ -17,4 +17,3 @@ rule filtbyMotifs:
         -o {output} \
         -r {params}
         """
-

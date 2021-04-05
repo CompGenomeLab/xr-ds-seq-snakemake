@@ -76,6 +76,4 @@ def allInput(method, build, sampleList):
     
     return inputList
 
-
-
 ################################################################################

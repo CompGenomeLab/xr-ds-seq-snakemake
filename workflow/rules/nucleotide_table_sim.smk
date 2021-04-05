@@ -49,4 +49,3 @@ rule nucleotide_table_xr_sim:
         -k 1 \
         -o {output.nuc} 2>>{log}
         """
-

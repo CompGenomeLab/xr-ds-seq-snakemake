@@ -17,8 +17,15 @@ rule bowtie2_se:
         "../envs/align.yaml"
     shell:  
         """
-        (bowtie2 --threads {threads} {params.extra} -x {params.ref_genome} \
-        -U {input.sample[0]} | samtools view -Sbh -o {output} -) 2>{log}
+        (echo "`date -R`: Aligning fastq file..." &&
+        bowtie2 \
+        --threads {threads} \
+        {params.extra} \
+        -x {params.ref_genome} \
+        -U {input.sample[0]} |& 
+        samtools view -Sbh -o {output} - &&
+        echo "`date -R`: Success! Alignment is done." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
         """
 
 rule bowtie2_pe:
@@ -39,7 +46,13 @@ rule bowtie2_pe:
         "../envs/align.yaml"
     shell:  
         """
-        (bowtie2 --threads {threads} {params.extra} -x {params.ref_genome} \
-        -1 {input.sample[0]} -2 {input.sample[1]} | \
-        samtools view -Sb -o {output} -) 2>{log}
+        (echo "`date -R`: Aligning fastq files..." &&
+        bowtie2 \
+        --threads {threads} \
+        {params.extra} \
+        -x {params.ref_genome} \
+        -1 {input.sample[0]} -2 {input.sample[1]} |&
+        samtools view -Sb -o {output} - &&
+        echo "`date -R`: Success! Alignment is done." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
         """

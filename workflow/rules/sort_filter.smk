@@ -12,8 +12,9 @@ rule sort_filter:
         "logs/{samples}/{samples}_{build}_sort_filter.benchmark.txt",
     shell:  
         """
-        sort -u -k1,1 -k2,2n -k3,3n {input} |
-        egrep {params.filt} > {output}
+        (echo "`date -R`: Sorting and filtering bed file by chromosomes..." &&
+        sort -u -k1,1 -k2,2n -k3,3n {input} |&
+        egrep {params.filt} > {output} &&
+        echo "`date -R`: Success! Bed file is filtered." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
         """
-
-
