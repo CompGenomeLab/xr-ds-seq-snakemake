@@ -1,6 +1,6 @@
 
 sample: 
   - "HXA64A1_ATCACG_sub10k"
-
+  - "HXA64B7_CAGATC_sub10k"
 
 build: "GRCh38"
