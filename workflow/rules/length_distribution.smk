@@ -3,7 +3,7 @@ rule length_dist:
     input:
         "results/{samples}/{samples}_{build}_sorted_chr.bed",
     output:
-        "results/{samples}/{samples}_{build}_length_distribution.txt",
+        temp("results/{samples}/{samples}_{build}_length_distribution.txt"),
     log:
         "logs/{samples}/{samples}_{build}_length_dist.log",
     benchmark:

@@ -55,25 +55,28 @@ def allInput(method, build, sampleList):
             "_sorted_nucleotideTable.png")
         inputList.append(sampledir + sample + "_" + build + 
             "_sorted_dinucleotideTable.png")
-        inputList.append(sampledir + sample + "_" + build + 
+        inputList.append(sampledir + sample + "_" + build + "_" + method +
             "_sim_nucleotideTable.png")
-        inputList.append(sampledir + sample + "_" + build + 
+        inputList.append(sampledir + sample + "_" + build + "_" + method + 
             "_sim_dinucleotideTable.png")
         inputList.append(sampledir + sample + "_" + build + 
             "_length_distribution.png")
+        inputList.append(sampledir + sample + "_" + build + "_" + method + 
+            "_sorted_plus.bw")
+        inputList.append(sampledir + sample + "_" + build + "_" + method + 
+            "_sorted_minus.bw")
 
         if method == "DS":
-            inputList.append(sampledir + sample + 
-                "_" + build + "_sorted_ds_dipyrimidines_plus.bw")
-            inputList.append(sampledir + sample + 
-                "_" + build + "_sorted_ds_dipyrimidines_minus.bw")
-
-        elif method == "XR": 
             inputList.append(sampledir + sample + "_" + build + 
-                "_sorted_xr_plus.bw")
+                "_sorted_ds_dipyrimidines_plus.bed") 
             inputList.append(sampledir + sample + "_" + build + 
-                "_sorted_xr_minus.bw")
-    
+                "_sorted_ds_dipyrimidines_minus.bed") 
+        elif method == "XR":
+            inputList.append(sampledir + sample + "_" + 
+                build + "_sorted_plus.bed") 
+            inputList.append(sampledir + sample + "_" + 
+                build + "_sorted_minus.bed") 
+        
     return inputList
 
 ################################################################################

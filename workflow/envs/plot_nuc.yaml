@@ -7,4 +7,5 @@ dependencies:
   - conda-forge::r-ggplot2 ==3.0.0
   - conda-forge::r-dplyr ==0.8.0.1
   - conda-forge::r-tidyr ==0.8.2
+  - conda-forge::r-futile.logger ==1.4.3
   

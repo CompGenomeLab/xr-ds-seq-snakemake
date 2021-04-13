@@ -4,7 +4,7 @@ rule length_mode:
         bed="results/{samples}/{samples}_{build}_sorted_chr.bed",
         ld="results/{samples}/{samples}_{build}_length_distribution.txt",
     output:
-        "results/{samples}/{samples}_{build}_lengthMode.bed",
+        temp("results/{samples}/{samples}_{build}_lengthMode.bed"),
     log:
         "logs/{samples}/{samples}_{build}_length_mode.log",
     benchmark:

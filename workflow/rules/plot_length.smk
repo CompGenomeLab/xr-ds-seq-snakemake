@@ -3,7 +3,8 @@ rule plot_length:
     input:
         "results/{samples}/{samples}_{build}_length_distribution.txt",
     output:
-        report("results/{samples}/{samples}_{build}_length_distribution.png"),
+        report("results/{samples}/{samples}_{build}_length_distribution.png", 
+                category="Length Distribution"),
     params:
         "{samples}_{build}",
     log:
@@ -17,5 +18,6 @@ rule plot_length:
         Rscript workflow/scripts/lengthDistPlot.r \
         -i {input} \
         -s {params} \
-        -o {output} 2>{log}
+        -o {output} \
+        -l {log}
         """

@@ -5,8 +5,8 @@ rule reposition:
         minus="results/{samples}/{samples}_{build}_sorted_minus.bed",
         index="resources/ref_genomes/{build}/genome_{build}.fa.fai",
     output:
-        plus="results/{samples}/{samples}_{build}_sorted_plus_10.bed",
-        minus="results/{samples}/{samples}_{build}_sorted_minus_10.bed", 
+        plus=temp("results/{samples}/{samples}_{build}_sorted_plus_10.bed"),
+        minus=temp("results/{samples}/{samples}_{build}_sorted_minus_10.bed"), 
     log:
         "logs/{samples}/{samples}_{build}_reposition.log",
     benchmark:

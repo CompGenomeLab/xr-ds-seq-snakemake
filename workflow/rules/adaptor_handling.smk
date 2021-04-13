@@ -3,8 +3,8 @@ rule cutadapt_se:
     input:
         "resources/samples/{samples}.fastq.gz",
     output:
-        fastq="results/{samples}/{samples}_cutadapt.fastq.gz",
-        qc="results/{samples}/{samples}_cutadapt.qc.txt",   
+        fastq=temp("results/{samples}/{samples}_cutadapt.fastq.gz"),
+        qc=report("results/{samples}/{samples}_cutadapt.qc.txt", category="QC"),   
     params:
         adapters=config["adaptor_se"],  
         extra=config["cutadapt_se"],  
@@ -20,9 +20,9 @@ rule cutadapt_pe:
         fq1="resources/samples/{samples}_R1.fastq.gz",
         fq2="resources/samples/{samples}_R2.fastq.gz",
     output:
-        fastq1="results/{samples}/{samples}_cutadapt_1.fastq.gz",
-        fastq2="results/{samples}/{samples}_cutadapt_2.fastq.gz",
-        qc="results/{samples}/{samples}_cutadapt.qc.txt",
+        fastq1=temp("results/{samples}/{samples}_cutadapt_1.fastq.gz"),
+        fastq2=temp("results/{samples}/{samples}_cutadapt_2.fastq.gz"),
+        qc=report("results/{samples}/{samples}_cutadapt.qc.txt", category="QC"),
     params:
         adapters=config["adaptor_pe"],  
         extra=config["cutadapt_pe"], 

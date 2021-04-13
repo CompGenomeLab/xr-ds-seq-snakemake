@@ -3,7 +3,7 @@ rule fastqc:
     input:
         "resources/samples/{samples}.fastq.gz",
     output:
-        html=report("results/{samples}/{samples}.html"),
+        html=report("results/{samples}/{samples}.html", category="QC"),
         zip="results/{samples}/{samples}_fastqc.zip",
     params: ""
     log:

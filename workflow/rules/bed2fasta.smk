@@ -5,9 +5,9 @@ rule bed2fasta_ds:
         minus="results/{samples}/{samples}_{build}_sorted_minus_10.bed",
         genome="resources/ref_genomes/{build}/genome_{build}.fa",
     output:
-        plus="results/{samples}/{samples}_{build}_sorted_plus_10.fa",
-        minus="results/{samples}/{samples}_{build}_sorted_minus_10.fa",
-        comb="results/{samples}/{samples}_{build}_sorted_10.fa",
+        plus=temp("results/{samples}/{samples}_{build}_sorted_plus_10.fa"),
+        minus=temp("results/{samples}/{samples}_{build}_sorted_minus_10.fa"),
+        comb=temp("results/{samples}/{samples}_{build}_sorted_10.fa"),
         bed=temp("results/{samples}/{samples}_{build}_sorted_10.bed"),       
     log:
         "logs/{samples}/{samples}_{build}_bed2fasta_ds.log",
@@ -55,7 +55,7 @@ rule bed2fasta_xr:
         bed="results/{samples}/{samples}_{build}_lengthMode.bed",
         genome="resources/ref_genomes/{build}/genome_{build}.fa",
     output:
-        "results/{samples}/{samples}_{build}_lengthMode.fa",
+        temp("results/{samples}/{samples}_{build}_lengthMode.fa"),
     log:
         "logs/{samples}/{samples}_{build}_bed2fasta_xr.log",
     benchmark:

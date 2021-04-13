@@ -12,8 +12,11 @@ rule filtbyMotifs:
         "logs/{samples}/{samples}_{build}_filtbyMotifs_{strand}.benchmark.txt",
     shell:  
         """
+        (echo "`date -R`: Filtering by the given motif..." &&
         workflow/scripts/fa2bedByChoosingReadMotifs.py \
         -i {input} \
         -o {output} \
-        -r {params}
+        -r {params} &&
+        echo "`date -R`: Success! Filtering is done." ||
+        echo "`date -R`: Filtering failed...") > {log} 2>&1
         """
