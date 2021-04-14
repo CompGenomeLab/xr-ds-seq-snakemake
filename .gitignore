@@ -1,5 +1,5 @@
 results/*
-reports/*
+reports/report*
 resources/samples/*
 resources/ref_genomes/*
 logs/*

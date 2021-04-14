@@ -62,11 +62,12 @@ This workflow is prepared according to the
 [structure](https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html) 
 recommended by Snakemake: 
 
-- `config/`: contains the configuration file.
-- `resources/`: contains the input files.  
-- `results/`: contains the generated files and figures. 
-This folder will automatically appear when you run the workflow.
+- `config/`: contains the configuration files.
 - `logs/`: contains the log files of each step. 
+This folder will automatically appear when you run the workflow.
+- `reports/`: contains the report files, which can be produced after the pipeline is over. 
+- `resources/`: contains `samples/` where the raw XR and Damage-seq data are stored and `ref_genomes/` where the reference genome files are stored. Reference genome files can be automatically produced by the pipelines, if they are properly defined in the config files.  
+- `results/`: contains the generated files and figures. 
 This folder will automatically appear when you run the workflow.
 - `workflow/`: contains `envs/` where the environments are stored, 
 `rules/` where the Snakemake rules are stored, and 
