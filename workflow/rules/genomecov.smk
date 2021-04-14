@@ -40,12 +40,12 @@ rule genomecov_ds:
 
 rule genomecov_xr:
     input:
-        plus=temp("results/{samples}/{samples}_{build}_sorted_plus.bed"),
-        minus=temp("results/{samples}/{samples}_{build}_sorted_minus.bed"),
+        plus="results/{samples}/{samples}_{build}_sorted_plus.bed",
+        minus="results/{samples}/{samples}_{build}_sorted_minus.bed",
         ref_genome="resources/ref_genomes/{build}/genome_{build}.fa.fai",
     output:
-        plus="results/{samples}/{samples}_{build}_XR_sorted_plus.bdg",
-        minus="results/{samples}/{samples}_{build}_XR_sorted_minus.bdg",
+        plus=temp("results/{samples}/{samples}_{build}_XR_sorted_plus.bdg"),
+        minus=temp("results/{samples}/{samples}_{build}_XR_sorted_minus.bdg"),
     params:
         read=lambda w, input: mappedReads(input),
     log:

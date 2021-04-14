@@ -2,5 +2,18 @@
 sample: 
   - "HXA64A1_ATCACG_sub10k"
   - "HXA64B7_CAGATC_sub10k"
+  - "HXACA4_TGACCA_sub10k"
+
+# Genome parameters 
 
 build: "GRCh38"
+
+species: "homo_sapiens"
+
+datatype: "dna"
+
+release: "102"
+
+#######
+
+filter: "'^([1-9]|1[0-9]|2[0-2]|X)'"

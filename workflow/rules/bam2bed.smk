@@ -7,9 +7,9 @@ rule bam2bed_se:
     params:
         q_trim=config["samtools_q_trim_se"], 
     log:
-        "logs/{samples}/{samples}_{build}_bam2bed.log",
+        "logs/{samples}/{samples}_{build}_bam2bed_se.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_bam2bed.benchmark.txt",
+        "logs/{samples}/{samples}_{build}_bam2bed_se.benchmark.txt",
     conda:
         "../envs/bam2bed.yaml"
     shell:  
@@ -30,9 +30,9 @@ rule bam2bed_pe:
     params:
         q_trim=config["samtools_q_trim_pe"],
     log:
-        "logs/{samples}/{samples}_{build}_bam2bed.log",
+        "logs/{samples}/{samples}_{build}_bam2bed_pe.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_bam2bed.benchmark.txt",
+        "logs/{samples}/{samples}_{build}_bam2bed_pe.benchmark.txt",
     conda:
         "../envs/bam2bed.yaml"
     shell:  

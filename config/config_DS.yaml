@@ -1,5 +1,18 @@
 
 sample: 
   - "HDA64A1_ATCACG_sub10k"
+  - "R19034725-CT5H2-HelaD3-5R2h2-B_combined_sub10k"
+
+# Genome parameters 
 
 build: "GRCh38"
+
+species: "homo_sapiens"
+
+datatype: "dna"
+
+release: "102"
+
+#######
+
+filter: "'^([1-9]|1[0-9]|2[0-2]|X)'"

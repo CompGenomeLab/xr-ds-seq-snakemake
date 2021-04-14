@@ -1,6 +1,6 @@
-# XR-seq and Damage-seq pipelines
+# XR-seq and Damage-seq workflows
 
-This repository contains xr-seq and damage-seq pipelines.  
+This repository contains xr-seq and damage-seq workflows.  
 
 ## Installation
 
@@ -47,7 +47,7 @@ We propose 2 way to create the environment:
 ## Install Simulation
 
 - You should install [boquila](https://github.com/CompGenomeLab/boquila) 
-tool to simulate repair and damage reads.
+tool to simulate repair and damage reads:
 
     ```
     cargo install --branch main --git https://github.com/CompGenomeLab/boquila.git
@@ -56,26 +56,55 @@ tool to simulate repair and damage reads.
 | Warning: please add the path of the tool to your $PATH to be able to run boquila tool. |
 | --- |
 
-## Directory Structure (will be updated)
+## Directory Structure
 
 This workflow is prepared according to the 
 [structure](https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html) 
 recommended by Snakemake: 
 
 - `config/`: contains the configuration files.
+
 - `logs/`: contains the log files of each step. 
 This folder will automatically appear when you run the workflow.
-- `reports/`: contains the report files, which can be produced after the pipeline is over. 
-- `resources/`: contains `samples/` where the raw XR and Damage-seq data are stored and `ref_genomes/` where the reference genome files are stored. Reference genome files can be automatically produced by the pipelines, if they are properly defined in the config files.  
+
+- `reports/`: contains the report files, which can be produced 
+after the workflow is over. 
+
+- `resources/`: contains `samples/` where the raw XR-seq and Damage-seq data 
+are stored and `ref_genomes/` where the reference genome files are stored. 
+Reference genome files can be automatically produced by the workflows, 
+if they are properly defined in the config files.  
+
 - `results/`: contains the generated files and figures. 
 This folder will automatically appear when you run the workflow.
+
 - `workflow/`: contains `envs/` where the environments are stored, 
 `rules/` where the Snakemake rules are stored, and 
 `scripts/` where the scripts used inside the rules are stored. 
 
 ## Configuration file (will be updated)
 
-Before running the workflow, you should edit the configuration file.  
+Before running the workflow, you should edit the configuration files. 
+For both XR-seq and Damage-seq workflows, there are 2 configuration files: 
+`config_(XR/DS)_initial.yaml` and `config_(XR/DS).yaml`. 
+The configuration file with "_initial_" prefix shouldn't be modified 
+by the user since they are containing configuration settings 
+that are common for all XR-seq and Damage-seq experiments. 
+For more detail about these configuration files, 
+check out the readme file in `config/` directory. 
+The parameters for "config_(XR/DS).yaml" as below:
+
+- `sample`: 
+
+- `build`:
+
+- `species`: 
+
+- `datatype`:
+
+- `release`:
+
+- `filter`:
 
 ## Usage (will be updated)
 

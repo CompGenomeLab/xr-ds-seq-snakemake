@@ -4,12 +4,25 @@ from os import path
 
 ################### Helper Functions ###########################################
 
+def isSingle(sample):
+
+    sample_dir = "resources/samples/"
+    single = sample_dir + sample + ".fastq.gz"
+    pairedR1 = sample_dir + sample + "_R1.fastq.gz"
+    
+    if path.isfile(single) and "_R1" not in single:
+        return True
+    elif path.isfile(pairedR1):
+        return False
+    else:
+        raise(ValueError("Sample not found..."))
+
 def getMotif(wildcards):
     
     if "Oxaliplatin" in wildcards.samples or "Cisplatin" in wildcards.samples: 
         return "'.{4}(g|G){2}.{4}'"
     
-    elif "64" in wildcards.samples or "CPD" in wildcards.samples:
+    elif "64" in wildcards.samples or "CPD" in wildcards.samples or "R190" in wildcards.samples:
         return "'.{4}(c|t|C|T){2}.{4}'"
 
 def getDinuc(wildcards):
@@ -17,7 +30,7 @@ def getDinuc(wildcards):
     if "Oxaliplatin" in wildcards.samples or "Cisplatin" in wildcards.samples: 
         return "'GG'"
     
-    elif "64" in wildcards.samples or "CPD" in wildcards.samples:
+    elif "64" in wildcards.samples or "CPD" in wildcards.samples or "R190" in wildcards.samples:
         return "'CC','CT','TC','TT'"
 
 def lineNum(file):
@@ -50,7 +63,12 @@ def allInput(method, build, sampleList):
     for sample in sampleList:
         sampledir = "results/" + sample + "/" 
     
-        inputList.append(sampledir + sample + ".html")
+        if isSingle(sample):
+            inputList.append(sampledir + sample + ".html")
+        else:
+            inputList.append(sampledir + sample + "_R1.html")
+            inputList.append(sampledir + sample + "_R2.html")
+
         inputList.append(sampledir + sample + "_" + build + 
             "_sorted_nucleotideTable.png")
         inputList.append(sampledir + sample + "_" + build + 
@@ -76,7 +94,7 @@ def allInput(method, build, sampleList):
                 build + "_sorted_plus.bed") 
             inputList.append(sampledir + sample + "_" + 
                 build + "_sorted_minus.bed") 
-        
+                
     return inputList
 
 ################################################################################
