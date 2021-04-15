@@ -82,7 +82,7 @@ This folder will automatically appear when you run the workflow.
 `rules/` where the Snakemake rules are stored, and 
 `scripts/` where the scripts used inside the rules are stored. 
 
-## Configuration file (will be updated)
+## Configuration file
 
 Before running the workflow, you should edit the configuration files. 
 For both XR-seq and Damage-seq workflows, there are 2 configuration files: 
@@ -94,23 +94,62 @@ For more detail about these configuration files,
 check out the readme file in `config/` directory. 
 The parameters for "config_(XR/DS).yaml" as below:
 
-- `sample`: 
+- `sample`: The name of the sample file w/o the extension. 
+Multiple sample names can be given in the below format:
 
-- `build`:
+    ```
+    sample: 
+    - "SAMPLE_1"
+    - "SAMPLE_2"
+    - "SAMPLE_3"
+    ```
 
-- `species`: 
+    - Using the given sample name, the workflow will look for 
+    `{SAMPLE}.fastq.gz` as raw data. 
+    Therefore, the fastq file must be gzipped before running the workflow.
 
-- `datatype`:
+    - If the layout of the given sample is paired-end, 
+    the workflow will look for 
+    `{SAMPLE}_R1.fastq.gz` and `{SAMPLE}_R2.fastq.gz` as raw data.
+    Therefore, paired-end sample files must contain `_R1/2` suffixes and 
+    the suffixes should not be given in the configuration file to the `sample`.
 
-- `release`:
+    - Lastly, because damage type is retrieved from the name of the file, 
+    given sample name should contain the damage type. 
+    If damage type is:
 
-- `filter`:
+        - (6-4)PP, then sample name should contain `64`.
+        - CPD, then sample name should contain `CPD`.
+        - Cisplatin, then sample name should contain `cisplatin`.
+        - Oxaliplatin, then sample name should contain `oxaliplatin`.
 
-## Usage (will be updated)
+- Genome parameters: The parameters `build`, `species`, `datatype`, 
+and `release` are defined to retrieve correct reference genome from ensembl. 
+For more information, you can check out the 
+[link](https://snakemake-wrappers.readthedocs.io/en/stable/wrappers/reference/ensembl-sequence.html). 
+
+- `filter`: This parameter is used to filter chromosomes by the given regex.
+
+## Usage
 
 After adjusting the configuration file, you can run the workflow 
-from `xr-ds-seq-snakemake` directory:
+from `xr-ds-seq-snakemake` directory.
+
+- For XR-seq:
+
+    ```
+    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_XR --debug-dag
+    ```
+
+- For Damage-seq:
+
+    ```
+    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_DS --debug-dag
+    ```
+
+To generate detailed HTML report files, 
+the code below should be run after workflow:
 
 ```
-snakemake -pr --use-conda --cores 64 --snakefile Snakefile_(XR/DS) --debug-dag
+snakemake -pr --use-conda --cores 64 --snakefile Snakefile_(XR/DS) --debug-dag --report reports/{report_name}.html
 ```
