@@ -11,7 +11,6 @@ rule all:
         lambda w: allInput(config["method"], config["build"], config["sample"]),
 
 include: "workflow/rules/fastqc.smk"
-include: "workflow/rules/zipping_samples.smk"
 include: "workflow/rules/genome_download.smk"
 include: "workflow/rules/genome_build.smk"
 include: "workflow/rules/genome_indexing.smk"

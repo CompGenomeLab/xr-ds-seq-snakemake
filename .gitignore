@@ -1,5 +1,5 @@
 results/*
-reports/*
+reports/report*
 resources/samples/*
 resources/ref_genomes/*
 logs/*
@@ -13,3 +13,4 @@ myXRseq.sh
 csv2config.py
 slurm*
 workflow/scripts/__pycache__/*
+Rplots.pdf

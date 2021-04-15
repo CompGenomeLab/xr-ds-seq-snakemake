@@ -5,8 +5,8 @@ rule genomecov_ds:
         minus="results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_minus.bed",
         ref_genome="resources/ref_genomes/{build}/genome_{build}.fa.fai",
     output:
-        plus="results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_plus.bdg",
-        minus="results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_minus.bdg",
+        plus=temp("results/{samples}/{samples}_{build}_DS_sorted_plus.bdg"),
+        minus=temp("results/{samples}/{samples}_{build}_DS_sorted_minus.bdg"),
     params:
         read=lambda w, input: mappedReads(input),
     log:
@@ -17,11 +17,25 @@ rule genomecov_ds:
         "../envs/genomecov.yaml"
     shell:  
         """
-        bedtools genomecov -i {input.plus} -g {input.ref_genome} -bg -scale \
-        $(echo {params.read} | awk '{{print 1000000/$1}}') > {output.plus}
+        (echo "`date -R`: Calculating genome coverage of {input.plus}..." &&
+        bedtools genomecov \
+        -i {input.plus} \
+        -g {input.ref_genome} \
+        -bg \
+        -scale $(echo {params.read} | awk '{{print 1000000/$1}}') \
+        > {output.plus} &&
+        echo "`date -R`: Success! Genome coverage is calculated." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
 
-        bedtools genomecov -i {input.minus} -g {input.ref_genome} -bg -scale \
-        $(echo {params.read} | awk '{{print 1000000/$1}}') > {output.minus}
+        (echo "`date -R`: Calculating genome coverage of {input.minus}..." &&
+        bedtools genomecov \
+        -i {input.minus} \
+        -g {input.ref_genome} \
+        -bg \
+        -scale $(echo {params.read} | awk '{{print 1000000/$1}}') \
+        > {output.minus} &&
+        echo "`date -R`: Success! Genome coverage is calculated." || 
+        echo "`date -R`: Process failed...") >> {log} 2>&1
         """
 
 rule genomecov_xr:
@@ -30,8 +44,8 @@ rule genomecov_xr:
         minus="results/{samples}/{samples}_{build}_sorted_minus.bed",
         ref_genome="resources/ref_genomes/{build}/genome_{build}.fa.fai",
     output:
-        plus="results/{samples}/{samples}_{build}_sorted_xr_plus.bdg",
-        minus="results/{samples}/{samples}_{build}_sorted_xr_minus.bdg",
+        plus=temp("results/{samples}/{samples}_{build}_XR_sorted_plus.bdg"),
+        minus=temp("results/{samples}/{samples}_{build}_XR_sorted_minus.bdg"),
     params:
         read=lambda w, input: mappedReads(input),
     log:
@@ -42,9 +56,24 @@ rule genomecov_xr:
         "../envs/genomecov.yaml"
     shell:  
         """
-        bedtools genomecov -i {input.plus} -g {input.ref_genome} -bg -scale \
-        $(echo {params.read} | awk '{{print 1000000/$1}}') > {output.plus}
+        (echo "`date -R`: Calculating genome coverage of {input.plus}..." &&
+        bedtools genomecov \
+        -i {input.plus} \
+        -g {input.ref_genome} \
+        -bg \
+        -scale $(echo {params.read} | awk '{{print 1000000/$1}}') \
+        > {output.plus} &&
+        echo "`date -R`: Success! Genome coverage is calculated." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
 
-        bedtools genomecov -i {input.minus} -g {input.ref_genome} -bg -scale \
-        $(echo {params.read} | awk '{{print 1000000/$1}}') > {output.minus}
+
+        (echo "`date -R`: Calculating genome coverage of {input.minus}..." &&
+        bedtools genomecov \
+        -i {input.minus} \
+        -g {input.ref_genome} \
+        -bg \
+        -scale $(echo {params.read} | awk '{{print 1000000/$1}}') \
+        > {output.minus} &&
+        echo "`date -R`: Success! Genome coverage is calculated." || 
+        echo "`date -R`: Process failed...") >> {log} 2>&1
         """

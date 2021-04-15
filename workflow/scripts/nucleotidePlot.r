@@ -4,22 +4,28 @@ library(ggplot2)
 library(argparser)
 library("tidyr")
 library(dplyr)
+library(futile.logger)
 
 ######## Arguments ##########
 p <- arg_parser("producing di/nucleotide contents")
 p <- add_argument(p, "-i", help="input")
 p <- add_argument(p, "-o", help="output")
+p <- add_argument(p, "-l", help="log file")
 p <- add_argument(p, "-k", help="kmer value of input, 1 (nucleotide) or 2 (dinucleotide)")
 p <- add_argument(p, "-s", help="sample name written in the caption")
 p <- add_argument(p, "-f", help="filter (only for dinucleotides). Ex: 'CC','CT','TC','TT'")
 # Parse the command line arguments
 argv <- parse_args(p)
 
+# log file
+flog.appender(appender.file(argv$l))
+
 #### Rearrange ####
 
+flog.info("Reading file...")  
 nuc_table <- read.table(argv$i, header = TRUE)
 
-# rename columns and get their order
+flog.info("Renaming columns...")  
 x_order <- c()
 
 if (argv$k == "1"){
@@ -50,13 +56,14 @@ dt_organized <- nuc_table %>% gather(Position, count,
 
 colnames(dt_organized) <- c("nucleotides", "positions", "counts")
 
-# calculate percentage
+flog.info("Calculating the percentages...")  
 dt_organized$freq <- 100*dt_organized$counts/sum(nuc_table[2])
 
 if (argv$k == "2"){
   
   new_dt <- data.frame()
   filt <- unlist(strsplit(argv$f, ","))
+  flog.info("Motifs: %s", list(filt))  
   for (i in filt){
     new_dt <- rbind(new_dt, filter(dt_organized, nucleotides == i))
     
@@ -64,10 +71,13 @@ if (argv$k == "2"){
   dt_organized <- unique(new_dt)
 }
 
+flog.info("Ordering columns...")  
 dt_organized$positions = factor(dt_organized$positions, 
                                 levels = x_order)
 
 #### Plot ####
+
+flog.info("Plotting...")  
 p <- ggplot(dt_organized, aes(x = positions, y = freq, 
                               fill = nucleotides)) + 
   geom_bar(stat = "identity") +
@@ -78,7 +88,6 @@ p <- ggplot(dt_organized, aes(x = positions, y = freq,
        caption = argv$s)
 
 # theme 
-
 p <- p + theme_light() +
   theme(axis.title.x = element_text(size = 16, face = "bold"),
         axis.title.y = element_text(size = 16, face = "bold"),
@@ -94,3 +103,5 @@ p <- p + theme_light() +
         plot.subtitle = element_text(size = 16, face = "bold"))
 
 ggsave(argv$o, width = 10, height = 8)
+
+flog.info("Saved.")  

@@ -17,19 +17,28 @@ rule simulation_ds:
         "../envs/bed2fasta.yaml"
     shell:
         """
-        cat {input.plus} {input.minus} > {output.bed}
+        (echo "`date -R`: Combine files..." &&
+        cat {input.plus} {input.minus} > {output.bed} &&
+        echo "`date -R`: Success! Files are combined." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
         
+        (echo "`date -R`: Converting {output.bed} to fasta format..." &&
         bedtools getfasta \
         -fi {input.genome} \
         -bed {output.bed} \
         -fo {output.fa} \
-        -s
+        -s &&
+        echo "`date -R`: Success! {output.bed} is converted." || 
+        echo "`date -R`: Process failed...") >> {log} 2>&1
 
+        (echo "`date -R`: Simulating reads..." &&
         boquila \
         --fasta {output.fa} \
         --ref {input.genome} \
         --regions {input.regions} \
-        > {output.sim}
+        > {output.sim} &&
+        echo "`date -R`: Success! Simulation is done." || 
+        echo "`date -R`: Process failed...") >> {log} 2>&1
         """
 
 rule simulation_xr:
@@ -48,15 +57,21 @@ rule simulation_xr:
         "../envs/bed2fasta.yaml"
     shell:
         """
+        (echo "`date -R`: Converting {input.bed} to fasta format..." &&
         bedtools getfasta \
         -fi {input.genome} \
         -bed {input.bed} \
         -fo {output.fa} \
-        -s
+        -s &&
+        echo "`date -R`: Success! {input.bed} is converted." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
 
+        (echo "`date -R`: Simulating reads..." &&
         boquila \
         --fasta {output.fa} \
         --ref {input.genome} \
         --regions {input.regions} \
-        > {output.sim}
+        > {output.sim} &&
+        echo "`date -R`: Success! Simulation is done." || 
+        echo "`date -R`: Process failed...") >> {log} 2>&1
         """

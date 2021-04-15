@@ -2,30 +2,39 @@
 
 library("ggplot2")
 library(argparser)
+library(futile.logger)
 
 ######## Arguments ##########
-p <- arg_parser("producing length distribution plot")
+p <- arg_parser("producing the length distribution plot")
 p <- add_argument(p, "-i", help="input")
 p <- add_argument(p, "-o", help="output")
+p <- add_argument(p, "-l", help="log file")
 p <- add_argument(p, "-s", help="sample name written in the caption")
 # Parse the command line arguments
 argv <- parse_args(p)
+
+# log file
+flog.appender(appender.file(argv$l))
 
 #### Rearrange ####
 
 # scientific notation
 options(scipen=999)
-  
+
+flog.info("Reading file...")  
 d <- read.delim(argv$i, header = FALSE)
 
 colnames(d) <- c("oligomer_length", "counts")
 
 #### Plot ####
 
+mostOccOligo <- d[which.max(d[,2]),1]
+
+flog.info("Plotting...") 
 p <- ggplot(d, aes(x = oligomer_length, y = counts, 
                               fill = counts)) + 
   geom_bar(stat = "identity") +
-  xlim(15, 35) +
+  xlim(mostOccOligo-10, mostOccOligo+10) +
   xlab("Oligomer Length") + ylab("Counts") +
   labs(title="Length Distribution of the Reads", 
        subtitle="Bar Chart",
@@ -50,3 +59,4 @@ p <- p + theme_light() +
 # save
 ggsave(argv$o, width = 10, height = 8)
 
+flog.info("Saved.") 

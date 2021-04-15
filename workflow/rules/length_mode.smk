@@ -4,7 +4,7 @@ rule length_mode:
         bed="results/{samples}/{samples}_{build}_sorted_chr.bed",
         ld="results/{samples}/{samples}_{build}_length_distribution.txt",
     output:
-        "results/{samples}/{samples}_{build}_lengthMode.bed",
+        temp("results/{samples}/{samples}_{build}_lengthMode.bed"),
     log:
         "logs/{samples}/{samples}_{build}_length_mode.log",
     benchmark:
@@ -12,10 +12,11 @@ rule length_mode:
     shell:  
         """
         length="$(awk -v m=0 '{{if(m<$2){{m=$2;l=$1}}}}END{{print l}}' \
-        {input.ld})"
+        {input.ld})" 
 
+        (echo "`date -R`: Filtering the reads by the lengths..." &&
         awk -v num="$length" '{{ if ($3-$2 == num) {{ print }} }}' {input.bed} \
-        > {output}
+        > {output} &&
+        echo "`date -R`: Success! Reads are filtered." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
         """
-
-
