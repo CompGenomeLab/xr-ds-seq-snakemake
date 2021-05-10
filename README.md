@@ -55,6 +55,7 @@ tool to simulate repair and damage reads:
 
 | Warning: please add the path of the tool to your $PATH to be able to run boquila tool. |
 | --- |
+<br>
 
 ## Directory Structure
 
@@ -138,14 +139,17 @@ from `xr-ds-seq-snakemake` directory.
 - For XR-seq:
 
     ```
-    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_XR --debug-dag
+    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_XR --keep-going --rerun-incomplete --debug-dag
     ```
 
 - For Damage-seq:
 
     ```
-    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_DS --debug-dag
+    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_DS --keep-going --rerun-incomplete --debug-dag
     ```
+| Note: To run the workflow on [Slurm Workload Manager](https://slurm.schedmd.com/srun.html) as set of jobs, `--profile` flag must be provided with proper slurm configuration file (`config/slurm`). |
+| --- |
+<br>
 
 To generate detailed HTML report files, 
 the code below should be run after workflow:
