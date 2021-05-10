@@ -5,7 +5,7 @@ sample:
 srr: 
   enabled: True
   codes:
-    - "SRR1976060"
+    - "SRR1976060:SRR1976061"
 
 # Genome parameters 
 
