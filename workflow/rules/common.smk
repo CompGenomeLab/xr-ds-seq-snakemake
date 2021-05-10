@@ -1,21 +1,63 @@
 
 import warnings
-from os import path
+import os
+import subprocess
 
 ################### Helper Functions ###########################################
 
-def isSingle(sample):
+def getSRR(sample, srrList, sampleList):
 
-    sample_dir = "resources/samples/"
-    single = sample_dir + sample + ".fastq.gz"
-    pairedR1 = sample_dir + sample + "_R1.fastq.gz"
-    
-    if path.isfile(single) and "_R1" not in single:
-        return True
-    elif path.isfile(pairedR1):
-        return False
+    try:
+        idx = sampleList.index(sample)
+    except:
+       raise(ValueError("Designated wildcard cannot be found in sample list."))
+        
+    return srrList[idx]
+
+def isSingle(sample, sampleList, srrEnabled, srrList):
+
+    if srrEnabled:
+
+        mySRR = getSRR(sample, srrList, sampleList)
+
+        shellCommand = 'fastq-dump -X 1 -Z --split-spot ' + mySRR + ' | wc -l'
+        #print(shellCommand)
+        p=subprocess.getoutput(shellCommand)
+        #print(p)
+        lineNum = int(p.split("\n")[2])
+        #print(lineNum)
+
+        if lineNum == 4:
+            return True
+        else:
+            return False
+
     else:
-        raise(ValueError("Sample not found..."))
+
+        sample_dir = "resources/samples/"
+        single = sample_dir + sample + ".fastq.gz"
+        pairedR1 = sample_dir + sample + "_1.fastq.gz"
+        
+        if os.path.isfile(single) and "_1" not in single:
+            return True
+        elif os.path.isfile(pairedR1):
+            return False
+        else:
+            raise(ValueError("Sample not found..."))
+
+def input4filter(wildcards, sampleList, srrEnabled, srrList):
+
+    if isSingle(wildcards.samples, sampleList, srrEnabled, srrList):
+        return "results/{samples}/{samples}_{build}_se.bed"
+    else:    
+        return "results/{samples}/{samples}_{build}_pe.bed"
+
+def input4nucTable(method):
+
+    if method == "XR":
+        return "results/{samples}/{samples}_{build}_lengthMode.fa"
+    elif method == "DS":    
+        return "results/{samples}/{samples}_{build}_sorted_10.fa"
 
 def getMotif(wildcards):
     
@@ -36,7 +78,7 @@ def getDinuc(wildcards):
 def lineNum(file):
     
     linenum = 0
-    if path.exists(file):
+    if os.path.exists(file):
         with open(file) as f:
             for line in f:
                 linenum += 1
@@ -57,17 +99,17 @@ def mappedReads(file):
 
     return lineNum(file1) + lineNum(file2)
 
-def allInput(method, build, sampleList):
+def allInput(method, build, sampleList, srrEnabled, srrList):
 
     inputList = []
     for sample in sampleList:
         sampledir = "results/" + sample + "/" 
-    
-        if isSingle(sample):
+
+        if isSingle(sample, sampleList, srrEnabled, srrList):
             inputList.append(sampledir + sample + ".html")
         else:
-            inputList.append(sampledir + sample + "_R1.html")
-            inputList.append(sampledir + sample + "_R2.html")
+            inputList.append(sampledir + sample + "_1.html")
+            inputList.append(sampledir + sample + "_2.html")
 
         inputList.append(sampledir + sample + "_" + build + 
             "_sorted_nucleotideTable.png")
@@ -94,7 +136,8 @@ def allInput(method, build, sampleList):
                 build + "_sorted_plus.bed") 
             inputList.append(sampledir + sample + "_" + 
                 build + "_sorted_minus.bed") 
-                
+    
+    #print(inputList)
     return inputList
 
 ################################################################################

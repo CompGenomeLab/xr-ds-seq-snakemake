@@ -3,7 +3,7 @@ rule bam2bed_se:
     input:
         "results/{samples}/{samples}_cutadapt_se_{build}.bam",
     output:
-        "results/{samples}/{samples}_{build}_.bed",
+        "results/{samples}/{samples}_{build}_se.bed",
     params:
         q_trim=config["samtools_q_trim_se"], 
     log:
@@ -25,7 +25,7 @@ rule bam2bed_pe:
     input:
         "results/{samples}/{samples}_cutadapt_pe_{build}.bam",
     output:
-        bed="results/{samples}/{samples}_{build}_.bed",
+        bed="results/{samples}/{samples}_{build}_pe.bed",
         bam=temp("results/{samples}/{samples}_{build}_sorted.bam"),
     params:
         q_trim=config["samtools_q_trim_pe"],

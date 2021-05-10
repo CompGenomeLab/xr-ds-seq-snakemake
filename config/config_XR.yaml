@@ -1,8 +1,11 @@
 
 sample: 
-  - "HXA64A1_ATCACG_sub10k"
-  - "HXA64B7_CAGATC_sub10k"
-  - "HXACA4_TGACCA_sub10k"
+  - "NHF1_64_XR_rep1"
+
+srr: 
+  enabled: True
+  codes:
+    - "SRR1976060"
 
 # Genome parameters 
 

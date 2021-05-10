@@ -1,7 +1,11 @@
 
 sample: 
-  - "HDA64A1_ATCACG_sub10k"
-  - "R19034725-CT5H2-HelaD3-5R2h2-B_combined_sub10k"
+  - "nhf1_cisplatin_rep1"
+
+srr: 
+  enabled: True
+  codes:
+    - "SRR3623532"
 
 # Genome parameters 
 
