@@ -24,7 +24,7 @@ rule sra_se:
         echo $srrList
 
         for srr in $srrList; do
-            (echo "`date -R`: Downloading SRR files..." &&
+            (echo "`date -R`: Downloading $srr files..." &&
             fasterq-dump \
             --threads {threads} \
             --progress $srr \
