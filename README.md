@@ -31,7 +31,7 @@ We propose 2 way to create the environment:
         ```
         conda install -c conda-forge mamba
 
-        mamba create -c bioconda -c conda-forge -c r -n repair snakemake python=3.8 rust=1.50
+        mamba create -c bioconda -c conda-forge -c r -n repair snakemake python=3.8 rust=1.50 sra-tools=2.11.0
 
         conda activate repair
         ```
