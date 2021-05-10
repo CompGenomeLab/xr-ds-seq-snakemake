@@ -17,16 +17,30 @@ rule sra_se:
         8
     shell:
         """
-        (echo "`date -R`: Downloading SRR files..." &&
-        fasterq-dump \
-        --threads {threads} \
-        --progress {params.srr} \
-        -t resources/samples/ \
-        -o resources/samples/{params.name} &&
-        gzip resources/samples/{params.name}*.fastq &&
-        echo "`date -R`: Download is successful!" || 
+        touch resources/samples/{params.name}.fastq
+
+        srrList=$(echo {params.srr} | tr ":" "\n")
+        
+        for srr in $srrList; do
+            (echo "`date -R`: Downloading SRR files..." &&
+            fasterq-dump \
+            --threads {threads} \
+            --progress $srr \
+            -t resources/samples/ \
+            -o resources/samples/${{srr}}.fastq &&
+            echo "`date -R`: Download is successful!" || 
+            echo "`date -R`: Process failed...") \
+            > {log} 2>&1
+
+            cat resources/samples/${{srr}}.fastq >> resources/samples/{params.name}.fastq
+
+            rm resources/samples/${{srr}}.fastq
+
+        (echo "`date -R`: Zipping srr file..." &&
+        gzip resources/samples/{params.name}.fastq &&
+        echo "`date -R`: Zipping is successful!" || 
         echo "`date -R`: Process failed...") \
-        > {log} 2>&1
+        >> {log} 2>&1
         """
 
 rule sra_pe:

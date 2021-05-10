@@ -20,6 +20,9 @@ def isSingle(sample, sampleList, srrEnabled, srrList):
 
         mySRR = getSRR(sample, srrList, sampleList)
 
+        if ":" in mySRR:
+            mySRR = mySRR.split(":")[0]
+
         shellCommand = 'fastq-dump -X 1 -Z --split-spot ' + mySRR + ' | wc -l'
         #print(shellCommand)
         p=subprocess.getoutput(shellCommand)
