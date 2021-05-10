@@ -30,11 +30,11 @@ rule sra_se:
             -o resources/samples/${{srr}}.fastq &&
             echo "`date -R`: Download is successful!" || 
             echo "`date -R`: Process failed...") \
-            > {log} 2>&1; done
+            > {log} 2>&1 
 
             cat resources/samples/${{srr}}.fastq >> resources/samples/{params.name}.fastq
 
-            rm resources/samples/${{srr}}.fastq
+            rm resources/samples/${{srr}}.fastq ; done
 
         (echo "`date -R`: Zipping srr file..." &&
         gzip resources/samples/{params.name}.fastq &&
