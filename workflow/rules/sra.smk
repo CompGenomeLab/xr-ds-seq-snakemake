@@ -19,7 +19,7 @@ rule sra_se:
         """
         touch resources/samples/{params.name}.fastq
 
-        srrList=$(echo {params.srr} | tr ":" "\n")
+        srrList=$(echo {params.srr} | tr ":" "\\n")
         
         for srr in $srrList; do
             (echo "`date -R`: Downloading SRR files..." &&
