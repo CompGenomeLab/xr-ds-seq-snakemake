@@ -62,7 +62,7 @@ rule bowtie2_pe:
         echo "`date -R`: Process failed...") > {log} 2>&1
 
         (echo "`date -R`: Converting sam to bam..." &&
-        samtools view -Sb -o {output.bam} {outpu.sam} &&
+        samtools view -Sb -o {output.bam} {output.sam} &&
         echo "`date -R`: Success! Conversion is done." || 
         echo "`date -R`: Process failed...") >> {log} 2>&1
         """
