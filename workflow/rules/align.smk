@@ -4,7 +4,8 @@ rule bowtie2_se:
         sample=["results/{samples}/{samples}_cutadapt.fastq.gz"],
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
     output:
-        "results/{samples}/{samples}_cutadapt_se_{build}.bam",
+        sam="results/{samples}/{samples}_cutadapt_se_{build}.sam",
+        bam="results/{samples}/{samples}_cutadapt_se_{build}.bam",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         extra=config["bowtie2"],
@@ -22,10 +23,14 @@ rule bowtie2_se:
         --threads {threads} \
         {params.extra} \
         -x {params.ref_genome} \
-        -U {input.sample[0]} |& 
-        samtools view -Sbh -o {output} - &&
+        -U {input.sample[0]} -S {output.sam} &&
         echo "`date -R`: Success! Alignment is done." || 
         echo "`date -R`: Process failed...") > {log} 2>&1
+
+        (echo "`date -R`: Converting sam to bam..." &&
+        samtools view -Sbh -o {output.bam} {output.sam} &&
+        echo "`date -R`: Success! Conversion is done." || 
+        echo "`date -R`: Process failed...") >> {log} 2>&1
         """
 
 rule bowtie2_pe:
@@ -33,7 +38,8 @@ rule bowtie2_pe:
         sample=["results/{samples}/{samples}_cutadapt_1.fastq.gz", "results/{samples}/{samples}_cutadapt_2.fastq.gz"],
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
     output:
-        "results/{samples}/{samples}_cutadapt_pe_{build}.bam",
+        sam=temp("results/{samples}/{samples}_cutadapt_pe_{build}.sam"),
+        bam="results/{samples}/{samples}_cutadapt_pe_{build}.bam",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         extra=config["bowtie2"],
@@ -51,8 +57,12 @@ rule bowtie2_pe:
         --threads {threads} \
         {params.extra} \
         -x {params.ref_genome} \
-        -1 {input.sample[0]} -2 {input.sample[1]} |&
-        samtools view -Sb -o {output} - &&
+        -1 {input.sample[0]} -2 {input.sample[1]} -S {output.sam} &&
         echo "`date -R`: Success! Alignment is done." || 
         echo "`date -R`: Process failed...") > {log} 2>&1
+
+        (echo "`date -R`: Converting sam to bam..." &&
+        samtools view -Sb -o {output.bam} {outpu.sam} &&
+        echo "`date -R`: Success! Conversion is done." || 
+        echo "`date -R`: Process failed...") >> {log} 2>&1
         """
