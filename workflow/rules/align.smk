@@ -4,7 +4,7 @@ rule bowtie2_se:
         sample=["results/{samples}/{samples}_cutadapt.fastq.gz"],
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
     output:
-        sam="results/{samples}/{samples}_cutadapt_se_{build}.sam",
+        sam=temp("results/{samples}/{samples}_cutadapt_se_{build}.sam"),
         bam="results/{samples}/{samples}_cutadapt_se_{build}.bam",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
