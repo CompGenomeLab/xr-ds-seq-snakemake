@@ -1,6 +1,7 @@
 # XR-seq and Damage-seq workflows
 
 This repository contains xr-seq and damage-seq workflows.  
+<br>
 
 ## Installation
 
@@ -43,6 +44,7 @@ We propose 2 way to create the environment:
 
         conda activate repair
         ```
+<br>
 
 ## Install Simulation
 
@@ -82,6 +84,7 @@ This folder will automatically appear when you run the workflow.
 - `workflow/`: contains `envs/` where the environments are stored, 
 `rules/` where the Snakemake rules are stored, and 
 `scripts/` where the scripts used inside the rules are stored. 
+<br>
 
 ## Configuration file
 
@@ -124,12 +127,32 @@ Multiple sample names can be given in the below format:
         - Cisplatin, then sample name should contain `cisplatin`.
         - Oxaliplatin, then sample name should contain `oxaliplatin`.
 
+- `srr`: Contains 2 parameters: `enabled`, `codes`. `enabled` is a boolean 
+variable (can only be True or False) and if it is True, then the pipeline will
+retrieve the raw data by [sra-toolkit](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc) 
+the defining the SRR code in the `codes` parameter. 
+
+    ```
+    srr: 
+    enabled: True
+    codes:
+        - "SRRXXXXXXX"
+    ```
+
+    - Each downloaded raw data with the SRR codes will be named as the 
+    corresponding sample name in the `sample` parameter.  
+
+    - If a sample have multiple SRR codes, then the code should be provided in 
+    the given format: `SRRXXXXXXX:SRRXXXXXXX:SRRXXXXXXX` (Works for single-end 
+    layout)
+
 - Genome parameters: The parameters `build`, `species`, `datatype`, 
 and `release` are defined to retrieve correct reference genome from ensembl. 
 For more information, you can check out the 
 [link](https://snakemake-wrappers.readthedocs.io/en/stable/wrappers/reference/ensembl-sequence.html). 
 
 - `filter`: This parameter is used to filter chromosomes by the given regex.
+<br>
 
 ## Usage
 
