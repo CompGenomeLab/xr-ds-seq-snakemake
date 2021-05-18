@@ -1,9 +1,9 @@
 
 sample: 
-  - "NHF1_64_XR_rep1"
+  - "HXA64B7_CAGATC_sub10k"
 
 srr: 
-  enabled: True
+  enabled: False
   codes:
     - "SRR1976060:SRR1976061"
 

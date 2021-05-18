@@ -128,6 +128,8 @@ def allInput(method, build, sampleList, srrEnabled, srrList):
             "_sorted_plus.bw")
         inputList.append(sampledir + sample + "_" + build + "_" + method + 
             "_sorted_minus.bw")
+        inputList.append(sampledir + sample + "_" + build + 
+            "_igv_report.html")
 
         if method == "DS":
             inputList.append(sampledir + sample + "_" + build + 
