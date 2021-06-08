@@ -128,8 +128,8 @@ def allInput(method, build, sampleList, srrEnabled, srrList):
             "_sorted_plus.bw")
         inputList.append(sampledir + sample + "_" + build + "_" + method + 
             "_sorted_minus.bw")
-        inputList.append(sampledir + sample + "_" + build + 
-            "_igv_report_chrX.html")
+        #inputList.append(sampledir + sample + "_" + build + 
+        #    "_igv_report_chrX.html")
 
         #for i in range(1,23):
         #    inputList.append(sampledir + sample + "_" + build + 
