@@ -8,6 +8,7 @@ rule simulation_ds:
     output:
         bed=temp("results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines.bed"),
         fa=temp("results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines.fa"),
+        simbed="results/{samples}/{samples}_{build}_ds_sim.bed",  
         sim="results/{samples}/{samples}_{build}_ds_sim.fa",     
     log:
         "logs/{samples}/{samples}_{build}_simulation_ds.log",
@@ -34,7 +35,9 @@ rule simulation_ds:
         (echo "`date -R`: Simulating reads..." &&
         boquila \
         --fasta {output.fa} \
+        --bed {output.simbed} \
         --ref {input.genome} \
+        --seed 1 \
         --regions {input.regions} \
         > {output.sim} &&
         echo "`date -R`: Success! Simulation is done." || 
@@ -48,6 +51,7 @@ rule simulation_xr:
         regions="resources/ref_genomes/{build}/genome_{build}.ron", 
     output:
         fa=temp("results/{samples}/{samples}_{build}_sorted_chr.fa"),
+        simbed="results/{samples}/{samples}_{build}_xr_sim.bed",
         sim="results/{samples}/{samples}_{build}_xr_sim.fa",
     log:
         "logs/{samples}/{samples}_{build}_simulation_xr.log",
@@ -69,7 +73,9 @@ rule simulation_xr:
         (echo "`date -R`: Simulating reads..." &&
         boquila \
         --fasta {output.fa} \
+        --bed {output.simbed} \
         --ref {input.genome} \
+        --seed 1 \
         --regions {input.regions} \
         > {output.sim} &&
         echo "`date -R`: Success! Simulation is done." || 
