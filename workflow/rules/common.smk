@@ -129,7 +129,11 @@ def allInput(method, build, sampleList, srrEnabled, srrList):
         inputList.append(sampledir + sample + "_" + build + "_" + method + 
             "_sorted_minus.bw")
         inputList.append(sampledir + sample + "_" + build + 
-            "_igv_report.html")
+            "_igv_report_chrX.html")
+
+        #for i in range(1,23):
+        #    inputList.append(sampledir + sample + "_" + build + 
+        #        "_igv_report_chr" + str(i) + ".html")
 
         if method == "DS":
             inputList.append(sampledir + sample + "_" + build + 
