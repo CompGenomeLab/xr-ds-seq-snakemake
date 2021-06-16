@@ -134,8 +134,7 @@ the defining the SRR code in the `codes` parameter.
     corresponding sample name in the `sample` parameter.  
 
     - If a sample have multiple SRR codes, then the code should be provided in 
-    the given format: `SRRXXXXXXX:SRRXXXXXXX:SRRXXXXXXX` (Works for single-end 
-    layout)
+    the given format: `SRRXXXXXXX:SRRXXXXXXX:SRRXXXXXXX` 
 
 - Genome parameters: The parameters `build`, `species`, `datatype`, 
 and `release` are defined to retrieve correct reference genome from ensembl. 
