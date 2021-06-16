@@ -9,7 +9,9 @@ srr:
 
 # Genome parameters 
 
-build: "GRCh38"
+genome_download: True
+
+build: "GRCh38" 
 
 species: "homo_sapiens"
 
