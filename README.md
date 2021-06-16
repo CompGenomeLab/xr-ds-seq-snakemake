@@ -24,26 +24,17 @@ the workflow. You can follow the installation steps from
     ```
 
 - Next, you should create a conda environment with the defined packages. 
-We propose 2 way to create the environment:
+Install [mamba](https://mamba.readthedocs.io/en/latest/) 
+and create the environment using mamba:
 
-    - One is installing [mamba](https://mamba.readthedocs.io/en/latest/) 
-    and creating the environment using mamba:
+    ```
+    conda install -c conda-forge mamba
 
-        ```
-        conda install -c conda-forge mamba
+    mamba create -c bioconda -c conda-forge -c r -n repair snakemake=6.3.0 python=3.8 rust=1.50 sra-tools=2.11.0
 
-        mamba create -c bioconda -c conda-forge -c r -n repair snakemake python=3.8 rust=1.50 sra-tools=2.11.0
+    conda activate repair
+    ```
 
-        conda activate repair
-        ```
-
-    - Or the environment can be directly created from our environment file:
-
-        ```
-        conda env create -f workflow/envs/env.yaml
-
-        conda activate repair
-        ```
 <br>
 
 ## Install Simulation
