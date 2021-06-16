@@ -8,7 +8,7 @@ rule bowtie2_se:
         bam="results/{samples}/{samples}_cutadapt_se_{build}.bam",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
-        extra=config["bowtie2"],
+        extra="",
     threads: 4  
     log:
         "logs/{samples}/{samples}_{build}_bowtie2.log",
@@ -42,7 +42,7 @@ rule bowtie2_pe:
         bam="results/{samples}/{samples}_cutadapt_pe_{build}.bam",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
-        extra=config["bowtie2"],
+        extra="-X 1000",
     threads: 4  
     log:
         "logs/{samples}/{samples}_{build}_bowtie2.log",
