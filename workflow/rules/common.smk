@@ -62,20 +62,31 @@ def input4nucTable(method):
     elif method == "DS":    
         return "results/{samples}/{samples}_{build}_sorted_10.fa"
 
-def getMotif(wildcards):
+def getDamage(sample, damage_type, sampleList):
+
+    try:
+        idx = sampleList.index(sample)
+    except:
+       raise(ValueError("Designated wildcard cannot be found in sample list."))
+        
+    return damage_type[idx]
+
+def getMotif(sample, damageList, sampleList):
     
-    if "oxaliplatin" in wildcards.samples or "cisplatin" in wildcards.samples: 
+    tDamage = getDamage(sample, damageList, sampleList)
+
+    if tDamage.lower() in ["oxaliplatin", "cisplatin"]: 
         return "'.{4}(g|G){2}.{4}'"
     
-    elif "64" in wildcards.samples or "CPD" in wildcards.samples:
+    elif tDamage.lower() in ["64", "64pp", "(6-4)pp", "6-4pp", "cpd"]: 
         return "'.{4}(c|t|C|T){2}.{4}'"
 
 def getDinuc(wildcards):
     
-    if "Oxaliplatin" in wildcards.samples or "Cisplatin" in wildcards.samples: 
+    if tDamage.lower() in ["oxaliplatin", "cisplatin"]: 
         return "'GG'"
     
-    elif "64" in wildcards.samples or "CPD" in wildcards.samples or "R190" in wildcards.samples:
+    elif tDamage.lower() in ["64", "64pp", "(6-4)pp", "6-4pp", "cpd"]: 
         return "'CC','CT','TC','TT'"
 
 def lineNum(file):

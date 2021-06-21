@@ -1,17 +1,50 @@
 
 sample: 
+  - "HXA64A1_ATCACG"
   - "HXA64B7_CAGATC"
+  - "HXACA4_TGACCA"
+  - "HXACB10_TAGCTT"
+  - "HXE64A2_CGATGT"
+  - "HXE64B8_ACTTGA"
+  - "HXECA5_ACAGTG"
+  - "HXECB11_GGCTAC"
+  - "HXL64A3_TTAGGC"
+  - "HXL64B9_GATCAG"
+  - "HXLCA6_GCCAAT"
+  - "HXLCB12_CTTGTA"
+  - "R19026421-2019XR1-Hela15X2_combined_R1"
+  - "R19026421-2019XR1-Hela35X3_combined_R1"
+  - "R19033030-2019XR3-Hela15X7_combined_R1"
+  - "R19033030-2019XR3-Hela35X8_combined_R1"
 
+damage_type:
+  - "64"
+  - "64"
+  - "CPD"
+  - "CPD"
+  - "64"
+  - "64"
+  - "CPD"
+  - "CPD"
+  - "64"
+  - "64"
+  - "CPD"
+  - "CPD"
+  - "CPD"
+  - "CPD"
+  - "CPD"
+  - "CPD"
+  
 srr: 
-  enabled: True
+  enabled: False
   codes:
     - "SRR1976060:SRR1976061"
 
 # Genome parameters 
 
-genome_download: True
+genome_download: False
 
-build: "GRCh38" 
+build: "hg19" 
 
 species: "homo_sapiens"
 
@@ -21,4 +54,4 @@ release: "102"
 
 #######
 
-filter: "'^([1-9]|1[0-9]|2[0-2]|X)'"
+filter: "'^chr([1-9]|1[0-9]|2[0-2]|X)'"
