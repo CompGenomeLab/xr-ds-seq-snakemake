@@ -40,13 +40,32 @@ def isSingle(sample, sampleList, srrEnabled, srrList):
         sample_dir = "resources/samples/"
         single = sample_dir + sample + ".fastq.gz"
         pairedR1 = sample_dir + sample + "_R1.fastq.gz"
+        paired1 = sample_dir + sample + "_1.fastq.gz"
         
-        if os.path.isfile(pairedR1):
+        if os.path.isfile(pairedR1) or os.path.isfile(paired1):
             return False
         elif os.path.isfile(single):
             return True
         else:
             raise(ValueError(pairedR1, single, "Sample not found..."))
+
+def getPaired(sample, sampleList, read):
+
+    sample_dir = "resources/samples/"
+    pairedR1 = sample_dir + sample + "_R1.fastq.gz"
+    paired1 = sample_dir + sample + "_1.fastq.gz"
+    
+    if os.path.isfile(pairedR1) and read == "forward":
+        return sample_dir + sample + "_R1.fastq.gz"
+
+    elif os.path.isfile(pairedR1) and read == "reverse":
+        return sample_dir + sample + "_R2.fastq.gz"
+
+    elif os.path.isfile(paired1) and read == "forward":
+        return sample_dir + sample + "_1.fastq.gz"
+
+    elif os.path.isfile(paired1) and read == "reverse":
+        return sample_dir + sample + "_2.fastq.gz"
 
 def input4filter(wildcards, sampleList, srrEnabled, srrList):
 
