@@ -11,7 +11,9 @@ rule all:
         lambda w: allInput(config["method"], config["build"], config["sample"], 
             config["srr"]["enabled"], config["srr"]["codes"]),
 
-include: "workflow/rules/sra.smk"
+if config["srr"]["enabled"]:
+    include: "workflow/rules/sra.smk"
+
 include: "workflow/rules/fastqc.smk"
 
 if config["genome_download"]:

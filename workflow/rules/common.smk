@@ -39,14 +39,14 @@ def isSingle(sample, sampleList, srrEnabled, srrList):
 
         sample_dir = "resources/samples/"
         single = sample_dir + sample + ".fastq.gz"
-        pairedR1 = sample_dir + sample + "_1.fastq.gz"
+        pairedR1 = sample_dir + sample + "_R1.fastq.gz"
         
-        if os.path.isfile(single) and "_1" not in single:
-            return True
-        elif os.path.isfile(pairedR1):
+        if os.path.isfile(pairedR1):
             return False
+        elif os.path.isfile(single):
+            return True
         else:
-            raise(ValueError("Sample not found..."))
+            raise(ValueError(pairedR1, single, "Sample not found..."))
 
 def input4filter(wildcards, sampleList, srrEnabled, srrList):
 
@@ -111,8 +111,8 @@ def allInput(method, build, sampleList, srrEnabled, srrList):
         if isSingle(sample, sampleList, srrEnabled, srrList):
             inputList.append(sampledir + sample + ".html")
         else:
-            inputList.append(sampledir + sample + "_1.html")
-            inputList.append(sampledir + sample + "_2.html")
+            inputList.append(sampledir + sample + "_R1.html")
+            inputList.append(sampledir + sample + "_R2.html")
 
         inputList.append(sampledir + sample + "_" + build + 
             "_sorted_nucleotideTable.png")

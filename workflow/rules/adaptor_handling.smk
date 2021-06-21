@@ -13,12 +13,12 @@ rule cutadapt_se:
     benchmark:
         "logs/{samples}/{samples}_cutadapt.benchmark.txt",
     wrapper:
-        "0.69.0/bio/cutadapt/se"
+        "0.75.0/bio/cutadapt/se"
 
 rule cutadapt_pe:
     input:
-        fq1="resources/samples/{samples}_1.fastq.gz",
-        fq2="resources/samples/{samples}_2.fastq.gz",
+        fq1="resources/samples/{samples}_R1.fastq.gz",
+        fq2="resources/samples/{samples}_R2.fastq.gz",
     output:
         fastq1=temp("results/{samples}/{samples}_cutadapt_1.fastq.gz"),
         fastq2=temp("results/{samples}/{samples}_cutadapt_2.fastq.gz"),
@@ -31,4 +31,4 @@ rule cutadapt_pe:
     benchmark:
         "logs/{samples}/{samples}_cutadapt.benchmark.txt",
     wrapper:
-        "0.69.0/bio/cutadapt/pe"
+        "0.75.0/bio/cutadapt/pe"

@@ -1,17 +1,32 @@
 
 sample: 
-  - "nhf1_cisplatin_rep1"
+  - "HDA64A1_ATCACG"
+  - "HDA64B19_GTGAAA"
+  - "HDACA6_GCCAAT"
+  - "HDACB23_GAGTGG"
+  - "HDE64A4_TGACCA"
+  - "HDE64B20_GTGGCC"
+  - "HDECA10_TAGCTT"
+  - "HDECB25_ACTGAT"
+  - "HDL64A5_ACAGTG"
+  - "HDL64B22_CGTACG"
+  - "HDLCA12_CTTGTA"
+  - "HDLCB27_ATTCCT"
+  - "NT4H1-CT5H2-HelaD1-5R2h2_combined"
+  - "XT4H1-CT5H2-HelaD3-5R2h2_combined"
+  - "R19029847-HD2TCD4-HelaD1-5R2h1_combined"
+  - "R19029847-HD2TCD4-HelaD3-5R2h1_combined"
 
 srr: 
-  enabled: True
+  enabled: False
   codes:
     - "SRR3623532"
 
 # Genome parameters 
 
-genome_download: True
+genome_download: False
 
-build: "GRCh38"
+build: "hg19"
 
 species: "homo_sapiens"
 
@@ -21,4 +36,4 @@ release: "102"
 
 #######
 
-filter: "'^([1-9]|1[0-9]|2[0-2]|X)'"
+filter: "'^chr([1-9]|1[0-9]|2[0-2]|X)'"
