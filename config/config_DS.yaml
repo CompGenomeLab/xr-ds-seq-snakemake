@@ -12,10 +12,10 @@ sample:
   - "HDL64B22_CGTACG"
   - "HDLCA12_CTTGTA"
   - "HDLCB27_ATTCCT"
-  - "NT4H1_CT5H2_HelaD1_5R2h2_combined"
-  - "XT4H1_CT5H2_HelaD3_5R2h2_combined"
-  - "R19029847_HD2TCD4_HelaD1_5R2h1_combined"
-  - "R19029847_HD2TCD4_HelaD3_5R2h1_combined"
+  - "NT4H1-CT5H2-HelaD1-5R2h2_combined"
+  - "XT4H1-CT5H2-HelaD3-5R2h2_combined"
+  - "R19029847-HD2TCD4-HelaD1-5R2h1_combined"
+  - "R19029847-HD2TCD4-HelaD3-5R2h1_combined"
 
 damage_type:
   - "64"
