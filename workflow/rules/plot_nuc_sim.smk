@@ -9,7 +9,7 @@ rule plot_nuc_sim:
         nuc=report("results/{samples}/{samples}_{build}_{method}_sim_nucleotideTable.png", 
                     category="Nucleotide Content"),
     params:
-        motif=lambda w: getDinuc(w),
+        motif=lambda w: getDinuc(w.samples, config["damage_type"], config["sample"]),
         name="{samples}_{build}_{method}_sim",
     log:
         "logs/{samples}/{samples}_{build}_{method}_plot_nuc_sim.log",

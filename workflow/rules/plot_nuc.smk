@@ -9,7 +9,7 @@ rule plot_nuc:
         nuc=report("results/{samples}/{samples}_{build}_sorted_nucleotideTable.png", 
                     category="Nucleotide Content"),
     params:
-        motif=lambda w: getDinuc(w),
+        motif=lambda w: getDinuc(w.samples, config["damage_type"], config["sample"]),
         name="{samples}_{build}",
     log:
         "logs/{samples}/{samples}_{build}_plot_nuc.log",

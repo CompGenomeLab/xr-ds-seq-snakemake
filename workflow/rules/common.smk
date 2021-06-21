@@ -81,7 +81,9 @@ def getMotif(sample, damageList, sampleList):
     elif tDamage.lower() in ["64", "64pp", "(6-4)pp", "6-4pp", "cpd"]: 
         return "'.{4}(c|t|C|T){2}.{4}'"
 
-def getDinuc(wildcards):
+def getDinuc(sample, damageList, sampleList):
+
+    tDamage = getDamage(sample, damageList, sampleList)
     
     if tDamage.lower() in ["oxaliplatin", "cisplatin"]: 
         return "'GG'"
