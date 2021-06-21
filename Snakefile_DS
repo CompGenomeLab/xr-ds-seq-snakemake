@@ -14,6 +14,7 @@ rule all:
 if config["srr"]["enabled"]:
     include: "workflow/rules/sra.smk"
     
+
 include: "workflow/rules/fastqc.smk"
 
 if config["genome_download"]:
