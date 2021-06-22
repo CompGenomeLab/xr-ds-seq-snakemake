@@ -94,9 +94,9 @@ Multiple sample names can be given in the below format:
 
     ```
     sample: 
-    - "SAMPLE_1"
-    - "SAMPLE_2"
-    - "SAMPLE_3"
+        - "SAMPLE_1"
+        - "SAMPLE_2"
+        - "SAMPLE_3"
     ```
 
     - Using the given sample name, the workflow will look for 
@@ -105,18 +105,27 @@ Multiple sample names can be given in the below format:
 
     - If the layout of the given sample is paired-end, 
     the workflow will look for 
-    `{SAMPLE}_R1.fastq.gz` and `{SAMPLE}_R2.fastq.gz` as raw data.
-    Therefore, paired-end sample files must contain `_R1/2` suffixes and 
+    `{SAMPLE}_R1.fastq.gz`, `{SAMPLE}_R2.fastq.gz` and 
+    `{SAMPLE}_1.fastq.gz`, `{SAMPLE}_2.fastq.gz` as raw data.
+    Therefore, paired-end sample files must contain `_R1/2` or `_1/2` suffixes and 
     the suffixes should not be given in the configuration file to the `sample`.
 
-    - Lastly, because damage type is retrieved from the name of the file, 
-    given sample name should contain the damage type. 
-    If damage type is:
+- `damage_type`: Damage type of each sample should be provided here in the 
+same order of the samples:
 
-        - (6-4)PP, then sample name should contain `64`.
-        - CPD, then sample name should contain `CPD`.
-        - Cisplatin, then sample name should contain `cisplatin`.
-        - Oxaliplatin, then sample name should contain `oxaliplatin`.
+    ```
+    damage_type: 
+        - "64"
+        - "CPD"
+        - "oxaliplatin"
+    ```
+
+    - Currently damages below are available can be provided as (case-insensitive):
+
+        - (6-4)PP: `64`, `64pp`, `(6-4)pp`, `6-4pp`;
+        - CPD: `CPD`;
+        - Cisplatin: `cisplatin`;
+        - Oxaliplatin: `oxaliplatin`.
 
 - `srr`: Contains 2 parameters: `enabled`, `codes`. `enabled` is a boolean 
 variable (can only be True or False) and if it is True, then the pipeline will
@@ -140,6 +149,9 @@ the defining the SRR code in the `codes` parameter.
 and `release` are defined to retrieve correct reference genome from ensembl. 
 For more information, you can check out the 
 [link](https://snakemake-wrappers.readthedocs.io/en/stable/wrappers/reference/ensembl-sequence.html). 
+If `genome_download` is set to False, then a fasta file expected to be 
+provided as `resources/ref_genomes/${build}/genome_${build}.fa`, where `${build}`
+should be the string given in `build` parameter.
 
 - `filter`: This parameter is used to filter chromosomes by the given regex.
 <br>
