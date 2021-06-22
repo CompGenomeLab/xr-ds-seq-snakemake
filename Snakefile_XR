@@ -22,7 +22,9 @@ if config["genome_download"]:
     include: "workflow/rules/genome_variation.smk"
     #include: "workflow/rules/genome_chr_download.smk"
 
-include: "workflow/rules/genome_build.smk"
+if config["bowtie2_build"]:
+    include: "workflow/rules/genome_build.smk"
+    
 include: "workflow/rules/genome_indexing.smk"
 include: "workflow/rules/genome_idx2ron.smk"
 include: "workflow/rules/adaptor_handling.smk"

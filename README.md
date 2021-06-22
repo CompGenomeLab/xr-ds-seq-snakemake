@@ -149,9 +149,17 @@ the defining the SRR code in the `codes` parameter.
 and `release` are defined to retrieve correct reference genome from ensembl. 
 For more information, you can check out the 
 [link](https://snakemake-wrappers.readthedocs.io/en/stable/wrappers/reference/ensembl-sequence.html). 
-If `genome_download` is set to False, then a fasta file expected to be 
-provided as `resources/ref_genomes/${build}/genome_${build}.fa`, where `${build}`
-should be the string given in `build` parameter.
+
+    - If `genome_download` is set to False, then a fasta file expected to be 
+    provided as `resources/ref_genomes/${build}/genome_${build}.fa`, where 
+    `${build}` should be the string given in `build` parameter. 
+    
+    - In the same manner, If `bowtie2_build` is set to False, 
+    then a build should be provided in `resources/ref_genomes/${build}/Bowtie2/`, 
+    where `${build}` should be the string given in `build` parameter. 
+    File name before the extensions must be `genome_${build}`. Lastly to 
+    properly set `bowtie2_build` to False, `genome_download` must be set 
+    to False as well.
 
 - `filter`: This parameter is used to filter chromosomes by the given regex.
 <br>

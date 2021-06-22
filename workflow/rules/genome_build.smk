@@ -11,8 +11,19 @@ rule genome_build:
     benchmark:
         "resources/ref_genomes/{build}/log/bowtie2_build.benchmark.txt",
     params:
-        extra=""  
+        extra="", 
+        name="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
+    conda:
+        "../envs/align.yaml" 
     threads: 
-        4
-    wrapper:
-        "0.69.0/bio/bowtie2/build"
+        16
+    shell: 
+        """
+        (echo "`date -R`: Building indexes..." &&
+        bowtie2-build --threads {threads} \
+        {params.extra} \
+        {input.reference} \
+        {params.name} &&
+        echo "`date -R`: Success! Indexes are build." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
+        """

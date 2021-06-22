@@ -44,6 +44,8 @@ srr:
 
 genome_download: False
 
+bowtie2_build: False
+
 build: "hg19" 
 
 species: "homo_sapiens"
