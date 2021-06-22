@@ -9,7 +9,7 @@ rule bowtie2_se:
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         extra="",
-    threads: 4  
+    threads: 16  
     log:
         "logs/{samples}/{samples}_{build}_bowtie2.log",
     benchmark:
@@ -43,7 +43,7 @@ rule bowtie2_pe:
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         extra="-X 1000",
-    threads: 4  
+    threads: 16  
     log:
         "logs/{samples}/{samples}_{build}_bowtie2.log",
     benchmark:
