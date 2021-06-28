@@ -13,8 +13,9 @@ rule all:
 
 if config["srr"]["enabled"]:
     include: "workflow/rules/sra.smk"
+else:
+    include: "workflow/rules/rename_raw.smk"
     
-include: "workflow/rules/rename_raw.smk"
 include: "workflow/rules/fastqc.smk"
 
 if config["genome_download"]:
