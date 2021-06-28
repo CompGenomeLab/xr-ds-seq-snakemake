@@ -17,8 +17,8 @@ rule cutadapt_se:
 
 rule cutadapt_pe:
     input:
-        fq1=lambda w: getPaired(w.samples, config["sample"], "forward"),
-        fq2=lambda w: getPaired(w.samples, config["sample"], "reverse"),
+        fq1="resources/samples/{samples}_1.fastq.gz", 
+        fq2="resources/samples/{samples}_2.fastq.gz",
     output:
         fastq1=temp("results/{samples}/{samples}_cutadapt_1.fastq.gz"),
         fastq2=temp("results/{samples}/{samples}_cutadapt_2.fastq.gz"),
