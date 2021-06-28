@@ -1,7 +1,7 @@
 rule rename_raw:
     input:
-        r1="resources/samples/{samples}_R1.fastq.gz", 
-        r2="resources/samples/{samples}_R2.fastq.gz",
+        r1=lambda w: getPaired(w.samples, config["sample"], "forward"),
+        r2=lambda w: getPaired(w.samples, config["sample"], "reverse"),
     output:
         r1=temp("resources/samples/{samples}_1.fastq.gz"), 
         r2=temp("resources/samples/{samples}_2.fastq.gz"),
