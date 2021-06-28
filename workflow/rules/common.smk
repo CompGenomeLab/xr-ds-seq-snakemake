@@ -60,6 +60,9 @@ def getPaired(sample, sampleList, read):
 
     elif os.path.isfile(pairedR1) and read == "reverse":
         return sample_dir + sample + "_R2.fastq.gz"
+    
+    else:
+        return ""
 
     #elif os.path.isfile(paired1) and read == "forward":
     #    return sample_dir + sample + "_1.fastq.gz"
