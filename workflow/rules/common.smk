@@ -143,8 +143,8 @@ def allInput(method, build, sampleList, srrEnabled, srrList):
         if isSingle(sample, sampleList, srrEnabled, srrList):
             inputList.append(sampledir + sample + ".html")
         else:
-            inputList.append(sampledir + sample + "_R1.html")
-            inputList.append(sampledir + sample + "_R2.html")
+            inputList.append(sampledir + sample + "_1.html")
+            inputList.append(sampledir + sample + "_2.html")
 
         inputList.append(sampledir + sample + "_" + build + 
             "_sorted_nucleotideTable.png")
