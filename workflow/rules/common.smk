@@ -98,11 +98,14 @@ def getMotif(sample, damageList, sampleList):
     
     tDamage = getDamage(sample, damageList, sampleList)
 
-    if tDamage.lower() in ["oxaliplatin", "cisplatin"]: 
+    if tDamage.lower() in ["oxaliplatin", "cisplatin", "bpdedg"]: 
         return "'.{4}(g|G){2}.{4}'"
     
     elif tDamage.lower() in ["64", "64pp", "(6-4)pp", "6-4pp", "cpd"]: 
         return "'.{4}(c|t|C|T){2}.{4}'"
+
+    elif tDamage.lower() == "na":
+        return "'.{10}'"
 
 def getDinuc(sample, damageList, sampleList):
 
