@@ -1,3 +1,4 @@
+#!/bin/env python
 
 import warnings
 import os
