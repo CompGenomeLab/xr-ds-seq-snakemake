@@ -14,3 +14,4 @@ csv2config.py
 slurm*
 workflow/scripts/__pycache__/*
 Rplots.pdf
+config/config*
