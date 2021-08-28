@@ -8,7 +8,7 @@ rule genomecov_ds:
         plus=temp("results/{samples}/{samples}_{build}_DS_sorted_plus.bdg"),
         minus=temp("results/{samples}/{samples}_{build}_DS_sorted_minus.bdg"),
     params:
-        read=lambda w, input: mappedReads(input),
+        read=lambda w, input: mappedReads(input[0], input[1]),
     log:
         "logs/{samples}/{samples}_{build}_genomecov_ds.log",
     benchmark:
@@ -47,7 +47,7 @@ rule genomecov_xr:
         plus=temp("results/{samples}/{samples}_{build}_XR_sorted_plus.bdg"),
         minus=temp("results/{samples}/{samples}_{build}_XR_sorted_minus.bdg"),
     params:
-        read=lambda w, input: mappedReads(input),
+        read=lambda w, input: mappedReads(input[0], input[1]),
     log:
         "logs/{samples}/{samples}_{build}_genomecov_xr.log",
     benchmark:
