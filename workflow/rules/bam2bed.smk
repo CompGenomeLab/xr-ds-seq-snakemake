@@ -3,7 +3,9 @@ rule bam2bed_se:
     input:
         "results/{samples}/{samples}_cutadapt_se_{build}.bam",
     output:
-        "results/{samples}/{samples}_{build}_se.bed",
+        bed="results/{samples}/{samples}_{build}_se.bed",
+        bam="results/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam",
+        idx="results/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam.bai",
     params:
         q_trim=config["samtools_q_trim_se"], 
     log:
@@ -14,11 +16,21 @@ rule bam2bed_se:
         "../envs/bam2bed.yaml"
     shell:  
         """
+        (echo "`date -R`: Sorting (coordinates) bam file..." &&
+        samtools sort {input} > {output.bam} &&
+        echo "`date -R`: Success! Bam file is sorted." || 
+        echo "`date -R`: Process failed...") > {log} 2>&1
+
+        (echo "`date -R`: Index bam file..." &&
+        samtools index {output.bam} {output.idx} &&
+        echo "`date -R`: Success! Bam file is sorted." || 
+        echo "`date -R`: Process failed...") >> {log} 2>&1
+
         (echo "`date -R`: Processing bam file..." && 
         samtools view {params.q_trim} -b {input} |&
-        bedtools bamtobed > {output} &&
+        bedtools bamtobed > {output.bed} &&
         echo "`date -R`: Success! Bam file converted to bed format." || 
-        echo "`date -R`: Process failed...") > {log} 2>&1
+        echo "`date -R`: Process failed...") >> {log} 2>&1
         """
 
 rule bam2bed_pe:
@@ -27,6 +39,8 @@ rule bam2bed_pe:
     output:
         bed="results/{samples}/{samples}_{build}_pe.bed",
         bam=temp("results/{samples}/{samples}_{build}_sorted.bam"),
+        bam2="results/{samples}/{samples}_{build}_pe_sortedbyCoordinates.bam",
+        idx="results/{samples}/{samples}_{build}_pe_sortedbyCoordinates.bam.bai",
     params:
         q_trim=config["samtools_q_trim_pe"],
     log:
@@ -37,10 +51,20 @@ rule bam2bed_pe:
         "../envs/bam2bed.yaml"
     shell:  
         """
-        (echo "`date -R`: Sorting bam file..." &&
+        (echo "`date -R`: Sorting (name) bam file..." &&
         samtools sort -n {input} > {output.bam} &&
         echo "`date -R`: Success! Bam file is sorted." || 
         echo "`date -R`: Process failed...") > {log} 2>&1
+
+        (echo "`date -R`: Sorting (coordinates) bam file..." &&
+        samtools sort {input} > {output.bam2} &&
+        echo "`date -R`: Success! Bam file is sorted." || 
+        echo "`date -R`: Process failed...") >> {log} 2>&1
+
+        (echo "`date -R`: Index bam file..." &&
+        samtools index {output.bam2} {output.idx} &&
+        echo "`date -R`: Success! Bam file is sorted." || 
+        echo "`date -R`: Process failed...") >> {log} 2>&1
 
         (echo "`date -R`: Processing bam file..." &&
         samtools view {params.q_trim} {output.bam} |&
