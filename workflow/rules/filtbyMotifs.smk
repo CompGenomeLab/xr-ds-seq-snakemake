@@ -18,5 +18,5 @@ rule filtbyMotifs:
         -o {output} \
         -r {params} &&
         echo "`date -R`: Success! Filtering is done." ||
-        echo "`date -R`: Filtering failed...") > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
         """

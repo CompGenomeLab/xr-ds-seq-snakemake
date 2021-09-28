@@ -17,7 +17,7 @@ rule nucleotide_table_ds_sim:
         -k 2 \
         -o {output.dinuc} &&
         echo "`date -R`: Success! Dinucleotide abundance table is calculated." ||
-        echo "`date -R`: Dinucleotide abundace table cannot be calculated...") \
+        {{ echo "`date -R`: Dinucleotide abundace table cannot be calculated..."; rm {output.dinuc}; exit 1; }}  ) \
         > {log} 2>&1
 
         (echo "`date -R`: Calculating nucleotide abundance table..." &&
@@ -26,7 +26,7 @@ rule nucleotide_table_ds_sim:
         -k 1 \
         -o {output.nuc} &&
         echo "`date -R`: Success! Nucleotide abundance table is calculated." ||
-        echo "`date -R`: Nucleotide abundace table cannot be calculated...") \
+        {{ echo "`date -R`: Nucleotide abundace table cannot be calculated..."; rm {output.nuc}; exit 1; }}  ) \
         >> {log} 2>&1
         """
 

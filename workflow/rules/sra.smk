@@ -31,7 +31,7 @@ rule sra_se:
             -t resources/samples/ \
             -o resources/samples/${{srr}}.fastq &&
             echo "`date -R`: Download is successful!" || 
-            echo "`date -R`: Process failed...") \
+            {{ echo "`date -R`: Process failed..."; exit 1; }} ) \
             >> {log} 2>&1 
 
             cat resources/samples/${{srr}}.fastq >> resources/samples/{params.name}.fastq
@@ -41,7 +41,7 @@ rule sra_se:
         (echo "`date -R`: Zipping srr file..." &&
         gzip resources/samples/{params.name}.fastq &&
         echo "`date -R`: Zipping is successful!" || 
-        echo "`date -R`: Process failed...") \
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }} ) \
         >> {log} 2>&1
         """
 
@@ -81,7 +81,7 @@ rule sra_pe:
             -t resources/samples/ \
             -o resources/samples/${{srr}} &&
             echo "`date -R`: Download is successful!" || 
-            echo "`date -R`: Process failed...") \
+            {{ echo "`date -R`: Process failed..."; exit 1; }} ) \
             >> {log} 2>&1
 
             cat resources/samples/${{srr}}_1.fastq >> resources/samples/{params.name}_1.fastq
@@ -93,6 +93,6 @@ rule sra_pe:
         (echo "`date -R`: Zipping srr file..." &&
         gzip resources/samples/{params.name}*.fastq &&
         echo "`date -R`: Zipping is successful!" || 
-        echo "`date -R`: Process failed...") \
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }} ) \
         >> {log} 2>&1
         """

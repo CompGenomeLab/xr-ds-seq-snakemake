@@ -28,7 +28,7 @@ rule reposition:
         awk '{{ if ($3-$2 == 10) {{ print }} }}' \
         > {output.plus} &&
         echo "`date -R`: Success!" || 
-        echo "`date -R`: Process failed...") > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.plus}; exit 1; }}  ) > {log} 2>&1
 
         (echo "`date -R`: Centering {input.minus} at damage site..." &&
         bedtools flank \
@@ -43,5 +43,5 @@ rule reposition:
         awk '{{ if ($3-$2 == 10) {{ print }} }}' \
         > {output.minus} &&
         echo "`date -R`: Success!" || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.minus}; exit 1; }}  ) >> {log} 2>&1
         """

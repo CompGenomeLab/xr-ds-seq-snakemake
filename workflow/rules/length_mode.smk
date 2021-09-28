@@ -18,5 +18,5 @@ rule length_mode:
         awk -v num="$length" '{{ if ($3-$2 == num) {{ print }} }}' {input.bed} \
         > {output} &&
         echo "`date -R`: Success! Reads are filtered." || 
-        echo "`date -R`: Process failed...") > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
         """

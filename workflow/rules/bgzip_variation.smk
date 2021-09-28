@@ -15,10 +15,10 @@ rule bgzip_variation:
         (echo "`date -R`: Decompressing vcf file..." &&
         gunzip -c {input} > {output.decomp} &&
         echo "`date -R`: Success! vcf file is decompressed." || 
-        echo "`date -R`: Process failed...") > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  ) > {log} 2>&1
 
         (echo "`date -R`: Bgzip vcf file..." &&
         bgzip -c {output.decomp} > {output.fin} &&
         echo "`date -R`: Success! vcf file is compressed." || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
         """

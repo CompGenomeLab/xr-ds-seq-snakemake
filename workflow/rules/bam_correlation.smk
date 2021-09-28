@@ -19,5 +19,5 @@ rule bam_correlation:
         --minMappingQuality 20 \
         -out {output.out} --outRawCounts {output.raw_out} &&
         echo "`date -R`: Success!" || 
-        {{ echo "`date -R`: Process failed..."; exit 1; }} ) > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.out}; exit 1; }} ) > {log} 2>&1
         """

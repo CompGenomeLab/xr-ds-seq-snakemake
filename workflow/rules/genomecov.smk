@@ -25,7 +25,7 @@ rule genomecov_ds:
         -scale $(echo {params.read} | awk '{{print 1000000/$1}}') \
         > {output.plus} &&
         echo "`date -R`: Success! Genome coverage is calculated." || 
-        echo "`date -R`: Process failed...") > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.plus}; exit 1; }}  ) > {log} 2>&1
 
         (echo "`date -R`: Calculating genome coverage of {input.minus}..." &&
         bedtools genomecov \
@@ -35,7 +35,7 @@ rule genomecov_ds:
         -scale $(echo {params.read} | awk '{{print 1000000/$1}}') \
         > {output.minus} &&
         echo "`date -R`: Success! Genome coverage is calculated." || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.minus}; exit 1; }}  ) >> {log} 2>&1
         """
 
 rule genomecov_xr:

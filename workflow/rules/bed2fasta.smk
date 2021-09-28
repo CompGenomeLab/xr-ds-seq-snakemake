@@ -20,7 +20,7 @@ rule bed2fasta_ds:
         (echo "`date -R`: Combine files..." &&
         cat {input.plus} {input.minus} > {output.bed} &&
         echo "`date -R`: Success! Files are combined." || 
-        echo "`date -R`: Process failed...") > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  ) > {log} 2>&1
         
         (echo "`date -R`: Converting {output.bed} to fasta format..." &&
         bedtools getfasta \
@@ -29,7 +29,7 @@ rule bed2fasta_ds:
         -fo {output.comb} \
         -s &&
         echo "`date -R`: Success! {output.bed} is converted." || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
 
         (echo "`date -R`: Converting {input.plus} to fasta format..." &&
         bedtools getfasta \
@@ -38,7 +38,7 @@ rule bed2fasta_ds:
         -fo {output.plus} \
         -s &&
         echo "`date -R`: Success! {input.plus} is converted." || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
 
         (echo "`date -R`: Converting {input.minus} to fasta format..." &&
         bedtools getfasta \
@@ -47,7 +47,7 @@ rule bed2fasta_ds:
         -fo {output.minus} \
         -s &&
         echo "`date -R`: Success! {input.minus} is converted." || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
         """
 
 rule bed2fasta_xr:
@@ -71,5 +71,5 @@ rule bed2fasta_xr:
         -fo {output} \
         -s &&
         echo "`date -R`: Success! {input.bed} is converted." || 
-        echo "`date -R`: Process failed...") > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
         """

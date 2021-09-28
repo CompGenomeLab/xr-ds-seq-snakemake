@@ -27,7 +27,7 @@ rule bam_corr_graphs:
         -o {output.scatter} \
         --outFileCorMatrix {output.tab} &&
         echo "`date -R`: Success!" || 
-        {{ echo "`date -R`: Process failed..."; exit 1; }} ) > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.scatter}; exit 1; }} ) > {log} 2>&1
 
         (echo "`date -R`: Plotting correlation (heatmap)..." &&
         plotCorrelation \
@@ -38,12 +38,12 @@ rule bam_corr_graphs:
         -o {output.heatmap} \
         --outFileCorMatrix {output.tab2} &&
         echo "`date -R`: Success!" || 
-        {{ echo "`date -R`: Process failed..."; exit 1; }} ) >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.heatmap}; exit 1; }} ) >> {log} 2>&1
 
         (echo "`date -R`: PCA analysis..." &&
         plotPCA -in {input.npz} \
         -o {output.pca} \
         -T "PCA of read counts" &&
         echo "`date -R`: Success!" || 
-        {{ echo "`date -R`: Process failed..."; exit 1; }} ) >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.pca}; exit 1; }} ) >> {log} 2>&1
         """

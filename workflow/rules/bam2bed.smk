@@ -19,18 +19,18 @@ rule bam2bed_se:
         (echo "`date -R`: Sorting (coordinates) bam file..." &&
         samtools sort {input} > {output.bam} &&
         echo "`date -R`: Success! Bam file is sorted." || 
-        echo "`date -R`: Process failed...") > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
 
         (echo "`date -R`: Index bam file..." &&
         samtools index {output.bam} {output.idx} &&
         echo "`date -R`: Success! Bam file is sorted." || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) >> {log} 2>&1
 
         (echo "`date -R`: Processing bam file..." && 
         samtools view {params.q_trim} -b {input} |&
         bedtools bamtobed > {output.bed} &&
         echo "`date -R`: Success! Bam file converted to bed format." || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) >> {log} 2>&1
         """
 
 rule bam2bed_pe:
@@ -54,17 +54,17 @@ rule bam2bed_pe:
         (echo "`date -R`: Sorting (name) bam file..." &&
         samtools sort -n {input} > {output.bam} &&
         echo "`date -R`: Success! Bam file is sorted." || 
-        echo "`date -R`: Process failed...") > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  ) > {log} 2>&1
 
         (echo "`date -R`: Sorting (coordinates) bam file..." &&
         samtools sort {input} > {output.bam2} &&
         echo "`date -R`: Success! Bam file is sorted." || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
 
         (echo "`date -R`: Index bam file..." &&
         samtools index {output.bam2} {output.idx} &&
         echo "`date -R`: Success! Bam file is sorted." || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
 
         (echo "`date -R`: Processing bam file..." &&
         samtools view {params.q_trim} {output.bam} |&
@@ -76,5 +76,5 @@ rule bam2bed_pe:
                 print $1"\\t"$5"\\t"$3"\\t"$7"\\t"$8"\\t"$9;\
             }}' > {output.bed} &&
         echo "`date -R`: Success! Bam file converted to bed format." || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.bed}; exit 1; }}  ) >> {log} 2>&1
         """

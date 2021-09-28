@@ -14,10 +14,10 @@ rule sep_strands:
         (echo "`date -R`: Separating plus stranded reads..." &&
         awk '{{if($6=="+"){{print}}}}' {input} > {output.plus} &&
         echo "`date -R`: Success! Reads are separated." || 
-        echo "`date -R`: Process failed...") > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.plus}; exit 1; }}  )  > {log} 2>&1
 
         (echo "`date -R`: Separating minus stranded reads..." &&
         awk '{{if($6=="-"){{print}}}}' {input} > {output.minus} &&
         echo "`date -R`: Success! Reads are separated." || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.minus}; exit 1; }}  )  >> {log} 2>&1
         """

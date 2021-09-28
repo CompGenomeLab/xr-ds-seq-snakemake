@@ -78,7 +78,7 @@ rule simulation_ds:
             samtools view -b {output.bam_sorted} |&
             bedtools bamtobed > {output.simbed} &&
             echo "`date -R`: Success! Bam file converted to bed format." || 
-            {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
+            {{ echo "`date -R`: Process failed..."; rm {output.simbed}; exit 1; }}  ) >> {log} 2>&1
 
         else
 
@@ -91,7 +91,7 @@ rule simulation_ds:
             --regions {input.regions} \
             > {output.sim} &&
             echo "`date -R`: Success! Simulation is done." || 
-            {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
+            {{ echo "`date -R`: Process failed..."; rm {output.simbed}; exit 1; }}  ) >> {log} 2>&1
 
         fi
         """
@@ -169,7 +169,7 @@ rule simulation_xr:
             samtools view -b {output.bam_sorted} |&
             bedtools bamtobed > {output.simbed} &&
             echo "`date -R`: Success! Bam file converted to bed format." || 
-            {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
+            {{ echo "`date -R`: Process failed..."; rm {output.simbed}; exit 1; }}  ) >> {log} 2>&1
 
         else
 
@@ -182,7 +182,7 @@ rule simulation_xr:
             --regions {input.regions} \
             > {output.sim} &&
             echo "`date -R`: Success! Simulation is done." || 
-            {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
+            {{ echo "`date -R`: Process failed..."; rm {output.simbed}; exit 1; }}  ) >> {log} 2>&1
 
         fi
         """

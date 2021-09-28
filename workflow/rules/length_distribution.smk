@@ -17,5 +17,5 @@ rule length_dist:
         sed 's/\s\s*/ /g' |&
         awk '{{print $2"\\t"$1}}' > {output} &&
         echo "`date -R`: Success! Length distribution is calculated." || 
-        echo "`date -R`: Process failed...") > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
         """
