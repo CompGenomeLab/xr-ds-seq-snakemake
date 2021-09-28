@@ -25,12 +25,12 @@ rule bowtie2_se:
         -x {params.ref_genome} \
         -U {input.sample[0]} -S {output.sam} &&
         echo "`date -R`: Success! Alignment is done." || 
-        echo "`date -R`: Process failed...") > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
 
         (echo "`date -R`: Converting sam to bam..." &&
         samtools view -Sbh -o {output.bam} {output.sam} &&
         echo "`date -R`: Success! Conversion is done." || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.bam}; exit 1; }}  )  >> {log} 2>&1
         """
 
 rule bowtie2_pe:
@@ -59,10 +59,10 @@ rule bowtie2_pe:
         -x {params.ref_genome} \
         -1 {input.sample[0]} -2 {input.sample[1]} -S {output.sam} &&
         echo "`date -R`: Success! Alignment is done." || 
-        echo "`date -R`: Process failed...") > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
 
         (echo "`date -R`: Converting sam to bam..." &&
         samtools view -Sb -o {output.bam} {output.sam} &&
         echo "`date -R`: Success! Conversion is done." || 
-        echo "`date -R`: Process failed...") >> {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.bam}; exit 1; }}  )  >> {log} 2>&1
         """
