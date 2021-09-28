@@ -79,6 +79,18 @@ def input4filter(wildcards, sampleList, srrEnabled, srrList):
     else:    
         return "results/{samples}/{samples}_{build}_pe.bed"
 
+def input4PCA(sampleList, srrEnabled, srrList, build):
+
+    inputList = []
+    for sample in sampleList:
+
+        if isSingle(sample, sampleList, srrEnabled, srrList):
+            inputList.append("results/" + sample + "/" + sample + "_" + build + "_se_sortedbyCoordinates.bam")
+        else:    
+            inputList.append("results/" + sample + "/" + sample + "_" + build + "_pe_sortedbyCoordinates.bam")
+
+    return inputList
+
 def input4nucTable(method):
 
     if method == "XR":
@@ -118,6 +130,35 @@ def getDinuc(sample, damageList, sampleList):
     elif tDamage.lower() in ["64", "64pp", "(6-4)pp", "6-4pp", "cpd"]: 
         return "'CC','CT','TC','TT'"
 
+def getInput(sample, inputExist, inputList, inputIdx, sampleList):
+
+    if inputExist:
+        inpDict={}
+        for inp_idx in range(len(inputIdx)):
+            idx_split = inputIdx[inp_idx].strip().split(",")
+            indexList=[]
+            for sample_idx in idx_split:
+                sample_idx = sample_idx.strip() 
+                if "-" in sample_idx:
+                    for range_idx in range(int(sample_idx.split("-")[0]), int(sample_idx.split("-")[1])+1):
+                        indexList.append(int(range_idx)) 
+                else:
+                    indexList.append(int(sample_idx)) 
+                
+            for sample_idx in indexList:
+                if inputList[inp_idx] not in inpDict:
+                    inpDict[inputList[inp_idx]] = [sampleList[sample_idx]]
+                else:
+                    inpDict[inputList[inp_idx]].append(sampleList[sample_idx])
+        for k,v in inpDict.items():
+        
+            if sample in v:
+            
+                return k
+                
+    else:
+        return ""
+
 def lineNum(file):
     
     linenum = 0
@@ -135,12 +176,13 @@ def lineNum(file):
 
     return linenum
 
-def mappedReads(file):
+def mappedReads(*files):
 
-    file1 = str(file[0])
-    file2 = str(file[1])
+    lineNumber = 0
+    for file in files:
+        lineNumber += lineNum(str(file))
 
-    return lineNum(file1) + lineNum(file2)
+    return lineNumber
 
 def allInput(method, build, sampleList, srrEnabled, srrList):
 
@@ -180,12 +222,26 @@ def allInput(method, build, sampleList, srrEnabled, srrList):
                 "_sorted_ds_dipyrimidines_plus.bed") 
             inputList.append(sampledir + sample + "_" + build + 
                 "_sorted_ds_dipyrimidines_minus.bed") 
+
         elif method == "XR":
             inputList.append(sampledir + sample + "_" + 
                 build + "_sorted_plus.bed") 
             inputList.append(sampledir + sample + "_" + 
                 build + "_sorted_minus.bed") 
     
+    if method == "DS":
+        inputList.append("results/scatterplot_PearsonCorr_bigwigScores_DS.png")
+        inputList.append("results/PearsonCorr_bigwigScores_DS.tab")
+        inputList.append("results/heatmap_SpearmanCorr_readCounts_DS.png")
+        inputList.append("results/SpearmanCorr_readCounts_DS.tab")
+        inputList.append("results/PCA_readCounts_DS.png")
+    elif method == "XR":
+        inputList.append("results/scatterplot_PearsonCorr_bigwigScores_XR.png")
+        inputList.append("results/PearsonCorr_bigwigScores_XR.tab")
+        inputList.append("results/heatmap_SpearmanCorr_readCounts_XR.png")
+        inputList.append("results/SpearmanCorr_readCounts_XR.tab")
+        inputList.append("results/PCA_readCounts_XR.png")
+        
     #print(inputList)
     return inputList
 
