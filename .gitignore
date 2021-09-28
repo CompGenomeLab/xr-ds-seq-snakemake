@@ -1,6 +1,7 @@
 results/*
 reports/report*
 resources/samples/*
+resources/input/*
 resources/ref_genomes/*
 logs/*
 dag.svg
