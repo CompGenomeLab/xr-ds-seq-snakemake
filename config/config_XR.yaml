@@ -34,7 +34,18 @@ damage_type:
   - "CPD"
   - "CPD"
   - "CPD"
-  
+
+input:
+  exist: True
+  files:
+    - "R19040024-HelainputD-Hl0h20JID"
+    - "R19040024-HelainputD-Hl15R2hID"
+    - "R19040024-HelainputD-Hl35R2hID"  
+  sample: 
+    - "0-3"
+    - "4-7, 12, 14"
+    - "8-11, 13, 15"
+
 srr: 
   enabled: False
   codes:

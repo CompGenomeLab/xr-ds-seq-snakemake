@@ -1,0 +1,10 @@
+name: simulation
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - bedtools =2.29.0
+  - bowtie2 ==2.4.1  
+  - samtools ==1.10
+  - tbb ==2020.2
