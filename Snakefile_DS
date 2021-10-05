@@ -15,7 +15,12 @@ if config["srr"]["enabled"]:
     include: "workflow/rules/sra.smk"
 else:
     include: "workflow/rules/rename_raw.smk"
-    
+
+if config["input"]["srr"]["enabled"]:
+    include: "workflow/rules/sra_input.smk"
+else:
+    include: "workflow/rules/rename_raw_input.smk"
+
 include: "workflow/rules/fastqc.smk"
 
 if config["genome_download"]:

@@ -73,3 +73,28 @@ rule bed2fasta_xr:
         echo "`date -R`: Success! {input.bed} is converted." || 
         {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
         """
+
+rule bed2fasta_input:
+    input:
+        bed=lambda w: input4fasta(w, config["input"]["files"], 
+            config["srr"]["enabled"], config["srr"]["codes"]),
+        genome="resources/ref_genomes/{build}/genome_{build}.fa",
+    output:
+        "results/input/{samples}/{samples}_{build}.fasta",
+    log:
+        "logs/{samples}/{samples}_{build}_bed2fasta_input.log",
+    benchmark:
+        "logs/{samples}/{samples}_{build}_bed2fasta_input.benchmark.txt",
+    conda:
+        "../envs/bed2fasta.yaml"
+    shell:
+        """
+        (echo "`date -R`: Converting {input.bed} to fasta format..." &&
+        bedtools getfasta \
+        -fi {input.genome} \
+        -bed {input.bed} \
+        -fo {output} \
+        -s &&
+        echo "`date -R`: Success! {input.bed} is converted." || 
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
+        """

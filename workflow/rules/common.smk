@@ -15,7 +15,7 @@ def getSRR(sample, srrList, sampleList):
         
     return srrList[idx]
 
-def isSingle(sample, sampleList, srrEnabled, srrList):
+def isSingle(sample, sampleList, srrEnabled, srrList, sample_dir):
 
     if srrEnabled:
 
@@ -38,7 +38,6 @@ def isSingle(sample, sampleList, srrEnabled, srrList):
 
     else:
 
-        sample_dir = "resources/samples/"
         single = sample_dir + sample + ".fastq.gz"
         pairedR1 = sample_dir + sample + "_R1.fastq.gz"
         paired1 = sample_dir + sample + "_1.fastq.gz"
@@ -48,13 +47,12 @@ def isSingle(sample, sampleList, srrEnabled, srrList):
         elif os.path.isfile(single):
             return True
         else:
-            raise(ValueError(pairedR1, single, "Sample not found..."))
+            raise(ValueError(paired1, single, "Sample not found..."))
 
-def getPaired(sample, sampleList, read):
+def getPaired(sample, sampleList, read, sample_dir):
 
-    sample_dir = "resources/samples/"
     pairedR1 = sample_dir + sample + "_R1.fastq.gz"
-    #paired1 = sample_dir + sample + "_1.fastq.gz"
+    paired1 = sample_dir + sample + "_1.fastq.gz"
     
     if os.path.isfile(pairedR1) and read == "forward":
         return sample_dir + sample + "_R1.fastq.gz"
@@ -62,29 +60,32 @@ def getPaired(sample, sampleList, read):
     elif os.path.isfile(pairedR1) and read == "reverse":
         return sample_dir + sample + "_R2.fastq.gz"
 
-    #elif os.path.isfile(paired1) and read == "forward":
-    #    return sample_dir + sample + "_1.fastq.gz"
+    elif os.path.isfile(paired1) and read == "forward":
+        return sample_dir + sample + "_1.fastq.gz"
 
-    #elif os.path.isfile(paired1) and read == "reverse":
-    #    return sample_dir + sample + "_2.fastq.gz"
-    
-    else:
-        return ""
-
+    elif os.path.isfile(paired1) and read == "reverse":
+        return sample_dir + sample + "_2.fastq.gz"
 
 def input4filter(wildcards, sampleList, srrEnabled, srrList):
 
-    if isSingle(wildcards.samples, sampleList, srrEnabled, srrList):
+    if isSingle(wildcards.samples, sampleList, srrEnabled, srrList, "resources/samples/"):
         return "results/{samples}/{samples}_{build}_se.bed"
     else:    
         return "results/{samples}/{samples}_{build}_pe.bed"
+
+def input4fasta(wildcards, sampleList, srrEnabled, srrList):
+
+    if isSingle(wildcards.samples, sampleList, srrEnabled, srrList, "resources/input/"):
+        return "results/input/{samples}/{samples}_{build}_se.bed"
+    else:    
+        return "results/input/{samples}/{samples}_{build}_pe.bed"
 
 def input4PCA(sampleList, srrEnabled, srrList, build):
 
     inputList = []
     for sample in sampleList:
 
-        if isSingle(sample, sampleList, srrEnabled, srrList):
+        if isSingle(sample, sampleList, srrEnabled, srrList, "resources/samples/"):
             inputList.append("results/" + sample + "/" + sample + "_" + build + "_se_sortedbyCoordinates.bam")
         else:    
             inputList.append("results/" + sample + "/" + sample + "_" + build + "_pe_sortedbyCoordinates.bam")
@@ -130,7 +131,7 @@ def getDinuc(sample, damageList, sampleList):
     elif tDamage.lower() in ["64", "64pp", "(6-4)pp", "6-4pp", "cpd"]: 
         return "'CC','CT','TC','TT'"
 
-def getInput(sample, inputExist, inputList, inputIdx, sampleList):
+def getInput(sample, inputExist, inputList, inputIdx, sampleList, build):
 
     if inputExist:
         inpDict={}
@@ -154,10 +155,10 @@ def getInput(sample, inputExist, inputList, inputIdx, sampleList):
         
             if sample in v:
             
-                return k
+                return "results/input/" + k + "/" + k + "_" + build + ".fasta"
                 
     else:
-        return ""
+        return "resources/ref_genomes/" + build + "/genome_" + build + ".ron" 
 
 def lineNum(file):
     
@@ -190,7 +191,7 @@ def allInput(method, build, sampleList, srrEnabled, srrList):
     for sample in sampleList:
         sampledir = "results/" + sample + "/" 
 
-        if isSingle(sample, sampleList, srrEnabled, srrList):
+        if isSingle(sample, sampleList, srrEnabled, srrList, "resources/samples/"):
             inputList.append(sampledir + sample + ".html")
         else:
             inputList.append(sampledir + sample + "_1.html")

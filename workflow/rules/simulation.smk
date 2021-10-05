@@ -4,7 +4,7 @@ rule simulation_ds:
         plus="results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_plus.bed",
         minus="results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_minus.bed",
         genome="resources/ref_genomes/{build}/genome_{build}.fa",
-        regions="resources/ref_genomes/{build}/genome_{build}.ron", 
+        inpfile=lambda w: getInput(w.samples, config["input"]["exist"], config["input"]["files"], config["input"]["sample"], config["sample"], config["build"]),
     output:
         bed=temp("results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines.bed"),
         fa=temp("results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines.fa"),
@@ -16,7 +16,6 @@ rule simulation_ds:
         simbed="results/{samples}/{samples}_{build}_ds_sim.bed",  
     params:
         inp=config["input"]["exist"],
-        inpfile=lambda w: getInput(w.samples, config["input"]["exist"], config["input"]["files"], config["input"]["sample"], config["sample"]),
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
     log:
         "logs/{samples}/{samples}_{build}_simulation_ds.log",
@@ -46,7 +45,7 @@ rule simulation_ds:
             boquila \
             --fasta {output.fa} \
             --inseqFasta \
-            --inseq resources/input/{params.inpfile}_combined.fasta \
+            --inseq {input.inpfile} \
             --seed 1 \
             > {output.sim} &&
             echo "`date -R`: Success! Simulation is done." || 
@@ -88,7 +87,7 @@ rule simulation_ds:
             --bed {output.simbed} \
             --ref {input.genome} \
             --seed 1 \
-            --regions {input.regions} \
+            --regions {input.inpfile} \
             > {output.sim} &&
             echo "`date -R`: Success! Simulation is done." || 
             {{ echo "`date -R`: Process failed..."; rm {output.simbed}; exit 1; }}  ) >> {log} 2>&1
@@ -100,8 +99,8 @@ rule simulation_xr:
     input:
         bed="results/{samples}/{samples}_{build}_sorted_chr.bed",
         genome="resources/ref_genomes/{build}/genome_{build}.fa",
-        regions="resources/ref_genomes/{build}/genome_{build}.ron",
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2", 
+        inpfile=lambda w: getInput(w.samples, config["input"]["exist"], config["input"]["files"], config["input"]["sample"], config["sample"], config["build"]),
     output:
         fa=temp("results/{samples}/{samples}_{build}_sorted_chr.fa"),
         sim="results/{samples}/{samples}_{build}_xr_sim.fa",
@@ -112,7 +111,6 @@ rule simulation_xr:
         simbed="results/{samples}/{samples}_{build}_xr_sim.bed",
     params:
         inp=config["input"]["exist"],
-        inpfile=lambda w: getInput(w.samples, config["input"]["exist"], config["input"]["files"], config["input"]["sample"], config["sample"]),
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
     log:
         "logs/{samples}/{samples}_{build}_simulation_xr.log",
@@ -137,7 +135,7 @@ rule simulation_xr:
             boquila \
             --fasta {output.fa} \
             --inseqFasta \
-            --inseq resources/input/{params.inpfile}_combined.fasta \
+            --inseq {input.inpfile} \
             --seed 1 \
             > {output.sim} &&
             echo "`date -R`: Success! Simulation is done." || 
@@ -179,7 +177,7 @@ rule simulation_xr:
             --bed {output.simbed} \
             --ref {input.genome} \
             --seed 1 \
-            --regions {input.regions} \
+            --regions {input.inpfile} \
             > {output.sim} &&
             echo "`date -R`: Success! Simulation is done." || 
             {{ echo "`date -R`: Process failed..."; rm {output.simbed}; exit 1; }}  ) >> {log} 2>&1
