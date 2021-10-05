@@ -172,13 +172,13 @@ from `xr-ds-seq-snakemake` directory.
 - For XR-seq:
 
     ```
-    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_XR --keep-going --rerun-incomplete --debug-dag
+    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_XR.smk --keep-going --rerun-incomplete --debug-dag
     ```
 
 - For Damage-seq:
 
     ```
-    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_DS --keep-going --rerun-incomplete --debug-dag
+    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_DS.smk --keep-going --rerun-incomplete --debug-dag
     ```
 | Note: To run the workflow on [Slurm Workload Manager](https://slurm.schedmd.com/srun.html) as set of jobs, `--profile` flag must be provided with proper slurm configuration file (`config/slurm`). |
 | --- |
@@ -188,5 +188,5 @@ To generate detailed HTML report files,
 the code below should be run after workflow:
 
 ```
-snakemake -pr --use-conda --cores 64 --snakefile Snakefile_(XR/DS) --debug-dag --report reports/{report_name}.html
+snakemake -pr --use-conda --cores 64 --snakefile Snakefile_(XR/DS).smk --debug-dag --report reports/{report_name}.html
 ```
