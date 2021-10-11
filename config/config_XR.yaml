@@ -1,76 +1,127 @@
-
 sample: 
-  - "HXA64A1_ATCACG"
-  - "HXA64B7_CAGATC"
-  - "HXACA4_TGACCA"
-  - "HXACB10_TAGCTT"
-  - "HXE64A2_CGATGT"
-  - "HXE64B8_ACTTGA"
-  - "HXECA5_ACAGTG"
-  - "HXECB11_GGCTAC"
-  - "HXL64A3_TTAGGC"
-  - "HXL64B9_GATCAG"
-  - "HXLCA6_GCCAAT"
-  - "HXLCB12_CTTGTA"
-  - "R19026421-2019XR1-Hela15X2_combined_R1"
-  - "R19026421-2019XR1-Hela35X3_combined_R1"
-  - "R19033030-2019XR3-Hela15X7_combined_R1"
-  - "R19033030-2019XR3-Hela35X8_combined_R1"
+ - "CSB_64_A"
+ - "CSB_64_B"
+ - "CSB_CPD_A"
+ - "CSB_CPD_B"
+ - "XPC_64_A"
+ - "XPC_64_B"
+ - "XPC_CPD_A"
+ - "XPC_CPD_B"
+ - "WT_64_A"
+ - "WT_64_B"
+ - "WT_CPD_A"
+ - "WT_CPD_B"
+ - "CPD_tXRseq_rep1"
+ - "CPD_tXRseq_rep2"
+ - "BPDEdG_tXRseq_rep1"
+ - "BPDEdG_tXRseq_rep2"
+ - "GM12878_Cisplatin_XRseq_rep1"
+ - "GM12878_Cisplatin_XRseq_rep2"
+ - "GM12878_Oxaliplatin_XRseq_rep1"
+ - "GM12878_Oxaliplatin_XRseq_rep2"
+ - "HXA64A1_ATCACG"
+ - "HXA64B7_CAGATC"
+ - "HXACA4_TGACCA"
+ - "HXACB10_TAGCTT"
+ - "R19026421-2019XR1-HelaDRBX4_combined_R1"
+ - "R19026421-2019XR1-CSBDRBX5_combined_R1"
+ - "R19033030-2019XR3-HelaDRBX6_combined_R1"
+ - "R19033030-2019XR3-CSBDRBX1_combined_R1"
+
 
 damage_type:
-  - "64"
-  - "64"
-  - "CPD"
-  - "CPD"
-  - "64"
-  - "64"
-  - "CPD"
-  - "CPD"
-  - "64"
-  - "64"
-  - "CPD"
-  - "CPD"
-  - "CPD"
-  - "CPD"
-  - "CPD"
-  - "CPD"
+ - "64"
+ - "64"
+ - "CPD"
+ - "CPD"
+ - "64"
+ - "64"
+ - "CPD"
+ - "CPD"
+ - "64"
+ - "64"
+ - "CPD"
+ - "CPD"
+ - "CPD"
+ - "CPD"
+ - "BPDEdG"
+ - "BPDEdG"
+ - "cisplatin"
+ - "cisplatin"
+ - "oxaliplatin"
+ - "oxaliplatin"
+ - "64"
+ - "64"
+ - "CPD"
+ - "CPD"
+ - "CPD"
+ - "CPD"
+ - "CPD"
+ - "CPD"
 
 srr: 
-  enabled: False
-  codes:
-    - ""
+ enabled: True
+ codes:
+ - "SRR1976070"
+ - "SRR1976071"
+ - "SRR1976068"
+ - "SRR1976069"
+ - "SRR1976066"
+ - "SRR1976067"
+ - "SRR1976064"
+ - "SRR1976065"
+ - "SRR1976060:SRR1976061"
+ - "SRR1976062:SRR1976063"
+ - "SRR1976056:SRR1976057"
+ - "SRR1976058:SRR1976059"
+ - "SRR5444675"
+ - "SRR5444676"
+ - "SRR5444677"
+ - "SRR5444678"
+ - "SRR3623552"
+ - "SRR3623553"
+ - "SRR3623554"
+ - "SRR3623555"
+ - "NA"
+ - "NA"
+ - "NA"
+ - "NA"
+ - "NA"
+ - "NA"
+ - "NA"
+ - "NA"
 
 input:
   exist: True
   files:
-    - "R19040024-HelainputD-Hl0h20JID_combined"
-    - "R19040024-HelainputD-Hl15R2hID_combined"
-    - "R19040024-HelainputD-Hl35R2hID_combined"  
+    - "GM12878_input_A"
+    - "NHF1_input_A"
+    - "R19040024-HelainputD-Hl0h20JID_combined"  
   sample: 
-    - "0-3"
-    - "4-7, 12, 14"
-    - "8-11, 13, 15"
+    - "12-19"
+    - "0-11, 25, 27"
+    - "20-24, 26"
   srr: 
-    enabled: False
+    enabled: True
     codes:
-      - ""
-      - ""
-      - ""
+      - "SRR5461465"
+      - "SRR5461463"
+      - "NA"
 
 # Genome parameters 
-
+ 
 genome_download: False
-
+ 
 bowtie2_build: False
-
-build: "hg19" 
-
+ 
+build: "hg38"
+ 
 species: "homo_sapiens"
-
+ 
 datatype: "dna"
-
+ 
 release: "102"
-
+ 
 #######
-
+ 
 filter: "'^chr([1-9]|1[0-9]|2[0-2]|X)'"
