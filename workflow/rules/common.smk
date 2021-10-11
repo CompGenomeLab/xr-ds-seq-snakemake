@@ -21,6 +21,19 @@ def isSingle(sample, sampleList, srrEnabled, srrList, sample_dir):
 
         mySRR = getSRR(sample, srrList, sampleList)
 
+        if mySRR == "NA":
+
+            single = sample_dir + sample + ".fastq.gz"
+            pairedR1 = sample_dir + sample + "_R1.fastq.gz"
+            paired1 = sample_dir + sample + "_1.fastq.gz"
+            
+            if os.path.isfile(pairedR1) or os.path.isfile(paired1):
+                return False
+            elif os.path.isfile(single):
+                return True
+            else:
+                raise(ValueError(paired1, single, "Sample not found..."))
+
         if ":" in mySRR:
             mySRR = mySRR.split(":")[0]
 
