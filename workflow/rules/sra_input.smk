@@ -4,14 +4,14 @@ rule sra_se_input:
         "resources/input/{samples}.fastq.gz", 
     params:
         srr=lambda w: getSRR(w.samples, config["input"]["srr"]["codes"], 
-            config["input"]),
+            config["input"]["files"]),
         name="{samples}",
     log:
         "logs/{samples}/{samples}_se_sra_input.log",
     benchmark:
         "logs/{samples}/{samples}_se_sra_input.benchmark.txt",
     wildcard_constraints:
-        samples='|'.join([x for x in config["input"]])
+        samples='|'.join([x for x in config["input"]["files"]])
     conda:
         "../envs/sra.yaml"
     threads:
@@ -52,14 +52,14 @@ rule sra_pe_input:
         "resources/input/{samples}_2.fastq.gz", 
     params:
         srr=lambda w: getSRR(w.samples, config["input"]["srr"]["codes"], 
-            config["input"]),
+            config["input"]["files"]),
         name="{samples}",
     log:
         "logs/{samples}/{samples}_pe_sra_input.log",
     benchmark:
         "logs/{samples}/{samples}_pe_sra_input.benchmark.txt",
     wildcard_constraints:
-        samples='|'.join([x for x in config["input"]])
+        samples='|'.join([x for x in config["input"]["files"]])
     conda:
         "../envs/sra.yaml"
     threads:
