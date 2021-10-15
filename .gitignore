@@ -1,8 +1,11 @@
 results/*
 reports/report*
 resources/samples/*
+!resources/samples/readme.md
 resources/input/*
+!resources/input/readme.md
 resources/ref_genomes/*
+!resources/ref_genomes/readme.md
 logs/*
 dag.svg
 dag2.svg
