@@ -7,6 +7,9 @@ resources/input/*
 resources/ref_genomes/*
 !resources/ref_genomes/readme.md
 logs/*
+!logs/cluster/
+logs/cluster/*
+!logs/cluster/readme.md
 dag.svg
 dag2.svg
 dag_ds.svg
