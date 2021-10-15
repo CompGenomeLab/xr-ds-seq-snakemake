@@ -1,6 +1,7 @@
 # XR-seq and Damage-seq workflows
 
 This repository contains xr-seq and damage-seq workflows.  
+
 <br>
 
 ## Installation
@@ -40,14 +41,8 @@ and create the environment using mamba:
 ## Install Simulation
 
 - You should install [boquila](https://github.com/CompGenomeLab/boquila) 
-tool to simulate repair and damage reads:
+tool to simulate repair and damage reads.
 
-    ```
-    cargo install --branch main --git https://github.com/CompGenomeLab/boquila.git
-    ```
-
-| Warning: please add the path of the tool to your $PATH to be able to run boquila tool. |
-| --- |
 <br>
 
 ## Directory Structure
@@ -65,7 +60,8 @@ This folder will automatically appear when you run the workflow.
 after the workflow is over. 
 
 - `resources/`: contains `samples/` where the raw XR-seq and Damage-seq data 
-are stored and `ref_genomes/` where the reference genome files are stored. 
+are stored, `inputs/` where the input files are stored, 
+and `ref_genomes/` where the reference genome files are stored. 
 Reference genome files can be automatically produced by the workflows, 
 if they are properly defined in the config files.  
 
@@ -75,6 +71,7 @@ This folder will automatically appear when you run the workflow.
 - `workflow/`: contains `envs/` where the environments are stored, 
 `rules/` where the Snakemake rules are stored, and 
 `scripts/` where the scripts used inside the rules are stored. 
+
 <br>
 
 ## Configuration file
@@ -145,6 +142,27 @@ the defining the SRR code in the `codes` parameter.
     - If a sample have multiple SRR codes, then the code should be provided in 
     the given format: `SRRXXXXXXX:SRRXXXXXXX:SRRXXXXXXX` 
 
+- `input`: Contains 4 parameters: `exist`, `files`, `sample`, `srr`. This parameter is used for [boquila](https://github.com/CompGenomeLab/boquila), which can take input files for more accurate read simulations. If you don't have any input file, you can set `exist` as False. `files` parameter contains the names of input files w/o the extension. `sample` parameter contains the indeces of samples that will use the input of the same order. Lastly, `srr` can be used for downloading inputs from [sra-toolkit](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc). It works the same was as the `srr` parameter above. As a whole inputs can be provided as:
+
+    ```
+    input:
+        exist: True
+        files:
+            - "input0"
+            - "input1"
+            - "input2"  
+        sample: 
+            - "0-3" # input0 will be used for sample 0,1,2,3
+            - "4, 7" # input1 will be used for sample 4,7
+            - "5, 6" # input2 will be used for sample 5,6
+        srr: 
+            enabled: True
+            codes:
+            - "SRRXXXXXXX" # srr of input0
+            - "SRRXXXXXXX" # srr of input1
+            - "SRRXXXXXXX" # srr of input2
+    ```
+
 - Genome parameters: The parameters `build`, `species`, `datatype`, 
 and `release` are defined to retrieve correct reference genome from ensembl. 
 For more information, you can check out the 
@@ -162,6 +180,7 @@ For more information, you can check out the
     to False as well.
 
 - `filter`: This parameter is used to filter chromosomes by the given regex.
+
 <br>
 
 ## Usage
@@ -172,16 +191,18 @@ from `xr-ds-seq-snakemake` directory.
 - For XR-seq:
 
     ```
-    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_XR.smk --keep-going --rerun-incomplete --debug-dag
+    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_XR.smk --keep-going --rerun-incomplete 
     ```
 
 - For Damage-seq:
 
     ```
-    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_DS.smk --keep-going --rerun-incomplete --debug-dag
+    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_DS.smk --keep-going --rerun-incomplete 
     ```
-| Note: To run the workflow on [Slurm Workload Manager](https://slurm.schedmd.com/srun.html) as set of jobs, `--profile` flag must be provided with proper slurm configuration file (`config/slurm`). |
+| Note: To run the workflow on [Slurm Workload Manager](https://slurm.schedmd.com/srun.html) as set of jobs, `--profile` flag must be provided: |  
 | --- |
+    snakemake -pr --use-conda --profile config/slurm --snakefile Snakefile_DS.smk --keep-going --rerun-incomplete 
+
 <br>
 
 To generate detailed HTML report files, 
