@@ -60,7 +60,7 @@ This folder will automatically appear when you run the workflow.
 after the workflow is over. 
 
 - `resources/`: contains `samples/` where the raw XR-seq and Damage-seq data 
-are stored, `inputs/` where the input files are stored, 
+are stored, `input/` where the input files are stored, 
 and `ref_genomes/` where the reference genome files are stored. 
 Reference genome files can be automatically produced by the workflows, 
 if they are properly defined in the config files.  
