@@ -11,3 +11,19 @@ cutadapt_pe: ""
 samtools_q_trim_se: "-q 20"
 
 samtools_q_trim_pe: "-q 20 -bf 0x2"
+
+srr: 
+  enabled: False
+  codes:
+    - ""
+
+input:
+  exist: False
+  files:
+    - "" 
+  sample: 
+    - ""
+  srr: 
+    enabled: False
+    codes:
+      - ""
