@@ -14,7 +14,7 @@ rule sra_se:
     conda:
         "../envs/sra.yaml"
     threads:
-        8
+        6
     shell:
         """
         touch resources/samples/{params.name}.fastq
@@ -62,37 +62,38 @@ rule sra_pe:
     conda:
         "../envs/sra.yaml"
     threads:
-        8
+        6
     shell:
         """
         touch resources/samples/{params.name}_1.fastq
         touch resources/samples/{params.name}_2.fastq
         touch {log}
+        echo "`date -R`: paired-end layout" >> {log}
 
         srrList=$(echo {params.srr} | tr ":" "\\n")
-        echo $srrList
+        echo $srrList >> {log}
 
         for srr in $srrList; do
-
-            (echo "`date -R`: Downloading SRR files..." &&
+            (echo "`date -R`: Downloading $srr files..." &&
             fasterq-dump \
             --threads {threads} \
-            --progress {params.srr} \
+            --progress $srr \
             -t resources/samples/ \
             -o resources/samples/${{srr}} &&
             echo "`date -R`: Download is successful!" || 
-            {{ echo "`date -R`: Process failed..."; exit 1; }} ) \
-            >> {log} 2>&1
+            {{ echo "`date -R`: Process failed..."; exit 1; }}  ) \
+            > {log} 2>&1
 
             cat resources/samples/${{srr}}_1.fastq >> resources/samples/{params.name}_1.fastq
             cat resources/samples/${{srr}}_2.fastq >> resources/samples/{params.name}_2.fastq
 
-            rm resources/samples/${{srr}}_1.fastq 
+            rm resources/samples/${{srr}}_1.fastq
             rm resources/samples/${{srr}}_2.fastq ; done
 
         (echo "`date -R`: Zipping srr file..." &&
-        gzip resources/samples/{params.name}*.fastq &&
+        gzip resources/samples/{params.name}_1.fastq &&
+        gzip resources/samples/{params.name}_2.fastq &&
         echo "`date -R`: Zipping is successful!" || 
-        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }} ) \
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  ) \
         >> {log} 2>&1
         """

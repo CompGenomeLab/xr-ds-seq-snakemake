@@ -15,7 +15,7 @@ rule sra_se_input:
     conda:
         "../envs/sra.yaml"
     threads:
-        8
+        6
     shell:
         """
         touch resources/input/{params.name}.fastq
@@ -63,37 +63,38 @@ rule sra_pe_input:
     conda:
         "../envs/sra.yaml"
     threads:
-        8
+        6
     shell:
         """
-        touch resources/input/{params.name}_1.fastq
-        touch resources/input/{params.name}_2.fastq
+        touch resources/samples/input/{params.name}_1.fastq
+        touch resources/samples/input/{params.name}_2.fastq
         touch {log}
+        echo "`date -R`: paired-end layout" >> {log}
 
         srrList=$(echo {params.srr} | tr ":" "\\n")
-        echo $srrList
+        echo $srrList >> {log}
 
         for srr in $srrList; do
-
-            (echo "`date -R`: Downloading SRR files..." &&
+            (echo "`date -R`: Downloading $srr files..." &&
             fasterq-dump \
             --threads {threads} \
-            --progress {params.srr} \
-            -t resources/input/ \
-            -o resources/input/${{srr}} &&
+            --progress $srr \
+            -t resources/samples/input/ \
+            -o resources/samples/input/${{srr}} &&
             echo "`date -R`: Download is successful!" || 
-            {{ echo "`date -R`: Process failed..."; exit 1; }} ) \
-            >> {log} 2>&1
+            {{ echo "`date -R`: Process failed..."; exit 1; }}  ) \
+            > {log} 2>&1
 
-            cat resources/input/${{srr}}_1.fastq >> resources/input/{params.name}_1.fastq
-            cat resources/input/${{srr}}_2.fastq >> resources/input/{params.name}_2.fastq
+            cat resources/samples/input/${{srr}}_1.fastq >> resources/samples/input/{params.name}_1.fastq
+            cat resources/samples/input/${{srr}}_2.fastq >> resources/samples/input/{params.name}_2.fastq
 
-            rm resources/input/${{srr}}_1.fastq 
-            rm resources/input/${{srr}}_2.fastq ; done
+            rm resources/samples/input/${{srr}}_1.fastq
+            rm resources/samples/input/${{srr}}_2.fastq ; done
 
         (echo "`date -R`: Zipping srr file..." &&
-        gzip resources/input/{params.name}*.fastq &&
+        gzip resources/samples/input/{params.name}_1.fastq &&
+        gzip resources/samples/input/{params.name}_2.fastq &&
         echo "`date -R`: Zipping is successful!" || 
-        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }} ) \
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  ) \
         >> {log} 2>&1
         """
