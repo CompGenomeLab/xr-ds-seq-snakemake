@@ -18,18 +18,12 @@ srr:
     - ""
 
 input:
-  exist: True
+  exist: False
   files:
-    - "R19040024-HelainputD-Hl0h20JID_combined"
-    - "R19040024-HelainputD-Hl15R2hID_combined"
-    - "R19040024-HelainputD-Hl35R2hID_combined"  
+    - "" 
   sample: 
-    - "0-3"
-    - "4-7, 12, 14"
-    - "8-11, 13, 15"
+    - ""
   srr: 
     enabled: False
     codes:
-      - ""
-      - ""
       - ""
