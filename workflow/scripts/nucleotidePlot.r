@@ -35,9 +35,11 @@ if (argv$k == "1"){
     
     x_order <- c(x_order, paste(i-1)) 
     
-    #title for the plot
-    mytitle <- "Nucleotide Content of Oligomers"
   }
+  
+  #title for the plot
+  mytitle <- "Nucleotide Content of Oligomers"
+
 } else if (argv$k == "2"){
   for (i in 2:ncol(nuc_table)) {
     
@@ -45,9 +47,10 @@ if (argv$k == "1"){
     
     x_order <- c(x_order, paste(i - 1, "-", i, sep = "")) 
     
-    #title for the plot
-    mytitle <- "Dinucleotide Content of Oligomers"
   }
+
+  #title for the plot
+  mytitle <- "Dinucleotide Content of Oligomers"
 }
 
 # reorganize
