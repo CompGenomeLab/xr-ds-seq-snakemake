@@ -56,8 +56,8 @@ recommended by Snakemake:
 - `logs/`: contains the log files of each step. 
 This folder will automatically appear when you run the workflow.
 
-- `reports/`: contains the report files, which can be produced 
-after the workflow is over. 
+- `report/`: contains the description files of figures,
+which will be used in reports.
 
 - `resources/`: contains `samples/` where the raw XR-seq and Damage-seq data 
 are stored, `input/` where the input files are stored, 
@@ -209,5 +209,5 @@ To generate detailed HTML report files,
 the code below should be run after workflow:
 
 ```
-snakemake -pr --use-conda --cores 64 --snakefile Snakefile_(XR/DS).smk --debug-dag --report reports/{report_name}.html
+snakemake --report report.zip
 ```
