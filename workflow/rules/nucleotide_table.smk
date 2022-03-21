@@ -3,12 +3,12 @@ rule nucleotide_table:
     input:
         lambda w: input4nucTable(config["method"]),
     output:
-        dinuc=temp("results/{samples}/{samples}_{build}_sorted_dinucleotideTable.txt"),
-        nuc=temp("results/{samples}/{samples}_{build}_sorted_nucleotideTable.txt"),
+        dinuc=temp("results/{method}/{samples}/{samples}_{build}_sorted_dinucleotideTable.txt"),
+        nuc=temp("results/{method}/{samples}/{samples}_{build}_sorted_nucleotideTable.txt"),
     log:
-        "logs/{samples}/{samples}_{build}_nucleotide_table.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_nucleotide_table.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_nucleotide_table.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_nucleotide_table.benchmark.txt",
     shell:  
         """
         (echo "`date -R`: Calculating dinucleotide abundance table..." &&

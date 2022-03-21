@@ -5,6 +5,6 @@ rule genome_indexing:
     output:
         "resources/ref_genomes/{build}/genome_{build}.fa.fai",
     benchmark:
-        "resources/ref_genomes/{build}/log/indexing.benchmark.txt",
+        "logs/rule/analysis/{build}/log/indexing.benchmark.txt",
     wrapper:
         "0.69.0/bio/samtools/faidx"

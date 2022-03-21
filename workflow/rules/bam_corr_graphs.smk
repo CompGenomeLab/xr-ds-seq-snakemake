@@ -2,18 +2,18 @@ rule bam_corr_graphs:
     input:
         npz="results/readCounts_{method}.npz",
     output:
-        scatter=report("results/scatterplot_PearsonCorr_bigwigScores_{method}.png", 
+        scatter=report("results/scatterplot_PearsonCorr_bigwigScores_{method}.pdf", 
                 category="Correlation"),
         tab="results/PearsonCorr_bigwigScores_{method}.tab",
-        heatmap=report("results/heatmap_SpearmanCorr_readCounts_{method}.png", 
+        heatmap=report("results/heatmap_SpearmanCorr_readCounts_{method}.pdf", 
                 category="Correlation"),
         tab2="results/SpearmanCorr_readCounts_{method}.tab",
-        pca=report("results/PCA_readCounts_{method}.png", 
+        pca=report("results/PCA_readCounts_{method}.pdf", 
                 category="Correlation"),
     log:
-        "logs/bam_corr_graphs_{method}.log",
+        "logs/rule/figs/bam_corr_graphs_{method}.log",
     benchmark:
-        "logs/bam_corr_graphs.benchmark_{method}.txt",
+        "logs/rule/figs/bam_corr_graphs.benchmark_{method}.txt",
     conda:
         "../envs/bam_correlation.yaml"
     shell:  

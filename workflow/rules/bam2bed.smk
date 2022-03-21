@@ -1,19 +1,19 @@
 
 rule bam2bed_se:
     input:
-        "results/{samples}/{samples}_cutadapt_se_{build}.bam",
+        "results/{method}/{samples}/{samples}_cutadapt_se_{build}.bam",
     output:
-        bed="results/{samples}/{samples}_{build}_se.bed",
-        bam="results/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam",
-        idx="results/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam.bai",
+        bed="results/{method}/{samples}/{samples}_{build}_se.bed",
+        bam="results/{method}/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam",
+        idx="results/{method}/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam.bai",
     params:
         q_trim=config["samtools_q_trim_se"], 
     log:
-        "logs/{samples}/{samples}_{build}_bam2bed_se.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_bam2bed_se.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_bam2bed_se.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_bam2bed_se.benchmark.txt",
     conda:
-        "../envs/bam2bed.yaml"
+        "../envs/bedtools.yaml"
     shell:  
         """
         (echo "`date -R`: Sorting (coordinates) bam file..." &&
@@ -35,20 +35,20 @@ rule bam2bed_se:
 
 rule bam2bed_pe:
     input:
-        "results/{samples}/{samples}_cutadapt_pe_{build}.bam",
+        "results/{method}/{samples}/{samples}_cutadapt_pe_{build}.bam",
     output:
-        bed="results/{samples}/{samples}_{build}_pe.bed",
-        bam=temp("results/{samples}/{samples}_{build}_sorted.bam"),
-        bam2="results/{samples}/{samples}_{build}_pe_sortedbyCoordinates.bam",
-        idx="results/{samples}/{samples}_{build}_pe_sortedbyCoordinates.bam.bai",
+        bed="results/{method}/{samples}/{samples}_{build}_pe.bed",
+        bam=temp("results/{method}/{samples}/{samples}_{build}_sorted.bam"),
+        bam2="results/{method}/{samples}/{samples}_{build}_pe_sortedbyCoordinates.bam",
+        idx="results/{method}/{samples}/{samples}_{build}_pe_sortedbyCoordinates.bam.bai",
     params:
         q_trim=config["samtools_q_trim_pe"],
     log:
-        "logs/{samples}/{samples}_{build}_bam2bed_pe.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_bam2bed_pe.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_bam2bed_pe.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_bam2bed_pe.benchmark.txt",
     conda:
-        "../envs/bam2bed.yaml"
+        "../envs/bedtools.yaml"
     shell:  
         """
         (echo "`date -R`: Sorting (name) bam file..." &&
@@ -89,11 +89,11 @@ rule bam2bed_se_input:
     params:
         q_trim=config["samtools_q_trim_se"], 
     log:
-        "logs/{samples}/{samples}_{build}_bam2bed_se_input.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_bam2bed_se_input.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_bam2bed_se_input.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_bam2bed_se_input.benchmark.txt",
     conda:
-        "../envs/bam2bed.yaml"
+        "../envs/bedtools.yaml"
     shell:  
         """
         (echo "`date -R`: Sorting (coordinates) bam file..." &&
@@ -124,11 +124,11 @@ rule bam2bed_pe_input:
     params:
         q_trim=config["samtools_q_trim_pe"],
     log:
-        "logs/{samples}/{samples}_{build}_bam2bed_pe_input.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_bam2bed_pe_input.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_bam2bed_pe_input.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_bam2bed_pe_input.benchmark.txt",
     conda:
-        "../envs/bam2bed.yaml"
+        "../envs/bedtools.yaml"
     shell:  
         """
         (echo "`date -R`: Sorting (name) bam file..." &&

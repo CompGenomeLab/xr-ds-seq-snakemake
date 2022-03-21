@@ -1,14 +1,14 @@
 
 rule nucleotide_table_ds_sim:
     input:
-        "results/{samples}/{samples}_{build}_ds_sim.fa",
+        "results/{method}/{samples}/{samples}_{build}_ds_sim.fa",
     output:
-        dinuc=temp("results/{samples}/{samples}_{build}_DS_sim_dinucleotideTable.txt"),
-        nuc=temp("results/{samples}/{samples}_{build}_DS_sim_nucleotideTable.txt"),
+        dinuc=temp("results/{method}/{samples}/{samples}_{build}_DS_sim_dinucleotideTable.txt"),
+        nuc=temp("results/{method}/{samples}/{samples}_{build}_DS_sim_nucleotideTable.txt"),
     log:
-        "logs/{samples}/{samples}_{build}_nucleotide_table_ds_sim.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_nucleotide_table_ds_sim.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_nucleotide_table_ds_sim.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_nucleotide_table_ds_sim.benchmark.txt",
     shell:  
         """
         (echo "`date -R`: Calculating dinucleotide abundance table..." &&
@@ -32,15 +32,15 @@ rule nucleotide_table_ds_sim:
 
 rule nucleotide_table_xr_sim:
     input:
-        "results/{samples}/{samples}_{build}_xr_sim.fa",
+        "results/{method}/{samples}/{samples}_{build}_xr_sim.fa",
     output:
-        dinuc=temp("results/{samples}/{samples}_{build}_XR_sim_dinucleotideTable.txt"),
-        nuc=temp("results/{samples}/{samples}_{build}_XR_sim_nucleotideTable.txt"),
-        filt=temp("results/{samples}/{samples}_{build}_XR_sim_filt.fa"),
+        dinuc=temp("results/{method}/{samples}/{samples}_{build}_XR_sim_dinucleotideTable.txt"),
+        nuc=temp("results/{method}/{samples}/{samples}_{build}_XR_sim_nucleotideTable.txt"),
+        filt=temp("results/{method}/{samples}/{samples}_{build}_XR_sim_filt.fa"),
     log:
-        "logs/{samples}/{samples}_{build}_nucleotide_table_xr_sim.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_nucleotide_table_xr_sim.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_nucleotide_table_xr_sim.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_nucleotide_table_xr_sim.benchmark.txt",
     shell:  
         """
         len="$(awk 'BEGIN{{RS=">";ORS=""}}{{print length($2)"\\n"}}' {input} | sort | uniq -c | sort -k1,1n | tail -1 | awk '{{print $2}}')"

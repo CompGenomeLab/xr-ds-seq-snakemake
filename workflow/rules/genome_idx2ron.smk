@@ -5,8 +5,8 @@ rule genome_index2ron:
     output:
         "resources/ref_genomes/{build}/genome_{build}.ron",
     log:
-        "resources/ref_genomes/{build}/log/indexing.log",
+        "logs/rule/analysis/{build}/log/indexing.log",
     benchmark:
-        "resources/ref_genomes/{build}/log/indexing.benchmark.txt",
+        "logs/rule/analysis/{build}/log/indexing.benchmark.txt",
     shell:
         "python3 workflow/scripts/idx2ron.py -i {input} -o {output} -l {log}"

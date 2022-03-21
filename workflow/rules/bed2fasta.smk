@@ -1,20 +1,20 @@
 
 rule bed2fasta_ds:
     input:
-        plus="results/{samples}/{samples}_{build}_sorted_plus_10.bed",
-        minus="results/{samples}/{samples}_{build}_sorted_minus_10.bed",
+        plus="results/{method}/{samples}/{samples}_{build}_sorted_plus_10.bed",
+        minus="results/{method}/{samples}/{samples}_{build}_sorted_minus_10.bed",
         genome="resources/ref_genomes/{build}/genome_{build}.fa",
     output:
-        plus=temp("results/{samples}/{samples}_{build}_sorted_plus_10.fa"),
-        minus=temp("results/{samples}/{samples}_{build}_sorted_minus_10.fa"),
-        comb=temp("results/{samples}/{samples}_{build}_sorted_10.fa"),
-        bed=temp("results/{samples}/{samples}_{build}_sorted_10.bed"),       
+        plus=temp("results/{method}/{samples}/{samples}_{build}_sorted_plus_10.fa"),
+        minus=temp("results/{method}/{samples}/{samples}_{build}_sorted_minus_10.fa"),
+        comb=temp("results/{method}/{samples}/{samples}_{build}_sorted_10.fa"),
+        bed=temp("results/{method}/{samples}/{samples}_{build}_sorted_10.bed"),       
     log:
-        "logs/{samples}/{samples}_{build}_bed2fasta_ds.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_bed2fasta_ds.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_bed2fasta_ds.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_bed2fasta_ds.benchmark.txt",
     conda:
-        "../envs/bed2fasta.yaml"
+        "../envs/bedtools.yaml"
     shell:
         """
         (echo "`date -R`: Combine files..." &&
@@ -52,16 +52,16 @@ rule bed2fasta_ds:
 
 rule bed2fasta_xr:
     input:
-        bed="results/{samples}/{samples}_{build}_lengthMode.bed",
+        bed="results/{method}/{samples}/{samples}_{build}_lengthMode.bed",
         genome="resources/ref_genomes/{build}/genome_{build}.fa",
     output:
-        temp("results/{samples}/{samples}_{build}_lengthMode.fa"),
+        temp("results/{method}/{samples}/{samples}_{build}_lengthMode.fa"),
     log:
-        "logs/{samples}/{samples}_{build}_bed2fasta_xr.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_bed2fasta_xr.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_bed2fasta_xr.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_bed2fasta_xr.benchmark.txt",
     conda:
-        "../envs/bed2fasta.yaml"
+        "../envs/bedtools.yaml"
     shell:
         """
         (echo "`date -R`: Converting {input.bed} to fasta format..." &&
@@ -82,11 +82,11 @@ rule bed2fasta_input:
     output:
         "results/input/{samples}/{samples}_{build}.fasta",
     log:
-        "logs/{samples}/{samples}_{build}_bed2fasta_input.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_bed2fasta_input.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_bed2fasta_input.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_bed2fasta_input.benchmark.txt",
     conda:
-        "../envs/bed2fasta.yaml"
+        "../envs/bedtools.yaml"
     shell:
         """
         (echo "`date -R`: Converting {input.bed} to fasta format..." &&

@@ -6,9 +6,9 @@ rule rename_raw:
         r1="resources/samples/{samples}_1.fastq.gz", 
         r2="resources/samples/{samples}_2.fastq.gz",
     log:
-        "logs/{samples}/{samples}_rename_raw.log",
+        "logs/rule/analysis/{samples}/{samples}_rename_raw.log",
     benchmark:
-        "logs/{samples}/{samples}_rename_raw.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_rename_raw.benchmark.txt",
     shell:
         """
         mv {input.r1} {output.r1}

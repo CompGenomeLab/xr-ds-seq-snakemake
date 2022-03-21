@@ -6,9 +6,9 @@ rule sra_se:
             config["sample"]),
         name="{samples}",
     log:
-        "logs/{samples}/{samples}_se_sra.log",
+        "logs/rule/analysis/{samples}/{samples}_se_sra.log",
     benchmark:
-        "logs/{samples}/{samples}_se_sra.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_se_sra.benchmark.txt",
     wildcard_constraints:
         samples='|'.join([x for x in config["sample"]])
     conda:
@@ -55,9 +55,9 @@ rule sra_pe:
             config["sample"]),
         name="{samples}",
     log:
-        "logs/{samples}/{samples}_pe_sra.log",
+        "logs/rule/analysis/{samples}/{samples}_pe_sra.log",
     benchmark:
-        "logs/{samples}/{samples}_pe_sra.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_pe_sra.benchmark.txt",
     wildcard_constraints:
         samples='|'.join([x for x in config["sample"]])
     conda:

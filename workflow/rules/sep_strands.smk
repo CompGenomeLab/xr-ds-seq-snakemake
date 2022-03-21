@@ -1,14 +1,14 @@
 
 rule sep_strands:
     input:
-        "results/{samples}/{samples}_{build}_sorted_chr.bed",
+        "results/{method}/{samples}/{samples}_{build}_sorted_chr.bed",
     output:
-        plus="results/{samples}/{samples}_{build}_sorted_plus.bed",
-        minus="results/{samples}/{samples}_{build}_sorted_minus.bed",
+        plus="results/{method}/{samples}/{samples}_{build}_sorted_plus.bed",
+        minus="results/{method}/{samples}/{samples}_{build}_sorted_minus.bed",
     log:
-        "logs/{samples}/{samples}_{build}_sep_strands.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_sep_strands.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_sep_strands.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_sep_strands.benchmark.txt",
     shell:  
         """
         (echo "`date -R`: Separating plus stranded reads..." &&

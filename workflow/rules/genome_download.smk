@@ -8,8 +8,8 @@ rule genome_download:
         build=config["build"],
         release=config["release"],
     log:
-        "resources/ref_genomes/{build}/log/download.log",
+        "logs/rule/analysis/{build}/log/download.log",
     benchmark:
-        "resources/ref_genomes/{build}/log/download.benchmark.txt",
+        "logs/rule/analysis/{build}/log/download.benchmark.txt",
     wrapper:
         "0.69.0/bio/reference/ensembl-sequence"

@@ -7,9 +7,9 @@ rule genome_variation:
         release=config["release"],
         type="all", # one of "all", "somatic", "structural_variation"
     log:
-        "resources/ref_genomes/{build}/log/genome_variation.log",
+        "logs/rule/analysis/{build}/log/genome_variation.log",
     benchmark:
-        "resources/ref_genomes/{build}/log/genome_variation.benchmark.txt",
+        "logs/rule/analysis/{build}/log/genome_variation.benchmark.txt",
     cache: True  
     wrapper:
         "0.69.0/bio/reference/ensembl-variation"

@@ -15,7 +15,7 @@ def getSRR(sample, srrList, sampleList):
         
     return srrList[idx]
 
-def isSingle(sample, sampleList, srrEnabled, srrList, sample_dir):
+def isSingle(sample, method, sampleList, srrEnabled, srrList, sample_dir):
 
     if srrEnabled:
 
@@ -23,21 +23,21 @@ def isSingle(sample, sampleList, srrEnabled, srrList, sample_dir):
 
         if mySRR == "NA":
 
-            single = sample_dir + sample + ".fastq.gz"
-            pairedR1 = sample_dir + sample + "_R1.fastq.gz"
-            paired1 = sample_dir + sample + "_1.fastq.gz"
+            single = f"{sample_dir}{sample}.fastq.gz"
+            pairedR1 = f"{sample_dir}{sample}_R1.fastq.gz"
+            paired1 = f"{sample_dir}{sample}_1.fastq.gz"
             
             if os.path.isfile(pairedR1) or os.path.isfile(paired1):
                 return False
             elif os.path.isfile(single):
                 return True
             else:
-                raise(ValueError(paired1, single, "Sample not found..."))
+                raise(ValueError(f"{paired1}, {pairedR1}, or {single} not found..."))
 
         if ":" in mySRR:
             mySRR = mySRR.split(":")[0]
 
-        shellCommand = 'fastq-dump -X 1 -Z --split-spot ' + mySRR + ' | wc -l'
+        shellCommand = f'fastq-dump -X 1 -Z --split-spot {mySRR} | wc -l'
         #print(shellCommand)
         p=subprocess.getoutput(shellCommand)
         #print(p)
@@ -51,66 +51,66 @@ def isSingle(sample, sampleList, srrEnabled, srrList, sample_dir):
 
     else:
 
-        single = sample_dir + sample + ".fastq.gz"
-        pairedR1 = sample_dir + sample + "_R1.fastq.gz"
-        paired1 = sample_dir + sample + "_1.fastq.gz"
+        single = f"{sample_dir}{sample}.fastq.gz"
+        pairedR1 = f"{sample_dir}{sample}_R1.fastq.gz"
+        paired1 = f"{sample_dir}{sample}_1.fastq.gz"
         
         if os.path.isfile(pairedR1) or os.path.isfile(paired1):
             return False
         elif os.path.isfile(single):
             return True
         else:
-            raise(ValueError(paired1, single, "Sample not found..."))
+            raise(ValueError(f"{paired1}, {pairedR1}, or {single} not found..."))
 
 def getPaired(sample, sampleList, read, sample_dir):
 
-    pairedR1 = sample_dir + sample + "_R1.fastq.gz"
-    paired1 = sample_dir + sample + "_1.fastq.gz"
+    pairedR1 = f"{sample_dir}{sample}_R1.fastq.gz"
+    paired1 = f"{sample_dir}{sample}_1.fastq.gz"
     
     if os.path.isfile(pairedR1) and read == "forward":
-        return sample_dir + sample + "_R1.fastq.gz"
+        return f"{sample_dir}{sample}_R1.fastq.gz"
 
     elif os.path.isfile(pairedR1) and read == "reverse":
-        return sample_dir + sample + "_R2.fastq.gz"
+        return f"{sample_dir}{sample}_R2.fastq.gz"
 
     elif os.path.isfile(paired1) and read == "forward":
-        return sample_dir + sample + "_1.fastq.gz"
+        return f"{sample_dir}{sample}_1.fastq.gz"
 
     elif os.path.isfile(paired1) and read == "reverse":
-        return sample_dir + sample + "_2.fastq.gz"
+        return f"{sample_dir}{sample}_2.fastq.gz"
 
-def input4filter(wildcards, sampleList, srrEnabled, srrList):
+def input4filter(wildcards, method, sampleList, srrEnabled, srrList):
 
-    if isSingle(wildcards.samples, sampleList, srrEnabled, srrList, "resources/samples/"):
-        return "results/{samples}/{samples}_{build}_se.bed"
+    if isSingle(wildcards.samples, method, sampleList, srrEnabled, srrList, "resources/samples/"):
+        return "results/{method}/{samples}/{samples}_{build}_se.bed"
     else:    
-        return "results/{samples}/{samples}_{build}_pe.bed"
+        return "results/{method}/{samples}/{samples}_{build}_pe.bed"
 
 def input4fasta(wildcards, sampleList, srrEnabled, srrList):
 
-    if isSingle(wildcards.samples, sampleList, srrEnabled, srrList, "resources/input/"):
+    if isSingle(wildcards.samples, "input", sampleList, srrEnabled, srrList, "resources/input/"):
         return "results/input/{samples}/{samples}_{build}_se.bed"
     else:    
         return "results/input/{samples}/{samples}_{build}_pe.bed"
 
-def input4PCA(sampleList, srrEnabled, srrList, build):
+def input4PCA(sampleList, srrEnabled, srrList, build, method):
 
     inputList = []
     for sample in sampleList:
 
-        if isSingle(sample, sampleList, srrEnabled, srrList, "resources/samples/"):
-            inputList.append("results/" + sample + "/" + sample + "_" + build + "_se_sortedbyCoordinates.bam")
+        if isSingle(sample, method, sampleList, srrEnabled, srrList, "resources/samples/"):
+            inputList.append(f"results/{method}/{sample}/{sample}_{build}_se_sortedbyCoordinates.bam")
         else:    
-            inputList.append("results/" + sample + "/" + sample + "_" + build + "_pe_sortedbyCoordinates.bam")
+            inputList.append(f"results/{method}/{sample}/{sample}_{build}_pe_sortedbyCoordinates.bam")
 
     return inputList
 
 def input4nucTable(method):
 
     if method == "XR":
-        return "results/{samples}/{samples}_{build}_lengthMode.fa"
+        return "results/XR/{samples}/{samples}_{build}_lengthMode.fa"
     elif method == "DS":    
-        return "results/{samples}/{samples}_{build}_sorted_10.fa"
+        return "results/DS/{samples}/{samples}_{build}_sorted_10.fa"
 
 def getDamage(sample, damage_type, sampleList):
 
@@ -168,10 +168,10 @@ def getInput(sample, inputExist, inputList, inputIdx, sampleList, build):
         
             if sample in v:
             
-                return "results/input/" + k + "/" + k + "_" + build + ".fasta"
+                return f"results/input/{k}/{k}_{build}.fasta"
                 
     else:
-        return "resources/ref_genomes/" + build + "/genome_" + build + ".ron" 
+        return f"resources/ref_genomes/{build}/genome_{build}.ron" 
 
 def lineNum(file):
     
@@ -181,7 +181,7 @@ def lineNum(file):
             for line in f:
                 linenum += 1
 
-    warnMessage = ("\n" + file + " file is either empty or does not exists!\n" + 
+    warnMessage = (f"\n{file} file is either empty or does not exists!\n" + 
         "It is expected if this is a dry-run. The file will be produced " + 
         "after the execution.")
 
@@ -202,59 +202,46 @@ def allInput(method, build, sampleList, srrEnabled, srrList):
 
     inputList = []
     for sample in sampleList:
-        sampledir = "results/" + sample + "/" 
+        sample_dir = f"results/{method}/{sample}/" 
 
-        if isSingle(sample, sampleList, srrEnabled, srrList, "resources/samples/"):
-            inputList.append(sampledir + sample + ".html")
+        if isSingle(sample, method, sampleList, srrEnabled, srrList, "resources/samples/"):
+            inputList.append(f"{sample_dir}{sample}.html")
         else:
-            inputList.append(sampledir + sample + "_1.html")
-            inputList.append(sampledir + sample + "_2.html")
+            inputList.append(f"{sample_dir}{sample}_1.html")
+            inputList.append(f"{sample_dir}{sample}_2.html")
 
-        inputList.append(sampledir + sample + "_" + build + 
-            "_sorted_nucleotideTable.png")
-        inputList.append(sampledir + sample + "_" + build + 
-            "_sorted_dinucleotideTable.png")
-        inputList.append(sampledir + sample + "_" + build + "_" + method +
-            "_sim_nucleotideTable.png")
-        inputList.append(sampledir + sample + "_" + build + "_" + method + 
-            "_sim_dinucleotideTable.png")
-        inputList.append(sampledir + sample + "_" + build + 
-            "_length_distribution.png")
-        inputList.append(sampledir + sample + "_" + build + "_" + method + 
-            "_sorted_plus.bw")
-        inputList.append(sampledir + sample + "_" + build + "_" + method + 
-            "_sorted_minus.bw")
-        #inputList.append(sampledir + sample + "_" + build + 
-        #    "_igv_report_chrX.html")
+        inputList.append(f"{sample_dir}{sample}_{build}_sorted_nucleotideTable.pdf")
+        inputList.append(f"{sample_dir}{sample}_{build}_sorted_dinucleotideTable.pdf")
+        inputList.append(f"{sample_dir}{sample}_{build}_{method}_sim_nucleotideTable.pdf")
+        inputList.append(f"{sample_dir}{sample}_{build}_{method}_sim_dinucleotideTable.pdf")
+        inputList.append(f"{sample_dir}{sample}_{build}_length_distribution.pdf")
+        inputList.append(f"{sample_dir}{sample}_{build}_{method}_sorted_plus.bw")
+        inputList.append(f"{sample_dir}{sample}_{build}_{method}_sorted_minus.bw")
+        #inputList.append(f"{sample_dir}{sample}_{build}_igv_report_chrX.html")
 
         #for i in range(1,23):
-        #    inputList.append(sampledir + sample + "_" + build + 
-        #        "_igv_report_chr" + str(i) + ".html")
+        #    inputList.append(f"{sample_dir}{sample}_{build}_igv_report_chr{str(i)}.html")
 
         if method == "DS":
-            inputList.append(sampledir + sample + "_" + build + 
-                "_sorted_ds_dipyrimidines_plus.bed") 
-            inputList.append(sampledir + sample + "_" + build + 
-                "_sorted_ds_dipyrimidines_minus.bed") 
+            inputList.append(f"{sample_dir}{sample}_{build}_sorted_ds_dipyrimidines_plus.bed") 
+            inputList.append(f"{sample_dir}{sample}_{build}_sorted_ds_dipyrimidines_minus.bed") 
 
         elif method == "XR":
-            inputList.append(sampledir + sample + "_" + 
-                build + "_sorted_plus.bed") 
-            inputList.append(sampledir + sample + "_" + 
-                build + "_sorted_minus.bed") 
+            inputList.append(f"{sample_dir}{sample}_{build}_sorted_plus.bed") 
+            inputList.append(f"{sample_dir}{sample}_{build}_sorted_minus.bed") 
     
     if method == "DS":
-        inputList.append("results/scatterplot_PearsonCorr_bigwigScores_DS.png")
+        inputList.append("results/scatterplot_PearsonCorr_bigwigScores_DS.pdf")
         inputList.append("results/PearsonCorr_bigwigScores_DS.tab")
-        inputList.append("results/heatmap_SpearmanCorr_readCounts_DS.png")
+        inputList.append("results/heatmap_SpearmanCorr_readCounts_DS.pdf")
         inputList.append("results/SpearmanCorr_readCounts_DS.tab")
-        inputList.append("results/PCA_readCounts_DS.png")
+        inputList.append("results/PCA_readCounts_DS.pdf")
     elif method == "XR":
-        inputList.append("results/scatterplot_PearsonCorr_bigwigScores_XR.png")
+        inputList.append("results/scatterplot_PearsonCorr_bigwigScores_XR.pdf")
         inputList.append("results/PearsonCorr_bigwigScores_XR.tab")
-        inputList.append("results/heatmap_SpearmanCorr_readCounts_XR.png")
+        inputList.append("results/heatmap_SpearmanCorr_readCounts_XR.pdf")
         inputList.append("results/SpearmanCorr_readCounts_XR.tab")
-        inputList.append("results/PCA_readCounts_XR.png")
+        inputList.append("results/PCA_readCounts_XR.pdf")
         
     #print(inputList)
     return inputList

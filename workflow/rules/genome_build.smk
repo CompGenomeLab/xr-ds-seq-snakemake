@@ -7,9 +7,9 @@ rule genome_build:
         "resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         ".1.bt2", ".2.bt2", ".3.bt2", ".4.bt2", ".rev.1.bt2", ".rev.2.bt2"),
     log: 
-        "resources/ref_genomes/{build}/log/bowtie2_build.log"
+        "logs/rule/analysis/{build}/log/bowtie2_build.log"
     benchmark:
-        "resources/ref_genomes/{build}/log/bowtie2_build.benchmark.txt",
+        "logs/rule/analysis/{build}/log/bowtie2_build.benchmark.txt",
     params:
         extra="", 
         name="resources/ref_genomes/{build}/Bowtie2/genome_{build}",

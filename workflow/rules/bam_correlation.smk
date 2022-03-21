@@ -1,14 +1,14 @@
 rule bam_correlation:
     input:
-        lambda w: input4PCA(config["sample"], 
-            config["srr"]["enabled"], config["srr"]["codes"], config["build"]),
+        lambda w: input4PCA(config["sample"], config["srr"]["enabled"], 
+            config["srr"]["codes"], config["build"], config["method"]),
     output:
         out="results/readCounts_{method}.npz",
         raw_out="results/readCounts_{method}.tab",
     log:
-        "logs/bam_correlation_{method}.log",
+        "logs/rule/analysis/bam_correlation_{method}.log",
     benchmark:
-        "logs/bam_correlation_{method}.benchmark.txt",
+        "logs/rule/analysis/bam_correlation_{method}.benchmark.txt",
     conda:
         "../envs/bam_correlation.yaml"
     shell:  

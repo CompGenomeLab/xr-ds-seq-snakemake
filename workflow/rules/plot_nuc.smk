@@ -1,20 +1,20 @@
 
 rule plot_nuc:
     input:
-        dinuc="results/{samples}/{samples}_{build}_sorted_dinucleotideTable.txt",
-        nuc="results/{samples}/{samples}_{build}_sorted_nucleotideTable.txt",
+        dinuc="results/{method}/{samples}/{samples}_{build}_sorted_dinucleotideTable.txt",
+        nuc="results/{method}/{samples}/{samples}_{build}_sorted_nucleotideTable.txt",
     output:
-        dinuc=report("results/{samples}/{samples}_{build}_sorted_dinucleotideTable.png", 
+        dinuc=report("results/{method}/{samples}/{samples}_{build}_sorted_dinucleotideTable.pdf", 
                     category="Nucleotide Content"),
-        nuc=report("results/{samples}/{samples}_{build}_sorted_nucleotideTable.png", 
+        nuc=report("results/{method}/{samples}/{samples}_{build}_sorted_nucleotideTable.pdf", 
                     category="Nucleotide Content"),
     params:
         motif=lambda w: getDinuc(w.samples, config["damage_type"], config["sample"]),
         name="{samples}_{build}",
     log:
-        "logs/{samples}/{samples}_{build}_plot_nuc.log",
+        "logs/rule/figs/{samples}/{samples}_{build}_{method}_plot_nuc.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_plot_nuc.benchmark.txt",
+        "logs/rule/figs/{samples}/{samples}_{build}_{method}_plot_nuc.benchmark.txt",
     conda:
         "../envs/plot_nuc.yaml"
     shell:  

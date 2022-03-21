@@ -1,20 +1,20 @@
 
 rule genomecov_ds:
     input:
-        plus="results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_plus.bed",
-        minus="results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_minus.bed",
+        plus="results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_plus.bed",
+        minus="results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_minus.bed",
         ref_genome="resources/ref_genomes/{build}/genome_{build}.fa.fai",
     output:
-        plus=temp("results/{samples}/{samples}_{build}_DS_sorted_plus.bdg"),
-        minus=temp("results/{samples}/{samples}_{build}_DS_sorted_minus.bdg"),
+        plus=temp("results/{method}/{samples}/{samples}_{build}_DS_sorted_plus.bdg"),
+        minus=temp("results/{method}/{samples}/{samples}_{build}_DS_sorted_minus.bdg"),
     params:
         read=lambda w, input: mappedReads(input[0], input[1]),
     log:
-        "logs/{samples}/{samples}_{build}_genomecov_ds.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_genomecov_ds.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_genomecov_ds.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_genomecov_ds.benchmark.txt",
     conda:
-        "../envs/genomecov.yaml"
+        "../envs/bedtools.yaml"
     shell:  
         """
         (echo "`date -R`: Calculating genome coverage of {input.plus}..." &&
@@ -40,20 +40,20 @@ rule genomecov_ds:
 
 rule genomecov_xr:
     input:
-        plus="results/{samples}/{samples}_{build}_sorted_plus.bed",
-        minus="results/{samples}/{samples}_{build}_sorted_minus.bed",
+        plus="results/{method}/{samples}/{samples}_{build}_sorted_plus.bed",
+        minus="results/{method}/{samples}/{samples}_{build}_sorted_minus.bed",
         ref_genome="resources/ref_genomes/{build}/genome_{build}.fa.fai",
     output:
-        plus=temp("results/{samples}/{samples}_{build}_XR_sorted_plus.bdg"),
-        minus=temp("results/{samples}/{samples}_{build}_XR_sorted_minus.bdg"),
+        plus=temp("results/{method}/{samples}/{samples}_{build}_XR_sorted_plus.bdg"),
+        minus=temp("results/{method}/{samples}/{samples}_{build}_XR_sorted_minus.bdg"),
     params:
         read=lambda w, input: mappedReads(input[0], input[1]),
     log:
-        "logs/{samples}/{samples}_{build}_genomecov_xr.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_genomecov_xr.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_genomecov_xr.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_genomecov_xr.benchmark.txt",
     conda:
-        "../envs/genomecov.yaml"
+        "../envs/bedtools.yaml"
     shell:  
         """
         (echo "`date -R`: Calculating genome coverage of {input.plus}..." &&

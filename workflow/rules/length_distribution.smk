@@ -1,13 +1,13 @@
 
 rule length_dist:
     input:
-        "results/{samples}/{samples}_{build}_sorted_chr.bed",
+        "results/{method}/{samples}/{samples}_{build}_sorted_chr.bed",
     output:
-        temp("results/{samples}/{samples}_{build}_length_distribution.txt"),
+        temp("results/{method}/{samples}/{samples}_{build}_length_distribution.txt"),
     log:
-        "logs/{samples}/{samples}_{build}_length_dist.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_length_dist.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_length_dist.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_length_dist.benchmark.txt",
     shell:  
         """
         (echo "`date -R`: Calculating the read length distribution..." &&

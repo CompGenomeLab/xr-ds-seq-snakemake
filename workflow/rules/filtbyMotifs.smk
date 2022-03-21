@@ -1,15 +1,15 @@
 
 rule filtbyMotifs:
     input:
-        "results/{samples}/{samples}_{build}_sorted_{strand}_10.fa",
+        "results/{method}/{samples}/{samples}_{build}_sorted_{strand}_10.fa",
     output:
-        "results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_{strand}.bed",
+        "results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_{strand}.bed",
     params:
         lambda w: getMotif(w.samples, config["damage_type"], config["sample"]),
     log:
-        "logs/{samples}/{samples}_{build}_filtbyMotifs_{strand}.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_filtbyMotifs_{strand}.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_filtbyMotifs_{strand}.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_filtbyMotifs_{strand}.benchmark.txt",
     shell:  
         """
         (echo "`date -R`: Filtering by the given motif..." &&

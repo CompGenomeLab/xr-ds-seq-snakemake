@@ -3,25 +3,25 @@ if config["input"]["exist"]:
 
     rule simulation_ds_input:
         input:
-            plus="results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_plus.bed",
-            minus="results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_minus.bed",
+            plus="results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_plus.bed",
+            minus="results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_minus.bed",
             genome="resources/ref_genomes/{build}/genome_{build}.fa",
             inpfile=lambda w: getInput(w.samples, config["input"]["exist"], config["input"]["files"], config["input"]["sample"], config["sample"], config["build"]),
         output:
-            bed=temp("results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines.bed"),
-            fa=temp("results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines.fa"),
-            sim="results/{samples}/{samples}_{build}_ds_sim.fa",
-            sam=temp("results/{samples}/{samples}_cutadapt_ds_sim_{build}.sam"),
-            bam=temp("results/{samples}/{samples}_cutadapt_ds_sim_{build}.bam"),
-            bam_sorted=temp("results/{samples}/{samples}_cutadapt_ds_sim_{build}_sorted.bam"),
-            idx=temp("results/{samples}/{samples}_cutadapt_ds_sim_{build}_sorted.bam.bai"),
-            simbed="results/{samples}/{samples}_{build}_ds_sim.bed",  
+            bed=temp("results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines.bed"),
+            fa=temp("results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines.fa"),
+            sim="results/{method}/{samples}/{samples}_{build}_ds_sim.fa",
+            sam=temp("results/{method}/{samples}/{samples}_cutadapt_ds_sim_{build}.sam"),
+            bam=temp("results/{method}/{samples}/{samples}_cutadapt_ds_sim_{build}.bam"),
+            bam_sorted=temp("results/{method}/{samples}/{samples}_cutadapt_ds_sim_{build}_sorted.bam"),
+            idx=temp("results/{method}/{samples}/{samples}_cutadapt_ds_sim_{build}_sorted.bam.bai"),
+            simbed="results/{method}/{samples}/{samples}_{build}_ds_sim.bed",  
         params:
             ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         log:
-            "logs/{samples}/{samples}_{build}_simulation_ds_input.log",
+            "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation_ds_input.log",
         benchmark:
-            "logs/{samples}/{samples}_{build}_simulation_ds_input.benchmark.txt",
+            "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation_ds_input.benchmark.txt",
         conda:
             "../envs/simulation.yaml"
         shell:
@@ -81,24 +81,24 @@ if config["input"]["exist"]:
 
     rule simulation_xr_input:
         input:
-            bed="results/{samples}/{samples}_{build}_sorted_chr.bed",
+            bed="results/{method}/{samples}/{samples}_{build}_sorted_chr.bed",
             genome="resources/ref_genomes/{build}/genome_{build}.fa",
             bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2", 
             inpfile=lambda w: getInput(w.samples, config["input"]["exist"], config["input"]["files"], config["input"]["sample"], config["sample"], config["build"]),
         output:
-            fa=temp("results/{samples}/{samples}_{build}_sorted_chr.fa"),
-            sim="results/{samples}/{samples}_{build}_xr_sim.fa",
-            sam=temp("results/{samples}/{samples}_cutadapt_xr_sim_{build}.sam"),
-            bam=temp("results/{samples}/{samples}_cutadapt_xr_sim_{build}.bam"),
-            bam_sorted=temp("results/{samples}/{samples}_cutadapt_xr_sim_{build}_sorted.bam"),
-            idx=temp("results/{samples}/{samples}_cutadapt_xr_sim_{build}_sorted.bam.bai"),
-            simbed="results/{samples}/{samples}_{build}_xr_sim.bed",
+            fa=temp("results/{method}/{samples}/{samples}_{build}_sorted_chr.fa"),
+            sim="results/{method}/{samples}/{samples}_{build}_xr_sim.fa",
+            sam=temp("results/{method}/{samples}/{samples}_cutadapt_xr_sim_{build}.sam"),
+            bam=temp("results/{method}/{samples}/{samples}_cutadapt_xr_sim_{build}.bam"),
+            bam_sorted=temp("results/{method}/{samples}/{samples}_cutadapt_xr_sim_{build}_sorted.bam"),
+            idx=temp("results/{method}/{samples}/{samples}_cutadapt_xr_sim_{build}_sorted.bam.bai"),
+            simbed="results/{method}/{samples}/{samples}_{build}_xr_sim.bed",
         params:
             ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         log:
-            "logs/{samples}/{samples}_{build}_simulation_xr_input.log",
+            "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation_xr_input.log",
         benchmark:
-            "logs/{samples}/{samples}_{build}_simulation_xr_input.benchmark.txt",
+            "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation_xr_input.benchmark.txt",
         conda:
             "../envs/simulation.yaml"
         shell:
@@ -155,21 +155,21 @@ else:
 
     rule simulation_ds:
         input:
-            plus="results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_plus.bed",
-            minus="results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_minus.bed",
+            plus="results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_plus.bed",
+            minus="results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_minus.bed",
             genome="resources/ref_genomes/{build}/genome_{build}.fa",
             inpfile=lambda w: getInput(w.samples, config["input"]["exist"], config["input"]["files"], config["input"]["sample"], config["sample"], config["build"]),
         output:
-            bed=temp("results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines.bed"),
-            fa=temp("results/{samples}/{samples}_{build}_sorted_ds_dipyrimidines.fa"),
-            sim="results/{samples}/{samples}_{build}_ds_sim.fa",
-            simbed="results/{samples}/{samples}_{build}_ds_sim.bed",  
+            bed=temp("results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines.bed"),
+            fa=temp("results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines.fa"),
+            sim="results/{method}/{samples}/{samples}_{build}_ds_sim.fa",
+            simbed="results/{method}/{samples}/{samples}_{build}_ds_sim.bed",  
         params:
             ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         log:
-            "logs/{samples}/{samples}_{build}_simulation_ds.log",
+            "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation_ds.log",
         benchmark:
-            "logs/{samples}/{samples}_{build}_simulation_ds.benchmark.txt",
+            "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation_ds.benchmark.txt",
         conda:
             "../envs/simulation.yaml"
         shell:
@@ -202,20 +202,20 @@ else:
 
     rule simulation_xr:
         input:
-            bed="results/{samples}/{samples}_{build}_sorted_chr.bed",
+            bed="results/{method}/{samples}/{samples}_{build}_sorted_chr.bed",
             genome="resources/ref_genomes/{build}/genome_{build}.fa",
             bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2", 
             inpfile=lambda w: getInput(w.samples, config["input"]["exist"], config["input"]["files"], config["input"]["sample"], config["sample"], config["build"]),
         output:
-            fa=temp("results/{samples}/{samples}_{build}_sorted_chr.fa"),
-            sim="results/{samples}/{samples}_{build}_xr_sim.fa",
-            simbed="results/{samples}/{samples}_{build}_xr_sim.bed",
+            fa=temp("results/{method}/{samples}/{samples}_{build}_sorted_chr.fa"),
+            sim="results/{method}/{samples}/{samples}_{build}_xr_sim.fa",
+            simbed="results/{method}/{samples}/{samples}_{build}_xr_sim.bed",
         params:
             ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         log:
-            "logs/{samples}/{samples}_{build}_simulation_xr.log",
+            "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation_xr.log",
         benchmark:
-            "logs/{samples}/{samples}_{build}_simulation_xr.benchmark.txt",
+            "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation_xr.benchmark.txt",
         conda:
             "../envs/simulation.yaml"
         shell:

@@ -1,16 +1,16 @@
 
 rule plot_length:
     input:
-        "results/{samples}/{samples}_{build}_length_distribution.txt",
+        "results/{method}/{samples}/{samples}_{build}_length_distribution.txt",
     output:
-        report("results/{samples}/{samples}_{build}_length_distribution.png", 
+        report("results/{method}/{samples}/{samples}_{build}_length_distribution.pdf", 
                 category="Length Distribution"),
     params:
         "{samples}_{build}",
     log:
-        "logs/{samples}/{samples}_{build}_plot_length.log",
+        "logs/rule/figs/{samples}/{samples}_{build}_{method}_plot_length.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_plot_length.benchmark.txt",
+        "logs/rule/figs/{samples}/{samples}_{build}_{method}_plot_length.benchmark.txt",
     conda:
         "../envs/plot_nuc.yaml"
     shell:  

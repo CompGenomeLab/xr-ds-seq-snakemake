@@ -9,8 +9,8 @@ rule genome_chr_download:
         release=config["release"],
         chromosome="{chr}",
     log:
-        "resources/ref_genomes/{build}/log/download_chr{chr}.log",
+        "logs/rule/analysis/{build}/log/download_chr{chr}.log",
     benchmark:
-        "resources/ref_genomes/{build}/log/download_chr{chr}.benchmark.txt",
+        "logs/rule/analysis/{build}/log/download_chr{chr}.benchmark.txt",
     wrapper:
         "0.69.0/bio/reference/ensembl-sequence"

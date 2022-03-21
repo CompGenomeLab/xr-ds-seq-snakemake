@@ -1,15 +1,15 @@
 
 rule bedGraphToBigWig:
     input:
-        bdg="results/{samples}/{samples}_{build}_{method}_sorted_{strand}.bdg",
+        bdg="results/{method}/{samples}/{samples}_{build}_{method}_sorted_{strand}.bdg",
         index="resources/ref_genomes/{build}/genome_{build}.fa.fai",
     output:
-        report("results/{samples}/{samples}_{build}_{method}_sorted_{strand}.bw", 
+        report("results/{method}/{samples}/{samples}_{build}_{method}_sorted_{strand}.bw", 
                 category="BigWig"),
     log:
-        "logs/{samples}/{samples}_{build}_{method}_bedGraphToBigWig_{strand}.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_bedGraphToBigWig_{strand}.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_{method}_bedGraphToBigWig_{strand}.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_bedGraphToBigWig_{strand}.benchmark.txt",
     conda:
         "../envs/bedGraphToBigWig.yaml"
     shell:  

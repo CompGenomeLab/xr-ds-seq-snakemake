@@ -1,16 +1,16 @@
 
 rule sort_filter:
     input:
-        lambda w: input4filter(w, config["sample"], 
+        lambda w: input4filter(w, config["method"], config["sample"], 
             config["srr"]["enabled"], config["srr"]["codes"]),
     output:
-        "results/{samples}/{samples}_{build}_sorted_chr.bed",
+        "results/{method}/{samples}/{samples}_{build}_sorted_chr.bed",
     params:
         filt=config["filter"],
     log:
-        "logs/{samples}/{samples}_{build}_sort_filter.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_sort_filter.log",
     benchmark:
-        "logs/{samples}/{samples}_{build}_sort_filter.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_sort_filter.benchmark.txt",
     shell:  
         """
         (echo "`date -R`: Sorting and filtering bed file by chromosomes..." &&

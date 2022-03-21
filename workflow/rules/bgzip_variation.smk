@@ -5,9 +5,9 @@ rule bgzip_variation:
         fin="resources/ref_genomes/{build}/variation_{build}_bgzip.vcf.gz",
         decomp=temp("resources/ref_genomes/{build}/variation_{build}.vcf"),
     log:
-        "resources/ref_genomes/{build}/log/bgzip_variation.log",
+        "logs/rule/analysis/{build}/log/bgzip_variation.log",
     benchmark:
-        "resources/ref_genomes/{build}/log/bgzip_variation.benchmark.txt",
+        "logs/rule/analysis/{build}/log/bgzip_variation.benchmark.txt",
     conda:
         "../envs/bgzip_variation.yaml"
     shell:  
