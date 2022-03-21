@@ -61,7 +61,7 @@ input:
 
 genome_download: False
 
-bowtie2_build: False
+bowtie2_build: True
 
 build: "hg19" 
 
