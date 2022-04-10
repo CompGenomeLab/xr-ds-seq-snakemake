@@ -43,6 +43,12 @@ and create the environment using mamba:
 - You should install [boquila](https://github.com/CompGenomeLab/boquila) 
 tool to simulate repair and damage reads.
 
+- Path of the program should be added to the PATH variable:
+
+    ```
+    export PATH="$PATH:~/.cargo/bin/boquila"
+    ```
+
 <br>
 
 ## Directory Structure
