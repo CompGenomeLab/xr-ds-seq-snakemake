@@ -16,14 +16,12 @@ can be obtained automatically through environments prepared for each step of
 the workflow. You can follow the installation steps from 
 [the link](https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html).
 
-- Initially, you should clone the repository, navigate into the directory, and give required permissions: 
+- Initially, you should clone the repository and navigate into the directory: 
 
     ```
     git clone https://github.com/CompGenomeLab/xr-ds-seq-snakemake.git
         
     cd xr-ds-seq-snakemake
-
-    chmod 755 workflow/scripts/*
     ```
 
 - Next, you should create a conda environment with the defined packages. 
