@@ -12,8 +12,8 @@ rule sra_se_input:
         "logs/rule/analysis/{samples}/{samples}_se_sra_input.benchmark.txt",
     wildcard_constraints:
         samples='|'.join([x for x in config["input"]["files"]])
-    conda:
-        "../envs/sra.yaml"
+    #conda:
+    #    "../envs/sra.yaml"
     threads:
         6
     shell:
@@ -61,8 +61,8 @@ rule sra_pe_input:
         "logs/rule/analysis/{samples}/{samples}_pe_sra_input.benchmark.txt",
     wildcard_constraints:
         samples='|'.join([x for x in config["input"]["files"]])
-    conda:
-        "../envs/sra.yaml"
+    #conda:
+    #    "../envs/sra.yaml"
     threads:
         6
     shell:
