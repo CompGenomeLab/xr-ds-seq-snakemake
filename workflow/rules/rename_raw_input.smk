@@ -1,8 +1,8 @@
 
 rule rename_raw_input:
     input:
-        r1=lambda w: getPaired(w.samples, config["sample"], "forward", "resources/input/"),
-        r2=lambda w: getPaired(w.samples, config["sample"], "reverse", "resources/input/"),
+        r1=lambda w: getPaired(w.samples, "forward", "resources/input/"),
+        r2=lambda w: getPaired(w.samples, "reverse", "resources/input/"),
     output:
         r1="resources/input/{samples}_1.fastq.gz", 
         r2="resources/input/{samples}_2.fastq.gz",

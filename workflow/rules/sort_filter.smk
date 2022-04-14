@@ -1,8 +1,7 @@
 
 rule sort_filter:
     input:
-        lambda w: input4filter(w, config["method"], config["sample"], 
-            config["srr"]["enabled"], config["srr"]["codes"]),
+        lambda w: input4filter(w, config["meta"]),
     output:
         "results/{method}/{samples}/{samples}_{build}_sorted_chr.bed",
     params:

@@ -6,22 +6,11 @@ import subprocess
 
 ################### Helper Functions ###########################################
 
-def getSRR(sample, srrList, sampleList):
-
-    try:
-        idx = sampleList.index(sample)
-    except:
-       raise(ValueError("Designated wildcard cannot be found in sample list."))
-        
-    return srrList[idx]
-
-def isSingle(sample, method, sampleList, srrEnabled, srrList, sample_dir):
+def isSingle(sample, srrEnabled, srrID, sample_dir):
 
     if srrEnabled:
 
-        mySRR = getSRR(sample, srrList, sampleList)
-
-        if mySRR == "NA":
+        if srrID == "NA":
 
             single = f"{sample_dir}{sample}.fastq.gz"
             pairedR1 = f"{sample_dir}{sample}_R1.fastq.gz"
@@ -34,10 +23,10 @@ def isSingle(sample, method, sampleList, srrEnabled, srrList, sample_dir):
             else:
                 raise(ValueError(f"{paired1}, {pairedR1}, or {single} not found..."))
 
-        if ":" in mySRR:
-            mySRR = mySRR.split(":")[0]
+        if ":" in srrID:
+            srrID = srrID.split(":")[0]
 
-        shellCommand = f'fastq-dump -X 1 -Z --split-spot {mySRR} | wc -l'
+        shellCommand = f'fastq-dump -X 1 -Z --split-spot {srrID} | wc -l'
         #print(shellCommand)
         p=subprocess.getoutput(shellCommand)
         #print(p)
@@ -62,7 +51,7 @@ def isSingle(sample, method, sampleList, srrEnabled, srrList, sample_dir):
         else:
             raise(ValueError(f"{paired1}, {pairedR1}, or {single} not found..."))
 
-def getPaired(sample, sampleList, read, sample_dir):
+def getPaired(sample, read, sample_dir):
 
     pairedR1 = f"{sample_dir}{sample}_R1.fastq.gz"
     paired1 = f"{sample_dir}{sample}_1.fastq.gz"
@@ -79,26 +68,35 @@ def getPaired(sample, sampleList, read, sample_dir):
     elif os.path.isfile(paired1) and read == "reverse":
         return f"{sample_dir}{sample}_2.fastq.gz"
 
-def input4filter(wildcards, method, sampleList, srrEnabled, srrList):
+def input4filter(wildcards, metadata):
 
-    if isSingle(wildcards.samples, method, sampleList, srrEnabled, srrList, "resources/samples/"):
+    srrEnabled = metadata[wildcards.samples]["srr_enabled"]
+    srrID = metadata[wildcards.samples]["srr_id"]
+
+    if isSingle(wildcards.samples, srrEnabled, srrID, "resources/samples/"):
         return "results/{method}/{samples}/{samples}_{build}_se.bed"
     else:    
         return "results/{method}/{samples}/{samples}_{build}_pe.bed"
 
-def input4fasta(wildcards, sampleList, srrEnabled, srrList):
+def input4inpFasta(wildcards, metadata):
 
-    if isSingle(wildcards.samples, "input", sampleList, srrEnabled, srrList, "resources/input/"):
+    srrEnabled = metadata[wildcards.samples]["srr_enabled"]
+    srrID = metadata[wildcards.samples]["srr_id"]
+
+    if isSingle(wildcards.samples, srrEnabled, srrID, "resources/input/"):
         return "results/input/{samples}/{samples}_{build}_se.bed"
     else:    
         return "results/input/{samples}/{samples}_{build}_pe.bed"
 
-def input4PCA(sampleList, srrEnabled, srrList, build, method):
+def input4PCA(sampleList, metadata, build, method):
 
     inputList = []
     for sample in sampleList:
 
-        if isSingle(sample, method, sampleList, srrEnabled, srrList, "resources/samples/"):
+        srrEnabled = metadata[sample]["srr_enabled"]
+        srrID = metadata[sample]["srr_id"]
+
+        if isSingle(sample, srrEnabled, srrID, "resources/samples/"):
             inputList.append(f"results/{method}/{sample}/{sample}_{build}_se_sortedbyCoordinates.bam")
         else:    
             inputList.append(f"results/{method}/{sample}/{sample}_{build}_pe_sortedbyCoordinates.bam")
@@ -112,36 +110,23 @@ def input4nucTable(method):
     elif method == "DS":    
         return "results/DS/{samples}/{samples}_{build}_sorted_10.fa"
 
-def getDamage(sample, damage_type, sampleList):
+def getMotif(sample, product):
 
-    try:
-        idx = sampleList.index(sample)
-    except:
-       raise(ValueError("Designated wildcard cannot be found in sample list."))
-        
-    return damage_type[idx]
-
-def getMotif(sample, damageList, sampleList):
-    
-    tDamage = getDamage(sample, damageList, sampleList)
-
-    if tDamage.lower() in ["oxaliplatin", "cisplatin", "bpdedg"]: 
+    if product.lower() in ["oxaliplatin", "cisplatin", "bpdedg"]: 
         return "'.{4}(g|G){2}.{4}'"
     
-    elif tDamage.lower() in ["64", "64pp", "(6-4)pp", "6-4pp", "cpd"]: 
+    elif product.lower() in ["64", "64pp", "(6-4)pp", "6-4pp", "cpd"]: 
         return "'.{4}(c|t|C|T){2}.{4}'"
 
-    elif tDamage.lower() == "na":
+    elif product.lower() == "na":
         return "'.{10}'"
 
-def getDinuc(sample, damageList, sampleList):
-
-    tDamage = getDamage(sample, damageList, sampleList)
+def getDinuc(sample, product):
     
-    if tDamage.lower() in ["oxaliplatin", "cisplatin"]: 
+    if product.lower() in ["oxaliplatin", "cisplatin"]: 
         return "'GG'"
     
-    elif tDamage.lower() in ["64", "64pp", "(6-4)pp", "6-4pp", "cpd"]: 
+    elif product.lower() in ["64", "64pp", "(6-4)pp", "6-4pp", "cpd"]: 
         return "'CC','CT','TC','TT'"
 
 def getInput(sample, inputExist, inputList, inputIdx, sampleList, build):
@@ -198,13 +183,16 @@ def mappedReads(*files):
 
     return lineNumber
 
-def allInput(method, build, sampleList, srrEnabled, srrList):
+def allInput(method, build, sampleList, metadata):
 
     inputList = []
     for sample in sampleList:
         sample_dir = f"results/{method}/{sample}/" 
 
-        if isSingle(sample, method, sampleList, srrEnabled, srrList, "resources/samples/"):
+        srrEnabled = metadata[sample]["srr_enabled"]
+        srrID = metadata[sample]["srr_id"]
+
+        if isSingle(sample, srrEnabled, srrID, "resources/samples/"):
             inputList.append(f"{sample_dir}{sample}.html")
         else:
             inputList.append(f"{sample_dir}{sample}_1.html")

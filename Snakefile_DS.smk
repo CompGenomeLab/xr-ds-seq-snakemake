@@ -25,8 +25,6 @@ include: "workflow/rules/fastqc.smk"
 
 if config["genome_download"]:
     include: "workflow/rules/genome_download.smk"
-    include: "workflow/rules/genome_variation.smk"
-    #include: "workflow/rules/genome_chr_download.smk"
 
 if config["bowtie2_build"]:
     include: "workflow/rules/genome_build.smk"

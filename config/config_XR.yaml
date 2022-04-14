@@ -1,29 +1,16 @@
+
 sample: 
  - "NHF1_CPD_1h_XR_rep1"
 
-damage_type:
- - "CPD"
+meta: 
+  NHF1_CPD_1h_XR_rep1:
+    srr_enabled: False
+    srr_id: "SRR3062593:SRR3062594:SRR3062595" 
+    product: "CPD"
+    simulation_enabled: True
+    simulation_input: "SRR5461463" 
 
-srr: 
- enabled: True
- codes:
- - "SRR3062593:SRR3062594:SRR3062595"
-
-
-# Genome parameters 
-
-genome_download: False
-
-bowtie2_build: False
-
-build: "hg19" 
-
-species: "homo_sapiens"
-
-datatype: "dna"
-
-release: "102"
-
-#######
-
-filter: "'^chr([1-9]|1[0-9]|2[0-2]|X)'"
+genome:
+  build: "hg19"
+  link: "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/GRCh37.p13.genome.fa.gz"
+  bowtie2_build: False

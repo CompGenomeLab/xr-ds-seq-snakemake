@@ -5,7 +5,7 @@ rule filtbyMotifs:
     output:
         "results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_{strand}.bed",
     params:
-        lambda w: getMotif(w.samples, config["damage_type"], config["sample"]),
+        lambda w: getMotif(w.samples, config["meta"][w.samples][product]),
     log:
         "logs/rule/analysis/{samples}/{samples}_{build}_{method}_filtbyMotifs_{strand}.log",
     benchmark:
