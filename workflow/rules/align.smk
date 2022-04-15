@@ -69,7 +69,7 @@ rule bowtie2_pe:
 
 rule bowtie2_se_input:
     input:
-        sample=["resources/input/{samples}.fastq.gz"],
+        sample=[rules.sra_se_input.output.fastq],
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
     output:
         sam=temp("results/input/{samples}/{samples}_se_{build}.sam"),
@@ -103,7 +103,7 @@ rule bowtie2_se_input:
 
 rule bowtie2_pe_input:
     input:
-        sample=["resources/input/{samples}_1.fastq.gz", "resources/input/{samples}_2.fastq.gz"],
+        sample=[rules.sra_pe_input.output.read1, rules.sra_pe_input.output.read2],
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
     output:
         sam=temp("results/input/{samples}/{samples}_pe_{build}.sam"),

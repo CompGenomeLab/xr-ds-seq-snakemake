@@ -8,29 +8,20 @@ include: "workflow/rules/common.smk"
 
 rule all:
     input:
-        lambda w: allInput(config["method"], config["build"], config["sample"], 
+        lambda w: allInput(config["method"], config["genome"]["build"], config["sample"], 
             config["meta"]),
 
-if config["srr"]["enabled"]:
-    include: "workflow/rules/sra.smk"
-else:    
-    include: "workflow/rules/rename_raw.smk"
-
-if config["input"]["srr"]["enabled"]:
-    include: "workflow/rules/sra_input.smk"
-else:
-    include: "workflow/rules/rename_raw_input.smk"
-    
-include: "workflow/rules/fastqc.smk"
-
-if config["genome_download"]:
-    include: "workflow/rules/genome_download.smk"
-
-if config["bowtie2_build"]:
-    include: "workflow/rules/genome_build.smk"
-    
+# Downloading reference genome and generating related files  
+include: "workflow/rules/genome_download.smk"
+include: "workflow/rules/genome_build.smk"    
 include: "workflow/rules/genome_indexing.smk"
 include: "workflow/rules/genome_idx2ron.smk"
+
+include: "workflow/rules/sra.smk" 
+#include: "workflow/rules/rename_raw.smk"
+include: "workflow/rules/sra_input.smk"
+#include: "workflow/rules/rename_raw_input.smk"
+include: "workflow/rules/fastqc.smk"
 include: "workflow/rules/adaptor_handling.smk"
 include: "workflow/rules/align.smk"
 include: "workflow/rules/bam2bed.smk"

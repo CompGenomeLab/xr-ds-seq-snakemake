@@ -46,7 +46,7 @@ tool to simulate repair and damage reads.
 - Path of the program should be added to the PATH variable:
 
     ```
-    export PATH="$PATH:~/.cargo/bin/boquila"
+    export PATH="$PATH:~/.cargo/bin"
     ```
 
 <br>

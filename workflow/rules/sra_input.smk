@@ -1,19 +1,15 @@
 
 rule sra_se_input:
     output:
-        "resources/input/{samples}.fastq.gz", 
+        fastq="resources/input/{samples}.fastq.gz", 
     params:
-        srr=lambda w: getSRR(w.samples, config["input"]["srr"]["codes"], 
-            config["input"]["files"]),
         name="{samples}",
     log:
         "logs/rule/analysis/{samples}/{samples}_se_sra_input.log",
     benchmark:
         "logs/rule/analysis/{samples}/{samples}_se_sra_input.benchmark.txt",
-    wildcard_constraints:
-        samples='|'.join([x for x in config["input"]["files"]])
-    #conda:
-    #    "../envs/sra.yaml"
+    conda:
+        "../envs/sra.yaml"
     threads:
         6
     shell:
@@ -21,7 +17,7 @@ rule sra_se_input:
         touch resources/input/{params.name}.fastq
         touch {log}
 
-        srrList=$(echo {params.srr} | tr ":" "\\n")
+        srrList=$(echo {params.name} | tr ":" "\\n")
         echo $srrList
 
         for srr in $srrList; do
@@ -49,20 +45,16 @@ rule sra_se_input:
 
 rule sra_pe_input:
     output:
-        "resources/input/{samples}_1.fastq.gz", 
-        "resources/input/{samples}_2.fastq.gz", 
+        read1="resources/input/{samples}_1.fastq.gz", 
+        read2="resources/input/{samples}_2.fastq.gz", 
     params:
-        srr=lambda w: getSRR(w.samples, config["input"]["srr"]["codes"], 
-            config["input"]["files"]),
         name="{samples}",
     log:
         "logs/rule/analysis/{samples}/{samples}_pe_sra_input.log",
     benchmark:
         "logs/rule/analysis/{samples}/{samples}_pe_sra_input.benchmark.txt",
-    wildcard_constraints:
-        samples='|'.join([x for x in config["input"]["files"]])
-    #conda:
-    #    "../envs/sra.yaml"
+    conda:
+        "../envs/sra.yaml"
     threads:
         6
     shell:
@@ -72,7 +64,7 @@ rule sra_pe_input:
         touch {log}
         echo "`date -R`: paired-end layout" >> {log}
 
-        srrList=$(echo {params.srr} | tr ":" "\\n")
+        srrList=$(echo {params.name} | tr ":" "\\n")
         echo $srrList >> {log}
 
         for srr in $srrList; do

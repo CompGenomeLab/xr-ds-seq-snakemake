@@ -2,8 +2,7 @@ rule sra_se:
     output:
         "resources/samples/{samples}.fastq.gz", 
     params:
-        srr=lambda w: getSRR(w.samples, config["srr"]["codes"], 
-            config["sample"]),
+        srr=lambda w: config["meta"][w.samples]["srr_id"],
         name="{samples}",
     log:
         "logs/rule/analysis/{samples}/{samples}_se_sra.log",
@@ -11,8 +10,8 @@ rule sra_se:
         "logs/rule/analysis/{samples}/{samples}_se_sra.benchmark.txt",
     wildcard_constraints:
         samples='|'.join([x for x in config["sample"]])
-    #conda:
-    #    "../envs/sra.yaml"
+    conda:
+        "../envs/sra.yaml"
     threads:
         6
     shell:
@@ -51,8 +50,7 @@ rule sra_pe:
         "resources/samples/{samples}_1.fastq.gz", 
         "resources/samples/{samples}_2.fastq.gz", 
     params:
-        srr=lambda w: getSRR(w.samples, config["srr"]["codes"], 
-            config["sample"]),
+        srr=lambda w: config["meta"][w.samples]["srr_id"],
         name="{samples}",
     log:
         "logs/rule/analysis/{samples}/{samples}_pe_sra.log",
@@ -60,8 +58,8 @@ rule sra_pe:
         "logs/rule/analysis/{samples}/{samples}_pe_sra.benchmark.txt",
     wildcard_constraints:
         samples='|'.join([x for x in config["sample"]])
-    #conda:
-    #    "../envs/sra.yaml"
+    conda:
+        "../envs/sra.yaml"
     threads:
         6
     shell:
