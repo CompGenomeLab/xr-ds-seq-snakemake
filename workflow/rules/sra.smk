@@ -20,7 +20,7 @@ rule sra_se:
         touch {log}
 
         srrList=$(echo {params.srr} | tr ":" "\\n")
-        echo $srrList
+        echo $srrList >> {log}
 
         for srr in $srrList; do
             (echo "`date -R`: Downloading $srr files..." &&
@@ -28,8 +28,8 @@ rule sra_se:
             -O resources/samples/ &&
             vdb-validate resources/samples/$srr &&
             fastq-dump \
-            resources/samples/$srr \
-            --outdir resources/samples/ \
+            resources/samples/${{srr}}/${{srr}}.sra \
+            --outdir resources/samples/ &&
             echo "`date -R`: Download is successful!" || 
             {{ echo "`date -R`: Process failed..."; exit 1; }} ) \
             >> {log} 2>&1 
@@ -78,12 +78,12 @@ rule sra_pe:
             -O resources/samples/ &&
             vdb-validate resources/samples/$srr &&
             fastq-dump \
-            resources/samples/$srr \
+            resources/samples/${{srr}}/${{srr}}.sra \
             --outdir resources/samples/ \
             --split-files &&
             echo "`date -R`: Download is successful!" || 
             {{ echo "`date -R`: Process failed..."; exit 1; }}  ) \
-            > {log} 2>&1
+            >> {log} 2>&1
 
             cat resources/samples/${{srr}}_1.fastq >> resources/samples/{params.name}_1.fastq
             cat resources/samples/${{srr}}_2.fastq >> resources/samples/{params.name}_2.fastq
