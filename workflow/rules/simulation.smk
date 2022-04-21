@@ -44,6 +44,7 @@ rule simulation_ds_input:
         --inseqFasta \
         --inseq {input.inpfile} \
         --seed 1 \
+        --sens 2 \
         > {output.sim} &&
         echo "`date -R`: Success! Simulation is done." || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
@@ -116,6 +117,7 @@ rule simulation_xr_input:
         --inseqFasta \
         --inseq {input.inpfile} \
         --seed 1 \
+        --sens 2 \
         > {output.sim} &&
         echo "`date -R`: Success! Simulation is done." || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1

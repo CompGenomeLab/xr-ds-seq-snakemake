@@ -4,7 +4,6 @@ sample:
 
 meta: 
   NHF1_CPD_1h_XR_rep1:
-    srr_enabled: True
     srr_id: "SRR3062593:SRR3062594:SRR3062595" 
     layout: "single"
     product: "CPD"

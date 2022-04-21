@@ -155,19 +155,21 @@ def allInput(method, build, sampleList, metadata):
             inputList.append(f"{sample_dir}{sample}_{build}_sorted_plus.bed") 
             inputList.append(f"{sample_dir}{sample}_{build}_sorted_minus.bed") 
     
-    if method == "DS":
-        inputList.append("results/scatterplot_PearsonCorr_bigwigScores_DS.pdf")
-        inputList.append("results/PearsonCorr_bigwigScores_DS.tab")
-        inputList.append("results/heatmap_SpearmanCorr_readCounts_DS.pdf")
-        inputList.append("results/SpearmanCorr_readCounts_DS.tab")
-        inputList.append("results/PCA_readCounts_DS.pdf")
-    elif method == "XR":
-        inputList.append("results/scatterplot_PearsonCorr_bigwigScores_XR.pdf")
-        inputList.append("results/PearsonCorr_bigwigScores_XR.tab")
-        inputList.append("results/heatmap_SpearmanCorr_readCounts_XR.pdf")
-        inputList.append("results/SpearmanCorr_readCounts_XR.tab")
-        inputList.append("results/PCA_readCounts_XR.pdf")
-        
+    if len(sampleList) > 1:
+
+        if method == "DS":
+            inputList.append("results/scatterplot_PearsonCorr_bigwigScores_DS.pdf")
+            inputList.append("results/PearsonCorr_bigwigScores_DS.tab")
+            inputList.append("results/heatmap_SpearmanCorr_readCounts_DS.pdf")
+            inputList.append("results/SpearmanCorr_readCounts_DS.tab")
+            inputList.append("results/PCA_readCounts_DS.pdf")
+        elif method == "XR":
+            inputList.append("results/scatterplot_PearsonCorr_bigwigScores_XR.pdf")
+            inputList.append("results/PearsonCorr_bigwigScores_XR.tab")
+            inputList.append("results/heatmap_SpearmanCorr_readCounts_XR.pdf")
+            inputList.append("results/SpearmanCorr_readCounts_XR.tab")
+            inputList.append("results/PCA_readCounts_XR.pdf")
+            
     #print(inputList)
     return inputList
 

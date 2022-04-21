@@ -6,6 +6,9 @@ configfile: "config/config_XR.yaml"
 
 include: "workflow/rules/common.smk"
 
+wildcard_constraints:
+    build=config["genome"]["build"]
+
 rule all:
     input:
         lambda w: allInput(config["method"], config["genome"]["build"], config["sample"], 
@@ -24,6 +27,8 @@ include: "workflow/rules/sra_input.smk"
 include: "workflow/rules/fastqc.smk"
 include: "workflow/rules/adaptor_handling.smk"
 include: "workflow/rules/align.smk"
+include: "workflow/rules/sort_rmPG.smk"
+include: "workflow/rules/mark_duplicates.smk"
 include: "workflow/rules/bam2bed.smk"
 include: "workflow/rules/sort_filter.smk"
 include: "workflow/rules/length_distribution.smk"
