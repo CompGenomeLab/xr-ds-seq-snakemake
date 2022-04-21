@@ -13,7 +13,7 @@ rule sort_filter:
     shell:  
         """
         (echo "`date -R`: Sorting and filtering bed file by chromosomes..." &&
-        sort -u -k1,1 -k2,2n -k3,3n {input} |&
+        sort -k1,1 -k2,2n -k3,3n {input} |&
         egrep {params.filt} > {output} &&
         echo "`date -R`: Success! Bed file is filtered." || 
         {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }} ) > {log} 2>&1

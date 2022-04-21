@@ -1,7 +1,7 @@
 
 rule bam2bed_se:
     input:
-        "results/{method}/{samples}/{samples}_cutadapt_se_{build}.bam",
+        "results/{method}/{samples}/{samples}_dedup_cutadapt_se_{build}.bam",
     output:
         bed="results/{method}/{samples}/{samples}_{build}_se.bed",
         bam="results/{method}/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam",
@@ -35,7 +35,7 @@ rule bam2bed_se:
 
 rule bam2bed_pe:
     input:
-        "results/{method}/{samples}/{samples}_cutadapt_pe_{build}.bam",
+        "results/{method}/{samples}/{samples}_dedup_cutadapt_pe_{build}.bam",
     output:
         bed="results/{method}/{samples}/{samples}_{build}_pe.bed",
         bam=temp("results/{method}/{samples}/{samples}_{build}_sorted.bam"),
