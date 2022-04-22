@@ -18,7 +18,7 @@ rule sort_rmPG_se:
         {{ echo "`date -R`: Process failed..."; rm {output.header}; exit 1; }}  ) > {log} 2>&1
 
         (echo "`date -R`: Parsing the headers..." &&
-        samtools reheader {outout.header} {input} | samtools sort -o {output.sort} &&
+        samtools reheader {output.header} {input} | samtools sort -o {output.sort} &&
         echo "`date -R`: Success!" || 
         {{ echo "`date -R`: Process failed..."; rm {output.sort}; exit 1; }}  ) > {log} 2>&1
         """
@@ -43,7 +43,7 @@ rule sort_rmPG_pe:
         {{ echo "`date -R`: Process failed..."; rm {output.header}; exit 1; }}  ) > {log} 2>&1
 
         (echo "`date -R`: Reheader and sort..." &&
-        samtools reheader {outout.header} {input} | samtools sort -o {output.sort} &&
+        samtools reheader {output.header} {input} | samtools sort -o {output.sort} &&
         echo "`date -R`: Success!" || 
         {{ echo "`date -R`: Process failed..."; rm {output.sort}; exit 1; }}  ) > {log} 2>&1
         """
