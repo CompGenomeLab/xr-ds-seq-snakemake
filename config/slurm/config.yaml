@@ -1,0 +1,3 @@
+jobs: 220
+cluster: "sbatch -p {resources.partition} -J {rule}.job --nodes=1 --mem {resources.memory} -c {resources.cpus} --ntasks 1 -e logs/cluster/{rule}_%A.err --output=/dev/null"
+default-resources: [cpus=4, memory='64G', partition='mid_investor']

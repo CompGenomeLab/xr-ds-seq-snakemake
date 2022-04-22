@@ -20,6 +20,7 @@ Rplots.pdf
 
 config/config*
 config/slurm/*
+!config/slurm/config.yaml
 
 sratoolkit.3.0.0-ubuntu64/*
 sratoolkit.3.0.0-ubuntu64.tar.gz
