@@ -164,9 +164,7 @@ genome:
         - (6-4)PP: `64`, `64pp`, `(6-4)pp`, `6-4pp`;
         - CPD: `CPD`;
         - Cisplatin: `cisplatin`;
-        - Oxaliplatin: `oxaliplatin`.
-
-    <br>    
+        - Oxaliplatin: `oxaliplatin`. 
 
     - `simulation_enabled`: True if you want to generate simulated reads of 
         your sample via [boquila](https://github.com/CompGenomeLab/boquila). 
