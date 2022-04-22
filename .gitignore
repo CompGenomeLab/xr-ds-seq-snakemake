@@ -24,3 +24,7 @@ Rplots.pdf
 config/config*
 sratoolkit.3.0.0-ubuntu64/*
 sratoolkit.3.0.0-ubuntu64.tar.gz
+config/config_DS.yaml
+config/config_XR.yaml
+config/config_DS_initial.yaml
+config/config_XR_initial.yaml
