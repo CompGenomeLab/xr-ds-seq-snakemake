@@ -1,0 +1,16 @@
+
+sample: 
+ - "NHF1_CPD_1h_XR_rep1"
+
+meta: 
+  NHF1_CPD_1h_XR_rep1:
+    srr_id: "SRR3062593:SRR3062594:SRR3062595" 
+    layout: "single"
+    product: "CPD"
+    simulation_enabled: True
+    simulation_input: "SRR5461463" 
+    simulation_input_layout: "paired"
+
+genome:
+  build: "hg19"
+  link: "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/GRCh37.p13.genome.fa.gz"

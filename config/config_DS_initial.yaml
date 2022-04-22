@@ -1,0 +1,17 @@
+method: DS
+
+adaptor_se: "-g GACTGGTTCCAATTGAAAGTGCTCTTCCGATCT"
+
+adaptor_pe: "-g GACTGGTTCCAATTGAAAGTGCTCTTCCGATCT -G GACTGGTTCCAATTGAAAGTGCTCTTCCGATCT"
+
+cutadapt_se: "--discard-trimmed"
+
+cutadapt_pe: "--discard-trimmed"
+
+samtools_q_trim_se: "-q 20"
+
+samtools_q_trim_pe: "-q 20 -bf 0x2"
+
+#######
+
+filter: "'^'"
