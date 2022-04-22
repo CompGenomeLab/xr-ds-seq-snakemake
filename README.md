@@ -7,14 +7,14 @@ This repository contains xr-seq and damage-seq workflows.
 ## Installation
 
 - This workflow is prepared using 
-[Snakemake](https://snakemake.readthedocs.io/en/stable/) workflow management 
-system and [conda](https://docs.conda.io/en/latest/)
+    [Snakemake](https://snakemake.readthedocs.io/en/stable/) workflow management 
+    system and [conda](https://docs.conda.io/en/latest/)
 
 - To run the workflow, you should have conda installed for environment 
-management. All the other packages including Snakemake and their dependencies 
-can be obtained automatically through environments prepared for each step of 
-the workflow. You can follow the installation steps from 
-[the link](https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html).
+    management. All the other packages including Snakemake and their 
+    dependencies can be obtained automatically through environments prepared 
+    for each step of the workflow. You can follow the installation steps from 
+    [the link](https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html).
 
 - Initially, you should clone the repository and navigate into the directory: 
 
@@ -25,8 +25,8 @@ the workflow. You can follow the installation steps from
     ```
 
 - Next, you should create a conda environment with the defined packages. 
-Install [mamba](https://mamba.readthedocs.io/en/latest/) 
-and create the environment using mamba:
+    Install [mamba](https://mamba.readthedocs.io/en/latest/) 
+    and create the environment using mamba:
 
     ```
     conda install -c conda-forge mamba
@@ -41,12 +41,12 @@ and create the environment using mamba:
 ## Install Simulation
 
 - You should install [boquila](https://github.com/CompGenomeLab/boquila) 
-tool to simulate repair and damage reads.
+    tool to simulate repair and damage reads.
 
 - Path of the program should be added to the PATH variable:
 
     ```
-    export PATH="$PATH:~/.cargo/bin"
+    export PATH="$PATH:~/.cargo/bin" # works on linux
     ```
 
 <br>
@@ -60,23 +60,23 @@ recommended by Snakemake:
 - `config/`: contains the configuration files.
 
 - `logs/`: contains the log files of each step. 
-This folder will automatically appear when you run the workflow.
+    This folder will automatically appear when you run the workflow.
 
 - `report/`: contains the description files of figures,
-which will be used in reports.
+    which will be used in reports.
 
 - `resources/`: contains `samples/` where the raw XR-seq and Damage-seq data 
-are stored, `input/` where the input files are stored, 
-and `ref_genomes/` where the reference genome files are stored. 
-Reference genome files can be automatically produced by the workflows, 
-if they are properly defined in the config files.  
+    are stored, `input/` where the input files are stored, 
+    and `ref_genomes/` where the reference genome files are stored. 
+    Reference genome files can be automatically produced by the workflows, 
+    if they are properly defined in the config files.  
 
 - `results/`: contains the generated files and figures. 
-This folder will automatically appear when you run the workflow.
+    This folder will automatically appear when you run the workflow.
 
-- `workflow/`: contains `envs/` where the environments are stored, 
-`rules/` where the Snakemake rules are stored, and 
-`scripts/` where the scripts used inside the rules are stored. 
+- `workflow/`: contains `envs/` where the environments are stored,
+    `rules/` where the Snakemake rules are stored, and 
+    `scripts/` where the scripts used inside the rules are stored. 
 
 <br>
 
@@ -85,15 +85,41 @@ This folder will automatically appear when you run the workflow.
 Before running the workflow, you should edit the configuration files. 
 For both XR-seq and Damage-seq workflows, there are 2 configuration files: 
 `config_(XR/DS)_initial.yaml` and `config_(XR/DS).yaml`. 
-The configuration file with "_initial_" prefix shouldn't be modified 
+In most of the cases, 
+the configuration file with "initial" prefix shouldn't be modified 
 by the user since they are containing configuration settings 
 that are common for all XR-seq and Damage-seq experiments. 
-For more detail about these configuration files, 
-check out the readme file in `config/` directory. 
-The parameters for "config_(XR/DS).yaml" as below:
+A config example and description of each parameter 
+for "config_(XR/DS).yaml" are given below:
+
+```
+sample: 
+ - "NHF1_CPD_1h_XR_rep1"
+ - "NHF1_CPD_1h_XR_rep2"
+
+meta: 
+  NHF1_CPD_1h_XR_rep1:
+    srr_id: "SRR3062593:SRR3062594:SRR3062595" 
+    layout: "single"
+    product: "CPD"
+    simulation_enabled: True
+    simulation_input: "SRR5461463" 
+    simulation_input_layout: "paired"
+  NHF1_CPD_1h_XR_rep2:
+    srr_id: "SRR3062596:SRR3062597:SRR3062598" 
+    layout: "single"
+    product: "CPD"
+    simulation_enabled: True
+    simulation_input: "SRR5461463" 
+    simulation_input_layout: "paired"
+
+genome:
+  build: "hg19"
+  link: "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/GRCh37.p13.genome.fa.gz"
+```
 
 - `sample`: The name of the sample file w/o the extension. 
-Multiple sample names can be given in the below format:
+    Multiple sample names can be given in the below format:
 
     ```
     sample: 
@@ -103,89 +129,76 @@ Multiple sample names can be given in the below format:
     ```
 
     - Using the given sample name, the workflow will look for 
-    `{SAMPLE}.fastq.gz` as raw data. 
-    Therefore, the fastq file must be gzipped before running the workflow.
+        `{SAMPLE}.fastq.gz` as raw data. 
+        Therefore, the fastq file must be gzipped before running the workflow.
 
     - If the layout of the given sample is paired-end, 
-    the workflow will look for 
-    `{SAMPLE}_R1.fastq.gz`, `{SAMPLE}_R2.fastq.gz` and 
-    `{SAMPLE}_1.fastq.gz`, `{SAMPLE}_2.fastq.gz` as raw data.
-    Therefore, paired-end sample files must contain `_R1/2` or `_1/2` suffixes and 
-    the suffixes should not be given in the configuration file to the `sample`.
+        the workflow will look for 
+        `{SAMPLE}_R1.fastq.gz`, `{SAMPLE}_R2.fastq.gz` and 
+        `{SAMPLE}_1.fastq.gz`, `{SAMPLE}_2.fastq.gz` as raw data.
+        Therefore, paired-end sample files must contain `_R1/2` or `_1/2` 
+        suffixes and the suffixes should not be given 
+        in the configuration file to the `sample`.
 
-- `damage_type`: Damage type of each sample should be provided here in the 
-same order of the samples:
+- `meta`: contains the metadata of each sample. 
 
-    ```
-    damage_type: 
-        - "64"
-        - "CPD"
-        - "oxaliplatin"
-    ```
+    - `srr_id`: The SRR code of the sample. 
 
-    - Currently damages below are available can be provided as (case-insensitive):
+        - Each downloaded raw data with the SRR codes will be named as the 
+            corresponding sample name in the `sample` parameter.  
+
+        - If a sample have multiple SRR codes, then the code should be provided 
+            in the given format: `SRRXXXXXXX:SRRXXXXXXX:SRRXXXXXXX` 
+
+        - If the fastq file is already provided in the `resources/samples/` 
+            directory, workflow will directly use that file. In such a case,
+            you don't have to provide this parameter.
+
+    - `layout`: Whether the given sample is sequenced as 
+        paired-end or single-end. 
+        'Single' or 'Paired' (Case-insensitive)
+
+    - `product`: Damage type of each sample. Currently damages below are 
+        available can be provided as (case-insensitive):
 
         - (6-4)PP: `64`, `64pp`, `(6-4)pp`, `6-4pp`;
         - CPD: `CPD`;
         - Cisplatin: `cisplatin`;
         - Oxaliplatin: `oxaliplatin`.
 
-- `srr`: Contains 2 parameters: `enabled`, `codes`. `enabled` is a boolean 
-variable (can only be True or False) and if it is True, then the pipeline will
-retrieve the raw data by [sra-toolkit](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc) 
-the defining the SRR code in the `codes` parameter. 
+    <br>    
 
-    ```
-    srr: 
-    enabled: True
-    codes:
-        - "SRRXXXXXXX"
-    ```
+    - `simulation_enabled`: True if you want to generate simulated reads of 
+        your sample via [boquila](https://github.com/CompGenomeLab/boquila). 
+        If not, False should be provided.
 
-    - Each downloaded raw data with the SRR codes will be named as the 
-    corresponding sample name in the `sample` parameter.  
+    - `simulation_input`: Simulation can be either done using 
+        the reference genome or with a provided input file. If an input file
+        will be used, it's SRR code should be given. 
 
-    - If a sample have multiple SRR codes, then the code should be provided in 
-    the given format: `SRRXXXXXXX:SRRXXXXXXX:SRRXXXXXXX` 
+        - If the srr file of the input is already provided in the 
+            `resources/input/` directory in gzipped fastq format, 
+            workflow will directly use that file. Even in that case,
+            this parameter should be used as it will be used to set the name
+            of the input file.
 
-- `input`: Contains 4 parameters: `exist`, `files`, `sample`, `srr`. This parameter is used for [boquila](https://github.com/CompGenomeLab/boquila), which can take input files for more accurate read simulations. If you don't have any input file, you can set `exist` as False. `files` parameter contains the names of input files w/o the extension. `sample` parameter contains the indeces of samples that will use the input of the same order. Lastly, `srr` can be used for downloading inputs from [sra-toolkit](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc). It works the same was as the `srr` parameter above. As a whole inputs can be provided as:
+        - If simulation will be done without an input file, this parameter 
+            should be removed.
 
-    ```
-    input:
-        exist: True
-        files:
-            - "input0"
-            - "input1"
-            - "input2"  
-        sample: 
-            - "0-3" # input0 will be used for sample 0,1,2,3
-            - "4, 7" # input1 will be used for sample 4,7
-            - "5, 6" # input2 will be used for sample 5,6
-        srr: 
-            enabled: True
-            codes:
-            - "SRRXXXXXXX" # srr of input0
-            - "SRRXXXXXXX" # srr of input1
-            - "SRRXXXXXXX" # srr of input2
-    ```
+    - `simulation_input_layout`: Whether the given input file is sequenced as 
+        paired-end or single-end. 
+        'Single' or 'Paired' (Case-insensitive)
 
-- Genome parameters: The parameters `build`, `species`, `datatype`, 
-and `release` are defined to retrieve correct reference genome from ensembl. 
-For more information, you can check out the 
-[link](https://snakemake-wrappers.readthedocs.io/en/stable/wrappers/reference/ensembl-sequence.html). 
+        - If simulation will be done without an input file, this parameter 
+            should be removed.
 
-    - If `genome_download` is set to False, then a fasta file expected to be 
-    provided as `resources/ref_genomes/${build}/genome_${build}.fa`, where 
-    `${build}` should be the string given in `build` parameter. 
-    
-    - In the same manner, If `bowtie2_build` is set to False, 
-    then a build should be provided in `resources/ref_genomes/${build}/Bowtie2/`, 
-    where `${build}` should be the string given in `build` parameter. 
-    File name before the extensions must be `genome_${build}`. Lastly to 
-    properly set `bowtie2_build` to False, `genome_download` must be set 
-    to False as well.
+- `genome`: Contains 2 parameters, which are `build` and `link`.
 
-- `filter`: This parameter is used to filter chromosomes by the given regex.
+    - `build`: The name of the reference genome that the workflow will use.
+        Any name desired by the user can be used.
+
+    - `link`: The url of the reference fasta file to be retrieved. The file 
+        should be gzipped.
 
 <br>
 
