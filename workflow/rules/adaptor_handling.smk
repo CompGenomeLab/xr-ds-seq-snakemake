@@ -6,8 +6,10 @@ rule cutadapt_se:
         fastq=temp("results/{method}/{samples}/{samples}_cutadapt.fastq.gz"),
         qc=report("results/{method}/{samples}/{samples}_cutadapt.qc.txt", category="QC"),   
     params:
-        adapters=config["adaptor_se"],  
-        extra=config["cutadapt_se"],  
+        adapters=lambda w: getMethodParams(w, config["meta"], "adaptor", 
+            config["XR"], config["DS"]),
+        extra=lambda w: getMethodParams(w, config["meta"], "cutadapt", 
+            config["XR"], config["DS"]),
     log:
         "logs/rule/analysis/{samples}/{samples}_{method}_cutadapt.log",
     benchmark:
@@ -24,8 +26,10 @@ rule cutadapt_pe:
         fastq2=temp("results/{method}/{samples}/{samples}_cutadapt_2.fastq.gz"),
         qc=report("results/{method}/{samples}/{samples}_cutadapt.qc.txt", category="QC"),
     params:
-        adapters=config["adaptor_pe"],  
-        extra=config["cutadapt_pe"], 
+        adapters=lambda w: getMethodParams(w, config["meta"], "adaptor", 
+            config["XR"], config["DS"]),
+        extra=lambda w: getMethodParams(w, config["meta"], "cutadapt", 
+            config["XR"], config["DS"]),
     log:
         "logs/rule/analysis/{samples}/{samples}_{method}_cutadapt.log",
     benchmark:

@@ -23,13 +23,49 @@ def getPaired(sample, read, sample_dir):
     elif os.path.isfile(paired1) and read == "reverse":
         return f"{sample_dir}{sample}_2.fastq.gz"
 
+def getMethodParams(wildcards, metadata, parameter, XR, DS):
+
+    method = metadata[wildcards.samples]["method"].upper()
+    layout = metadata[wildcards.samples]["layout"].lower()
+
+    if parameter.lower() == "adaptor" and layout== "single":
+        if method == "XR":
+            return XR["adaptor_se"]
+        elif method == "DS":
+            return DS["adaptor_se"]
+    elif parameter.lower() == "adaptor" and layout== "paired":
+        if method == "XR":
+            return XR["adaptor_pe"]
+        elif method == "DS":
+            return DS["adaptor_pe"]
+    elif parameter.lower() == "cutadapt" and layout== "single":
+        if method == "XR":
+            return XR["cutadapt_se"]
+        elif method == "DS":
+            return DS["cutadapt_se"]
+    elif parameter.lower() == "cutadapt" and layout== "paired":
+        if method == "XR":
+            return XR["cutadapt_pe"]
+        elif method == "DS":
+            return DS["cutadapt_pe"]
+    elif parameter.lower() == "samtools" and layout== "single":
+        if method == "XR":
+            return XR["samtools_se"]
+        elif method == "DS":
+            return DS["samtools_se"]
+    elif parameter.lower() == "samtools" and layout== "paired":
+        if method == "XR":
+            return XR["samtools_pe"]
+        elif method == "DS":
+            return DS["samtools_pe"]
+
 def input4filter(wildcards, metadata):
 
-    layout = metadata[wildcards.samples]["layout"]
+    layout = metadata[wildcards.samples]["layout"].lower()
 
-    if layout.lower() == "single":
+    if layout == "single":
         return "results/{method}/{samples}/{samples}_{build}_se.bed"
-    elif layout.lower() == "paired":    
+    elif layout == "paired":    
         return "results/{method}/{samples}/{samples}_{build}_pe.bed"
 
 def input4inpFasta(wildcards, metadata, sampleList):
@@ -45,21 +81,24 @@ def input4inpFasta(wildcards, metadata, sampleList):
     elif layout.lower() == "paired":    
         return "results/input/{samples}/{samples}_{build}_pe.bed"
 
-def input4PCA(sampleList, metadata, build, method):
+def input4PCA(sampleList, metadata, build):
 
     inputList = []
     for sample in sampleList:
 
-        layout = metadata[sample]["layout"]
+        layout = metadata[sample]["layout"].lower()
+        method = metadata[sample]["method"].upper()
 
-        if layout.lower() == "single":
+        if layout == "single":
             inputList.append(f"results/{method}/{sample}/{sample}_{build}_se_sortedbyCoordinates.bam")
-        elif layout.lower() == "paired":   
+        elif layout == "paired":   
             inputList.append(f"results/{method}/{sample}/{sample}_{build}_pe_sortedbyCoordinates.bam")
 
     return inputList
 
-def input4nucTable(method):
+def input4nucTable(wildcards, metadata):
+
+    method = metadata[wildcards.samples]["method"].upper()
 
     if method == "XR":
         return "results/XR/{samples}/{samples}_{build}_lengthMode.fa"
@@ -122,12 +161,13 @@ def mappedReads(*files):
 
     return lineNumber
 
-def allInput(method, build, sampleList, metadata):
+def allInput(build, sampleList, metadata):
 
     inputList = []
     for sample in sampleList:
-        sample_dir = f"results/{method}/{sample}/" 
 
+        method = metadata[sample]["method"].upper()
+        sample_dir = f"results/{method}/{sample}/" 
         layout = metadata[sample]["layout"]
         simulation = metadata[sample]["simulation_enabled"]
 
@@ -157,18 +197,11 @@ def allInput(method, build, sampleList, metadata):
     
     if len(sampleList) > 1:
 
-        if method == "DS":
-            inputList.append("results/scatterplot_PearsonCorr_bigwigScores_DS.pdf")
-            inputList.append("results/PearsonCorr_bigwigScores_DS.tab")
-            inputList.append("results/heatmap_SpearmanCorr_readCounts_DS.pdf")
-            inputList.append("results/SpearmanCorr_readCounts_DS.tab")
-            inputList.append("results/PCA_readCounts_DS.pdf")
-        elif method == "XR":
-            inputList.append("results/scatterplot_PearsonCorr_bigwigScores_XR.pdf")
-            inputList.append("results/PearsonCorr_bigwigScores_XR.tab")
-            inputList.append("results/heatmap_SpearmanCorr_readCounts_XR.pdf")
-            inputList.append("results/SpearmanCorr_readCounts_XR.tab")
-            inputList.append("results/PCA_readCounts_XR.pdf")
+        inputList.append("results/scatterplot_PearsonCorr_bigwigScores.pdf")
+        inputList.append("results/PearsonCorr_bigwigScores.tab")
+        inputList.append("results/heatmap_SpearmanCorr_readCounts.pdf")
+        inputList.append("results/SpearmanCorr_readCounts.tab")
+        inputList.append("results/PCA_readCounts.pdf")
             
     #print(inputList)
     return inputList

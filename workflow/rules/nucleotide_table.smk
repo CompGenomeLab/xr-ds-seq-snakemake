@@ -1,7 +1,7 @@
 
 rule nucleotide_table:
     input:
-        lambda w: input4nucTable(config["method"]),
+        lambda w: input4nucTable(w, config["meta"]),
     output:
         dinuc=temp("results/{method}/{samples}/{samples}_{build}_sorted_dinucleotideTable.txt"),
         nuc=temp("results/{method}/{samples}/{samples}_{build}_sorted_nucleotideTable.txt"),

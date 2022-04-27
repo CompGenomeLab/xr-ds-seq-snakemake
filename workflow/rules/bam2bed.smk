@@ -7,7 +7,8 @@ rule bam2bed_se:
         bam="results/{method}/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam",
         idx="results/{method}/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam.bai",
     params:
-        q_trim=config["samtools_q_trim_se"], 
+        q_trim=lambda w: getMethodParams(w, config["meta"], "samtools", 
+            config["XR"], config["DS"]), 
     log:
         "logs/rule/analysis/{samples}/{samples}_{build}_{method}_bam2bed_se.log",
     benchmark:
@@ -42,7 +43,8 @@ rule bam2bed_pe:
         bam2="results/{method}/{samples}/{samples}_{build}_pe_sortedbyCoordinates.bam",
         idx="results/{method}/{samples}/{samples}_{build}_pe_sortedbyCoordinates.bam.bai",
     params:
-        q_trim=config["samtools_q_trim_pe"],
+        q_trim=lambda w: getMethodParams(w, config["meta"], "samtools", 
+            config["XR"], config["DS"]), 
     log:
         "logs/rule/analysis/{samples}/{samples}_{build}_{method}_bam2bed_pe.log",
     benchmark:
@@ -87,7 +89,7 @@ rule bam2bed_se_input:
         bam="results/input/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam",
         idx="results/input/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam.bai",
     params:
-        q_trim=config["samtools_q_trim_se"], 
+        q_trim="-q 20",
     log:
         "logs/rule/analysis/{samples}/{samples}_{build}_bam2bed_se_input.log",
     benchmark:
@@ -122,7 +124,7 @@ rule bam2bed_pe_input:
         bam2="results/input/{samples}/{samples}_{build}_pe_sortedbyCoordinates.bam",
         idx="results/input/{samples}/{samples}_{build}_pe_sortedbyCoordinates.bam.bai",
     params:
-        q_trim=config["samtools_q_trim_pe"],
+        q_trim="-q 20 -bf 0x2",
     log:
         "logs/rule/analysis/{samples}/{samples}_{build}_bam2bed_pe_input.log",
     benchmark:

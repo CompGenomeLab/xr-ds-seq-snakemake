@@ -1,0 +1,20 @@
+
+DS:
+  adaptor_se: "-g GACTGGTTCCAATTGAAAGTGCTCTTCCGATCT"
+  adaptor_pe: "-g GACTGGTTCCAATTGAAAGTGCTCTTCCGATCT -G GACTGGTTCCAATTGAAAGTGCTCTTCCGATCT"
+  cutadapt_se: "--discard-trimmed"
+  cutadapt_pe: "--discard-trimmed"
+  samtools_se: "-q 20"
+  samtools_pe: "-q 20 -bf 0x2"
+
+XR:
+  adaptor_se: "-a TGGAATTCTCGGGTGCCAAGGAACTCCAGTNNNNNNACGATCTCGTATGCCGTCTTCTGCTTG"
+  adaptor_pe: "-a TGGAATTCTCGGGTGCCAAGGAACTCCAGTNNNNNNACGATCTCGTATGCCGTCTTCTGCTTG -A TGGAATTCTCGGGTGCCAAGGAACTCCAGTNNNNNNACGATCTCGTATGCCGTCTTCTGCTTG"
+  cutadapt_se: ""
+  cutadapt_pe: ""
+  samtools_se: "-q 20"
+  samtools_pe: "-q 20 -bf 0x2"
+  
+#######
+
+filter: "'^'"

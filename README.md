@@ -83,23 +83,26 @@ recommended by Snakemake:
 ## Configuration file
 
 Before running the workflow, you should edit the configuration files. 
-For both XR-seq and Damage-seq workflows, there are 2 configuration files: 
-`config_(XR/DS)_initial.yaml` and `config_(XR/DS).yaml`. 
+Both XR-seq and Damage-seq workflows run with the same configuration files, 
+namely: `config_initial.yaml` and `config.yaml`. 
 In most of the cases, 
-the configuration file with "initial" prefix shouldn't be modified 
-by the user since they are containing configuration settings 
+`config_initial.yaml` file shouldn't be modified 
+by the user since it contains the configuration settings 
 that are common for all XR-seq and Damage-seq experiments. 
 A config example and description of each parameter 
-for "config_(XR/DS).yaml" are given below:
+for "config.yaml" are given below:
 
 ```
 sample: 
  - "NHF1_CPD_1h_XR_rep1"
  - "NHF1_CPD_1h_XR_rep2"
+ - "NHF1_CPD_1h_DS_rep1"
+ - "NHF1_CPD_1h_DS_rep2"
 
 meta: 
   NHF1_CPD_1h_XR_rep1:
     srr_id: "SRR3062593:SRR3062594:SRR3062595" 
+    method: "XR"
     layout: "single"
     product: "CPD"
     simulation_enabled: True
@@ -107,7 +110,24 @@ meta:
     simulation_input_layout: "paired"
   NHF1_CPD_1h_XR_rep2:
     srr_id: "SRR3062596:SRR3062597:SRR3062598" 
+    method: "XR"
     layout: "single"
+    product: "CPD"
+    simulation_enabled: True
+    simulation_input: "SRR5461463" 
+    simulation_input_layout: "paired"
+  NHF1_CPD_1h_DS_rep1:
+    srr_id: "SRR5461433" 
+    method: "DS"
+    layout: "paired"
+    product: "CPD"
+    simulation_enabled: True
+    simulation_input: "SRR5461463" 
+    simulation_input_layout: "paired"
+  NHF1_CPD_1h_DS_rep2:
+    srr_id: "SRR5461434" 
+    method: "DS"
+    layout: "paired"
     product: "CPD"
     simulation_enabled: True
     simulation_input: "SRR5461463" 
@@ -154,9 +174,13 @@ genome:
             directory, workflow will directly use that file. In such a case,
             you don't have to provide this parameter.
 
+    - `method`: Whether the given sample is subjected to 
+        XR-seq or Damage-seq experiments. 
+        'XR' or 'DS' (case-insensitive).
+
     - `layout`: Whether the given sample is sequenced as 
         paired-end or single-end. 
-        'Single' or 'Paired' (Case-insensitive)
+        'Single' or 'Paired' (case-insensitive).
 
     - `product`: Damage type of each sample. Currently damages below are 
         available can be provided as (case-insensitive):
@@ -185,7 +209,7 @@ genome:
 
     - `simulation_input_layout`: Whether the given input file is sequenced as 
         paired-end or single-end. 
-        'Single' or 'Paired' (Case-insensitive)
+        'Single' or 'Paired' (case-insensitive).
 
         - If simulation will be done without an input file, this parameter 
             should be removed.
@@ -205,20 +229,15 @@ genome:
 After adjusting the configuration file, you can run the workflow 
 from `xr-ds-seq-snakemake` directory.
 
-- For XR-seq:
-
     ```
-    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_XR.smk --keep-going --rerun-incomplete 
+    snakemake --use-conda --cores 64 --keep-going --rerun-incomplete -pr 
     ```
 
-- For Damage-seq:
-
-    ```
-    snakemake -pr --use-conda --cores 64 --snakefile Snakefile_DS.smk --keep-going --rerun-incomplete 
-    ```
-| Note: To run the workflow on [Slurm Workload Manager](https://slurm.schedmd.com/srun.html) as set of jobs, `--profile` flag must be provided: |  
+| Note: To run the workflow on [Slurm Workload Manager](https://slurm.schedmd.com/srun.html) as set of jobs, `--profile` flag must be provided instead of `--cores`: |  
 | --- |
-    snakemake -pr --use-conda --profile config/slurm --snakefile Snakefile_DS.smk --keep-going --rerun-incomplete 
+    snakemake --use-conda --profile config/slurm --keep-going --rerun-incomplete -pr
+
+An example of Slurm configuration file can be found in `config/slurm/config.yaml`.
 
 <br>
 

@@ -1,0 +1,43 @@
+sample: 
+ - "NHF1_CPD_1h_XR_rep1"
+ - "NHF1_CPD_1h_XR_rep2"
+ - "NHF1_CPD_1h_DS_rep1"
+ - "NHF1_CPD_1h_DS_rep2"
+
+meta: 
+  NHF1_CPD_1h_XR_rep1:
+    srr_id: "SRR3062593:SRR3062594:SRR3062595" 
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation_enabled: True
+    simulation_input: "SRR5461463" 
+    simulation_input_layout: "paired"
+  NHF1_CPD_1h_XR_rep2:
+    srr_id: "SRR3062596:SRR3062597:SRR3062598" 
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation_enabled: True
+    simulation_input: "SRR5461463" 
+    simulation_input_layout: "paired"
+  NHF1_CPD_1h_DS_rep1:
+    srr_id: "SRR5461433" 
+    method: "DS"
+    layout: "paired"
+    product: "CPD"
+    simulation_enabled: True
+    simulation_input: "SRR5461463" 
+    simulation_input_layout: "paired"
+  NHF1_CPD_1h_DS_rep2:
+    srr_id: "SRR5461434" 
+    method: "DS"
+    layout: "paired"
+    product: "CPD"
+    simulation_enabled: True
+    simulation_input: "SRR5461463" 
+    simulation_input_layout: "paired"
+
+genome:
+  build: "hg19"
+  link: "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/GRCh37.p13.genome.fa.gz"
