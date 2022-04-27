@@ -1,7 +1,7 @@
 
 rule bam2bed_se:
     input:
-        "results/{method}/{samples}/{samples}_dedup_cutadapt_se_{build}.bam",
+        rules.mark_duplicates_se.output.bam,
     output:
         bed="results/{method}/{samples}/{samples}_{build}_se.bed",
         bam="results/{method}/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam",
@@ -36,7 +36,7 @@ rule bam2bed_se:
 
 rule bam2bed_pe:
     input:
-        "results/{method}/{samples}/{samples}_dedup_cutadapt_pe_{build}.bam",
+        rules.mark_duplicates_pe.output.bam,
     output:
         bed="results/{method}/{samples}/{samples}_{build}_pe.bed",
         bam=temp("results/{method}/{samples}/{samples}_{build}_sorted.bam"),
@@ -83,7 +83,7 @@ rule bam2bed_pe:
 
 rule bam2bed_se_input:
     input:
-        "results/input/{samples}/{samples}_se_{build}.bam",
+        rules.bowtie2_se_input.output.bam,
     output:
         bed="results/input/{samples}/{samples}_{build}_se.bed",
         bam="results/input/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam",
@@ -117,7 +117,7 @@ rule bam2bed_se_input:
 
 rule bam2bed_pe_input:
     input:
-        "results/input/{samples}/{samples}_pe_{build}.bam",
+        rules.bowtie2_pe_input.output.bam,
     output:
         bed="results/input/{samples}/{samples}_{build}_pe.bed",
         bam=temp("results/input/{samples}/{samples}_{build}_sorted.bam"),

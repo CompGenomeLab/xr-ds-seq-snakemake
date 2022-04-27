@@ -47,8 +47,8 @@ rule sra_se:
 
 rule sra_pe:
     output:
-        "resources/samples/{samples}_1.fastq.gz", 
-        "resources/samples/{samples}_2.fastq.gz", 
+        read1="resources/samples/{samples}_1.fastq.gz", 
+        read2="resources/samples/{samples}_2.fastq.gz", 
     params:
         srr=lambda w: config["meta"][w.samples]["srr_id"],
         name="{samples}",

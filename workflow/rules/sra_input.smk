@@ -1,7 +1,7 @@
 
 rule sra_se_input:
     output:
-        fastq="resources/input/{samples}.fastq.gz", 
+        "resources/input/{samples}.fastq.gz", 
     params:
         name="{samples}",
     log:

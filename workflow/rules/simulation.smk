@@ -3,7 +3,7 @@ rule simulation_ds_input:
     input:
         plus="results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_plus.bed",
         minus="results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_minus.bed",
-        genome="resources/ref_genomes/{build}/genome_{build}.fa",
+        genome=rules.genome_download.output,
         inpfile=lambda w: getInput(w.samples, config["meta"], config["genome"]["build"]),
     output:
         bed=temp("results/{method}/{samples}/{samples}_{build}_sorted_ds_dipyrimidines.bed"),
@@ -80,8 +80,8 @@ rule simulation_ds_input:
 
 rule simulation_xr_input:
     input:
-        bed="results/{method}/{samples}/{samples}_{build}_sorted_chr.bed",
-        genome="resources/ref_genomes/{build}/genome_{build}.fa",
+        bed=rules.sort_filter.output,
+        genome=rules.genome_download.output,
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2", 
         inpfile=lambda w: getInput(w.samples, config["meta"], config["genome"]["build"]),
     output:
@@ -193,6 +193,7 @@ rule simulation_ds:
         --bed {output.simbed} \
         --ref {input.genome} \
         --seed 1 \
+        --sens 2 \
         --regions {input.inpfile} \
         > {output.sim} &&
         echo "`date -R`: Success! Simulation is done." || 
@@ -234,6 +235,7 @@ rule simulation_xr:
         --bed {output.simbed} \
         --ref {input.genome} \
         --seed 1 \
+        --sens 2 \
         --regions {input.inpfile} \
         > {output.sim} &&
         echo "`date -R`: Success! Simulation is done." || 

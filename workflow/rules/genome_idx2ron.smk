@@ -1,7 +1,7 @@
 
 rule genome_index2ron:
     input:
-        "resources/ref_genomes/{build}/genome_{build}.fa.fai",
+        rules.genome_indexing.output,
     output:
         "resources/ref_genomes/{build}/genome_{build}.ron",
     log:

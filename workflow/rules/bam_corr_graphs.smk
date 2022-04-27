@@ -1,6 +1,6 @@
 rule bam_corr_graphs:
     input:
-        npz="results/readCounts.npz",
+        npz=rules.bam_correlation.output.out
     output:
         scatter=report("results/scatterplot_PearsonCorr_bigwigScores.pdf", 
                 category="Correlation"),

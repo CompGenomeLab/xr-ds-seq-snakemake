@@ -2,7 +2,7 @@
 rule bedGraphToBigWig:
     input:
         bdg="results/{method}/{samples}/{samples}_{build}_{method}_sorted_{strand}.bdg",
-        index="resources/ref_genomes/{build}/genome_{build}.fa.fai",
+        index=rules.genome_indexing.output,
     output:
         sort=temp("results/{method}/{samples}/{samples}_{build}_{method}_resorted_{strand}.bdg"),
         bw=report("results/{method}/{samples}/{samples}_{build}_{method}_sorted_{strand}.bw", 

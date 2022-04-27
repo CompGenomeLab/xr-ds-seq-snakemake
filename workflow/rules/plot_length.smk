@@ -1,7 +1,7 @@
 
 rule plot_length:
     input:
-        "results/{method}/{samples}/{samples}_{build}_length_distribution.txt",
+        rules.length_distribution.output
     output:
         report("results/{method}/{samples}/{samples}_{build}_length_distribution.pdf", 
                 category="Length Distribution"),

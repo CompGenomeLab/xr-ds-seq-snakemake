@@ -1,9 +1,9 @@
 
 rule reposition:
     input:
-        plus="results/{method}/{samples}/{samples}_{build}_sorted_plus.bed",
-        minus="results/{method}/{samples}/{samples}_{build}_sorted_minus.bed",
-        index="resources/ref_genomes/{build}/genome_{build}.fa.fai",
+        plus=rules.sep_strands.output.plus,
+        minus=rules.sep_strands.output.minus,
+        index=rules.genome_indexing.output,
     output:
         plus=temp("results/{method}/{samples}/{samples}_{build}_sorted_plus_10.bed"),
         minus=temp("results/{method}/{samples}/{samples}_{build}_sorted_minus_10.bed"), 

@@ -1,8 +1,8 @@
 
 rule length_mode:
     input:
-        bed="results/{method}/{samples}/{samples}_{build}_sorted_chr.bed",
-        ld="results/{method}/{samples}/{samples}_{build}_length_distribution.txt",
+        bed=rules.sort_filter.output,
+        ld=rules.length_distribution.output,
     output:
         temp("results/{method}/{samples}/{samples}_{build}_lengthMode.bed"),
     log:

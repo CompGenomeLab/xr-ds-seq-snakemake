@@ -1,7 +1,7 @@
 
 rule bowtie2_se:
     input:
-        sample=["results/{method}/{samples}/{samples}_cutadapt.fastq.gz"],
+        sample=[rules.cutadapt_se.output.fastq],
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
     output:
         sam=temp("results/{method}/{samples}/{samples}_cutadapt_se_{build}.sam"),
@@ -35,7 +35,7 @@ rule bowtie2_se:
 
 rule bowtie2_pe:
     input:
-        sample=["results/{method}/{samples}/{samples}_cutadapt_1.fastq.gz", "results/{method}/{samples}/{samples}_cutadapt_2.fastq.gz"],
+        sample=[rules.cutadapt_pe.output.fastq1, rules.cutadapt_pe.output.fastq2],
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
     output:
         sam=temp("results/{method}/{samples}/{samples}_cutadapt_pe_{build}.sam"),
@@ -69,7 +69,7 @@ rule bowtie2_pe:
 
 rule bowtie2_se_input:
     input:
-        sample=[rules.sra_se_input.output.fastq],
+        sample=[rules.sra_se_input.output],
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
     output:
         sam=temp("results/input/{samples}/{samples}_se_{build}.sam"),

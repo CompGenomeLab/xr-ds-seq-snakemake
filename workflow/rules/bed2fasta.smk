@@ -1,9 +1,9 @@
 
 rule bed2fasta_ds:
     input:
-        plus="results/{method}/{samples}/{samples}_{build}_sorted_plus_10.bed",
-        minus="results/{method}/{samples}/{samples}_{build}_sorted_minus_10.bed",
-        genome="resources/ref_genomes/{build}/genome_{build}.fa",
+        plus=rules.reposition.output.plus,
+        minus=rules.reposition.output.minus,
+        genome=rules.genome_download.output,
     output:
         plus=temp("results/{method}/{samples}/{samples}_{build}_sorted_plus_10.fa"),
         minus=temp("results/{method}/{samples}/{samples}_{build}_sorted_minus_10.fa"),
@@ -52,8 +52,8 @@ rule bed2fasta_ds:
 
 rule bed2fasta_xr:
     input:
-        bed="results/{method}/{samples}/{samples}_{build}_lengthMode.bed",
-        genome="resources/ref_genomes/{build}/genome_{build}.fa",
+        bed=rules.length_mode.output,
+        genome=rules.genome_download.output,
     output:
         temp("results/{method}/{samples}/{samples}_{build}_lengthMode.fa"),
     log:
@@ -77,7 +77,7 @@ rule bed2fasta_xr:
 rule bed2fasta_input:
     input:
         bed=lambda w: input4inpFasta(w, config["meta"], config["sample"]),
-        genome="resources/ref_genomes/{build}/genome_{build}.fa",
+        genome=rules.genome_download.output,
     output:
         "results/input/{samples}/{samples}_{build}.fasta",
     log:

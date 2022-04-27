@@ -1,7 +1,7 @@
 
 rule genome_build:
     input:
-        reference="resources/ref_genomes/{build}/genome_{build}.fa",
+        rules.genome_download.output,
     output:
         multiext(
         "resources/ref_genomes/{build}/Bowtie2/genome_{build}",
@@ -22,7 +22,7 @@ rule genome_build:
         (echo "`date -R`: Building indexes..." &&
         bowtie2-build --threads {threads} \
         {params.extra} \
-        {input.reference} \
+        {input} \
         {params.name} &&
         echo "`date -R`: Success! Indexes are build." || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  ) > {log} 2>&1

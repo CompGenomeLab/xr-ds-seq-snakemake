@@ -1,8 +1,8 @@
 
 rule plot_nuc:
     input:
-        dinuc="results/{method}/{samples}/{samples}_{build}_sorted_dinucleotideTable.txt",
-        nuc="results/{method}/{samples}/{samples}_{build}_sorted_nucleotideTable.txt",
+        dinuc=rules.nucleotide_table.output.dinuc,
+        nuc=rules.nucleotide_table.output.nuc,
     output:
         dinuc=report("results/{method}/{samples}/{samples}_{build}_sorted_dinucleotideTable.pdf", 
                     category="Nucleotide Content"),

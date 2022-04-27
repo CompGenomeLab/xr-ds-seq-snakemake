@@ -1,7 +1,7 @@
 
 rule cutadapt_se:
     input:
-        "resources/samples/{samples}.fastq.gz",
+        rules.sra_se.output,
     output:
         fastq=temp("results/{method}/{samples}/{samples}_cutadapt.fastq.gz"),
         qc=report("results/{method}/{samples}/{samples}_cutadapt.qc.txt", category="QC"),   
@@ -19,8 +19,8 @@ rule cutadapt_se:
 
 rule cutadapt_pe:
     input:
-        fq1="resources/samples/{samples}_1.fastq.gz", 
-        fq2="resources/samples/{samples}_2.fastq.gz",
+        fq1=rules.sra_pe.output.read1, 
+        fq2=rules.sra_pe.output.read2,
     output:
         fastq1=temp("results/{method}/{samples}/{samples}_cutadapt_1.fastq.gz"),
         fastq2=temp("results/{method}/{samples}/{samples}_cutadapt_2.fastq.gz"),

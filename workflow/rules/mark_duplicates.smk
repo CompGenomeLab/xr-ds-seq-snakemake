@@ -1,6 +1,6 @@
 rule mark_duplicates_se:
     input:
-        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_samSorted.bam"
+        rules.sort_rmPG_se.output.sort,
     output:
         bam="results/{method}/{samples}/{samples}_dedup_cutadapt_se_{build}.bam",
         metrics="results/{method}/{samples}/{samples}_cutadapt_se_dedup_{build}.metrics.txt",
@@ -13,7 +13,7 @@ rule mark_duplicates_se:
 
 rule mark_duplicates_pe:
     input:
-        "results/{method}/{samples}/{samples}_cutadapt_pe_{build}_samSorted.bam"
+        rules.sort_rmPG_pe.output.sort,
     output:
         bam="results/{method}/{samples}/{samples}_dedup_cutadapt_pe_{build}.bam",
         metrics="results/{method}/{samples}/{samples}_cutadapt_pe_dedup_{build}.metrics.txt",

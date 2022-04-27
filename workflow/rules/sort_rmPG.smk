@@ -1,6 +1,6 @@
 rule sort_rmPG_se:
     input:
-        "results/{method}/{samples}/{samples}_cutadapt_se_{build}.bam"
+        rules.bowtie2_se.output.bam,
     output:
         header=temp("results/{method}/{samples}/{samples}_cutadapt_se_{build}_header.txt"),
         sort=temp("results/{method}/{samples}/{samples}_cutadapt_se_{build}_samSorted.bam"),
@@ -20,12 +20,12 @@ rule sort_rmPG_se:
         (echo "`date -R`: Parsing the headers..." &&
         samtools reheader {output.header} {input} | samtools sort -o {output.sort} &&
         echo "`date -R`: Success!" || 
-        {{ echo "`date -R`: Process failed..."; rm {output.sort}; exit 1; }}  ) > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.sort}; exit 1; }}  ) >> {log} 2>&1
         """
 
 rule sort_rmPG_pe:
     input:
-        "results/{method}/{samples}/{samples}_cutadapt_pe_{build}.bam"
+        rules.bowtie2_pe.output.bam,
     output:
         header=temp("results/{method}/{samples}/{samples}_cutadapt_pe_{build}_header.txt"),
         sort=temp("results/{method}/{samples}/{samples}_cutadapt_pe_{build}_samSorted.bam"),
@@ -45,5 +45,5 @@ rule sort_rmPG_pe:
         (echo "`date -R`: Reheader and sort..." &&
         samtools reheader {output.header} {input} | samtools sort -o {output.sort} &&
         echo "`date -R`: Success!" || 
-        {{ echo "`date -R`: Process failed..."; rm {output.sort}; exit 1; }}  ) > {log} 2>&1
+        {{ echo "`date -R`: Process failed..."; rm {output.sort}; exit 1; }}  ) >> {log} 2>&1
         """

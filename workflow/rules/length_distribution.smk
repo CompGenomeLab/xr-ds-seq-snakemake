@@ -1,7 +1,7 @@
 
-rule length_dist:
+rule length_distribution:
     input:
-        "results/{method}/{samples}/{samples}_{build}_sorted_chr.bed",
+        rules.sort_filter.output
     output:
         temp("results/{method}/{samples}/{samples}_{build}_length_distribution.txt"),
     log:

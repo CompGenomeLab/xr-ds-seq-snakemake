@@ -1,7 +1,7 @@
 
 rule sep_strands:
     input:
-        "results/{method}/{samples}/{samples}_{build}_sorted_chr.bed",
+       rules.sort_filter.output,
     output:
         plus="results/{method}/{samples}/{samples}_{build}_sorted_plus.bed",
         minus="results/{method}/{samples}/{samples}_{build}_sorted_minus.bed",
