@@ -11,8 +11,6 @@ meta:
     layout: "single"
     product: "CPD"
     simulation_enabled: True
-    simulation_input: "SRR5461463" 
-    simulation_input_layout: "paired"
   NHF1_CPD_1h_XR_rep2:
     srr_id: "SRR3062596:SRR3062597:SRR3062598" 
     method: "XR"
@@ -27,8 +25,6 @@ meta:
     layout: "paired"
     product: "CPD"
     simulation_enabled: True
-    simulation_input: "SRR5461463" 
-    simulation_input_layout: "paired"
   NHF1_CPD_1h_DS_rep2:
     srr_id: "SRR5461434" 
     method: "DS"

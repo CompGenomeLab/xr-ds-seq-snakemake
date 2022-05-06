@@ -72,9 +72,12 @@ def input4inpFasta(wildcards, metadata, sampleList):
 
     for sample in sampleList:
 
-        if metadata[sample]["simulation_input"] == wildcards.samples:
-
-            layout = metadata[sample]["simulation_input_layout"]
+        try:
+            if metadata[sample]["simulation_input"] == wildcards.samples:
+                layout = metadata[sample]["simulation_input_layout"]
+                break
+        except:
+            continue
 
     if layout.lower() == "single":
         return "results/input/{samples}/{samples}_{build}_se.bed"
