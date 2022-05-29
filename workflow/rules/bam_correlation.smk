@@ -1,6 +1,6 @@
 rule bam_correlation:
     input:
-        lambda w: input4PCA(config["sample"], config["meta"], config["genome"]["build"]),
+        lambda w: input4PCA(config["meta"], config["genome"]["build"]),
     output:
         out="results/readCounts.npz",
         raw_out="results/readCounts.tab",

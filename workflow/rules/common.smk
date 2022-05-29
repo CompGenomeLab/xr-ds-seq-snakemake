@@ -68,9 +68,9 @@ def input4filter(wildcards, metadata):
     elif layout == "paired":    
         return "results/{method}/{samples}/{samples}_{build}_pe.bed"
 
-def input4inpFasta(wildcards, metadata, sampleList):
+def input4inpFasta(wildcards, metadata):
 
-    for sample in sampleList:
+    for sample in metadata.keys():
 
         try:
             if metadata[sample]["simulation_input"] == wildcards.samples:
@@ -84,10 +84,10 @@ def input4inpFasta(wildcards, metadata, sampleList):
     elif layout.lower() == "paired":    
         return "results/input/{samples}/{samples}_{build}_pe.bed"
 
-def input4PCA(sampleList, metadata, build):
+def input4PCA(metadata, build):
 
     inputList = []
-    for sample in sampleList:
+    for sample in metadata.keys():
 
         layout = metadata[sample]["layout"].lower()
         method = metadata[sample]["method"].upper()
@@ -127,8 +127,6 @@ def getDinuc(sample, product):
     elif product.lower() in ["64", "64pp", "(6-4)pp", "6-4pp", "cpd"]: 
         return "'CC','CT','TC','TT'"
 
-
-#def getInput(sample, inputExist, inputList, inputIdx, sampleList, build):
 def getInput(sample, metadata, build):
 
     if "simulation_input" in metadata[sample]:
@@ -164,10 +162,10 @@ def mappedReads(*files):
 
     return lineNumber
 
-def allInput(build, sampleList, metadata):
+def allInput(build, metadata):
 
     inputList = []
-    for sample in sampleList:
+    for sample in metadata.keys():
 
         method = metadata[sample]["method"].upper()
         sample_dir = f"results/{method}/{sample}/" 
@@ -198,7 +196,7 @@ def allInput(build, sampleList, metadata):
             inputList.append(f"{sample_dir}{sample}_{build}_sorted_plus.bed") 
             inputList.append(f"{sample_dir}{sample}_{build}_sorted_minus.bed") 
     
-    if len(sampleList) > 1:
+    if len(metadata.keys()) > 1:
 
         inputList.append("results/scatterplot_PearsonCorr_bigwigScores.pdf")
         inputList.append("results/PearsonCorr_bigwigScores.tab")

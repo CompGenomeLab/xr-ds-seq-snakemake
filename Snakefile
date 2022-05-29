@@ -11,8 +11,7 @@ wildcard_constraints:
     
 rule all:
     input:
-        lambda w: allInput(config["genome"]["build"], config["sample"], 
-            config["meta"]),
+        lambda w: allInput(config["genome"]["build"], config["meta"]),
 
 # Downloading reference genome and generating related files  
 include: "workflow/rules/genome_download.smk"

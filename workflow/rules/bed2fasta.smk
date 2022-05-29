@@ -76,7 +76,7 @@ rule bed2fasta_xr:
 
 rule bed2fasta_input:
     input:
-        bed=lambda w: input4inpFasta(w, config["meta"], config["sample"]),
+        bed=lambda w: input4inpFasta(w, config["meta"]),
         genome=rules.genome_download.output,
     output:
         "results/input/{samples}/{samples}_{build}.fasta",
