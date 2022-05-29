@@ -6,7 +6,7 @@ rule genomecov_ds:
     output:
         temp("results/{method}/{samples}/{samples}_{build}_DS_sorted_{strand}.bdg"),
     params:
-        read=lambda w, input: mappedReads(input[0], input[1]),
+        read=lambda w, input: mappedReads(input[0]),
     log:
         "logs/rule/analysis/{samples}/{samples}_{build}_{method}_genomecov_ds_{strand}.log",
     benchmark:
@@ -33,7 +33,7 @@ rule genomecov_xr:
     output:
         bed=temp("results/{method}/{samples}/{samples}_{build}_XR_sorted_{strand}.bdg"),
     params:
-        read=lambda w, input: mappedReads(input[0], input[1]),
+        read=lambda w, input: mappedReads(input[0]),
     log:
         "logs/rule/analysis/{samples}/{samples}_{build}_{method}_genomecov_xr_{strand}.log",
     benchmark:
