@@ -168,41 +168,39 @@ def allInput(build, metadata):
     for sample in metadata.keys():
 
         method = metadata[sample]["method"].upper()
-        sample_dir = f"results/{method}/{sample}/" 
+        sdir = "results/processed_files" 
+        sprefix = f"{sample}_{build}_{method}"
         layout = metadata[sample]["layout"]
         simulation = metadata[sample]["simulation_enabled"]
 
-        if layout.lower() == "single":
-            inputList.append(f"{sample_dir}{sample}.html")
-        elif layout.lower() == "paired":
-            inputList.append(f"{sample_dir}{sample}_1.html")
-            inputList.append(f"{sample_dir}{sample}_2.html")
 
-        inputList.append(f"{sample_dir}{sample}_{build}_sorted_nucleotideTable.pdf")
-        inputList.append(f"{sample_dir}{sample}_{build}_sorted_dinucleotideTable.pdf")
-        inputList.append(f"{sample_dir}{sample}_{build}_length_distribution.pdf")
-        inputList.append(f"{sample_dir}{sample}_{build}_{method}_sorted_plus.bw")
-        inputList.append(f"{sample_dir}{sample}_{build}_{method}_sorted_minus.bw")
+        if layout.lower() == "single":
+            inputList.append(f"{sdir}/{sample}.html")
+        elif layout.lower() == "paired":
+            inputList.append(f"{sdir}/{sample}_1.html")
+            inputList.append(f"{sdir}/{sample}_2.html")
+
+        inputList.append(f"{sdir}/{sprefix}_nucleotideTable.pdf")
+        inputList.append(f"{sdir}/{sprefix}_dinucleotideTable.pdf")
+        inputList.append(f"{sdir}/{sprefix}_length_distribution.pdf")
+        inputList.append(f"{sdir}/{sprefix}_plus.bw")
+        inputList.append(f"{sdir}/{sprefix}_minus.bw")
+        inputList.append(f"{sdir}/{sprefix}_plus.bed") 
+        inputList.append(f"{sdir}/{sprefix}_minus.bed") 
 
         if simulation:
-            inputList.append(f"{sample_dir}{sample}_{build}_{method}_sim_nucleotideTable.pdf")
-            inputList.append(f"{sample_dir}{sample}_{build}_{method}_sim_dinucleotideTable.pdf")
-
-        if method == "DS":
-            inputList.append(f"{sample_dir}{sample}_{build}_sorted_ds_dipyrimidines_plus.bed") 
-            inputList.append(f"{sample_dir}{sample}_{build}_sorted_ds_dipyrimidines_minus.bed") 
-
-        elif method == "XR":
-            inputList.append(f"{sample_dir}{sample}_{build}_sorted_plus.bed") 
-            inputList.append(f"{sample_dir}{sample}_{build}_sorted_minus.bed") 
+            inputList.append(f"{sdir}/{sprefix}_sim_nucleotideTable.pdf")
+            inputList.append(f"{sdir}/{sprefix}_sim_dinucleotideTable.pdf")
+            inputList.append(f"{sdir}/{sprefix}_sim_plus.bed")
+            inputList.append(f"{sdir}/{sprefix}_sim_minus.bed")
     
     if len(metadata.keys()) > 1:
 
-        inputList.append("results/scatterplot_PearsonCorr_bigwigScores.pdf")
-        inputList.append("results/PearsonCorr_bigwigScores.tab")
-        inputList.append("results/heatmap_SpearmanCorr_readCounts.pdf")
-        inputList.append("results/SpearmanCorr_readCounts.tab")
-        inputList.append("results/PCA_readCounts.pdf")
+        inputList.append(f"{sdir}/scatterplot_PearsonCorr_bigwigScores.pdf")
+        inputList.append(f"{sdir}/PearsonCorr_bigwigScores.tab")
+        inputList.append(f"{sdir}/heatmap_SpearmanCorr_readCounts.pdf")
+        inputList.append(f"{sdir}/SpearmanCorr_readCounts.tab")
+        inputList.append(f"{sdir}/PCA_readCounts.pdf")
             
     #print(inputList)
     return inputList

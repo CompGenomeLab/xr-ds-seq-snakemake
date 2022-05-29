@@ -5,7 +5,7 @@ rule bedGraphToBigWig:
         index=rules.genome_indexing.output,
     output:
         sort=temp("results/{method}/{samples}/{samples}_{build}_{method}_resorted_{strand}.bdg"),
-        bw=report("results/{method}/{samples}/{samples}_{build}_{method}_sorted_{strand}.bw", 
+        bw=report("results/processed_files/{samples}_{build}_{method}_{strand}.bw", 
                 category="BigWig"),
     log:
         "logs/rule/analysis/{samples}/{samples}_{build}_{method}_bedGraphToBigWig_{strand}.log",

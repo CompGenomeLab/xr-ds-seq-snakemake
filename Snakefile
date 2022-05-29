@@ -7,7 +7,8 @@ configfile: "config/config.yaml"
 include: "workflow/rules/common.smk"
 
 wildcard_constraints:
-    build=config["genome"]["build"]
+    build=config["genome"]["build"],
+    method="XR|DS"
     
 rule all:
     input:
@@ -45,7 +46,6 @@ include: "workflow/rules/genomecov.smk"
 include: "workflow/rules/bedGraphToBigWig.smk"
 include: "workflow/rules/comb_strands.smk"
 include: "workflow/rules/simulation.smk"
-include: "workflow/rules/nucleotide_table_sim.smk"
-include: "workflow/rules/plot_nuc_sim.smk"
 include: "workflow/rules/bam_correlation.smk"
 include: "workflow/rules/bam_corr_graphs.smk"
+include: "workflow/rules/cp_bed.smk"

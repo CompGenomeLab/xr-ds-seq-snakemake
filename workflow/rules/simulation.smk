@@ -6,14 +6,14 @@ rule simulation_ds:
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
         inp_file=lambda w: getInput(w.samples, config["meta"], config["genome"]["build"]),
     output:
-        bed="results/{method}/{samples}/{samples}_{build}_ds_sim.bed",  
+        bed="results/{method}/{samples}/{samples}_{build}_DS_sim.bed",  
         fa="results/{method}/{samples}/{samples}_{build}_ds_sim.fa",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
     log:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation_ds.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation.log",
     benchmark:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation_ds.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation.benchmark.txt",
     conda:
         "../envs/simulation.yaml"
     shell:
@@ -35,14 +35,14 @@ rule simulation_xr:
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2", 
         inp_file=lambda w: getInput(w.samples, config["meta"], config["genome"]["build"]),
     output:
-        bed="results/{method}/{samples}/{samples}_{build}_xr_sim.bed",
+        bed="results/{method}/{samples}/{samples}_{build}_XR_sim.bed",
         fa="results/{method}/{samples}/{samples}_{build}_xr_sim.fa",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
     log:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation_xr.log",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation.log",
     benchmark:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation_xr.benchmark.txt",
+        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation.benchmark.txt",
     conda:
         "../envs/simulation.yaml"
     shell:

@@ -2,13 +2,13 @@ rule bam_corr_graphs:
     input:
         npz=rules.bam_correlation.output.out
     output:
-        scatter=report("results/scatterplot_PearsonCorr_bigwigScores.pdf", 
+        scatter=report("results/processed_files/scatterplot_PearsonCorr_bigwigScores.pdf", 
                 category="Correlation"),
-        tab="results/PearsonCorr_bigwigScores.tab",
-        heatmap=report("results/heatmap_SpearmanCorr_readCounts.pdf", 
+        tab="results/processed_files/PearsonCorr_bigwigScores.tab",
+        heatmap=report("results/processed_files/heatmap_SpearmanCorr_readCounts.pdf", 
                 category="Correlation"),
-        tab2="results/SpearmanCorr_readCounts.tab",
-        pca=report("results/PCA_readCounts.pdf", 
+        tab2="results/processed_files/SpearmanCorr_readCounts.tab",
+        pca=report("results/processed_files/PCA_readCounts.pdf", 
                 category="Correlation"),
     log:
         "logs/rule/figs/bam_corr_graphs.log",

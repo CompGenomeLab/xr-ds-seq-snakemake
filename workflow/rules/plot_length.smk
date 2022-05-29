@@ -3,10 +3,10 @@ rule plot_length:
     input:
         rules.length_distribution.output
     output:
-        report("results/{method}/{samples}/{samples}_{build}_length_distribution.pdf", 
+        report("results/processed_files/{samples}_{build}_{method}_length_distribution.pdf", 
                 category="Length Distribution"),
     params:
-        "{samples}_{build}",
+        "{samples}_{build}_{method}",
     log:
         "logs/rule/figs/{samples}/{samples}_{build}_{method}_plot_length.log",
     benchmark:
