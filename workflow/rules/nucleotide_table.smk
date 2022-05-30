@@ -76,29 +76,29 @@ rule nucleotide_table_xr_sim:
         """
         len="$(awk 'BEGIN{{RS=">";ORS=""}}{{print length($2)"\\n"}}' {input} | sort | uniq -c | sort -k1,1n | tail -1 | awk '{{print $2}}')"
 
-        (echo "`date -R`: Filtering by most occurred read length..." &&
+        ( echo "`date -R`: Filtering by most occurred read length..." &&
         awk -v num="$len" \
         'BEGIN{{RS=">";ORS=""}}length($2)==num{{print ">"$0}}' \
         {input} > {output.filt} &&
         echo "`date -R`: Success!" ||
-        echo "`date -R`: Filtering is failed...") \
+        {{ echo "`date -R`: Filtering is failed..."; exit 1; }} ) \
         > {log} 2>&1
         
-        (echo "`date -R`: Calculating dinucleotide abundance table..." &&
+        ( echo "`date -R`: Calculating dinucleotide abundance table..." &&
         workflow/scripts/fa2kmerAbundanceTable.py \
         -i {output.filt} \
         -k 2 \
         -o {output.dinuc} &&
         echo "`date -R`: Success! Dinucleotide abundance table is calculated." ||
-        echo "`date -R`: Dinucleotide abundace table cannot be calculated...") \
-        >> {log} 2>&1
+        {{ echo "`date -R`: Dinucleotide abundace table cannot be calculated..."; 
+        exit 1; }} ) >> {log} 2>&1
 
-        (echo "`date -R`: Calculating nucleotide abundance table..." &&
+        ( echo "`date -R`: Calculating nucleotide abundance table..." &&
         workflow/scripts/fa2kmerAbundanceTable.py \
         -i {output.filt} \
         -k 1 \
         -o {output.nuc}  &&
         echo "`date -R`: Success! Nucleotide abundance table is calculated." ||
-        echo "`date -R`: Nucleotide abundace table cannot be calculated...") \
-        >> {log} 2>&1
+        {{ echo "`date -R`: Nucleotide abundace table cannot be calculated..."; \
+        exit 1; }} ) >> {log} 2>&1
         """
