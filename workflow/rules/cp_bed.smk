@@ -25,7 +25,7 @@ rule cp_bed_ds:
 rule cp_bed_xr:
     input:
         plus="results/XR/{samples}/{samples}_{build}_sorted_plus.bed",
-        minus="results/XR/{samples}/{samples}_{build}_sorted_plus.bed",
+        minus="results/XR/{samples}/{samples}_{build}_sorted_minus.bed",
     output:
         plus="results/processed_files/{samples}_{build}_XR_plus.bed",
         minus="results/processed_files/{samples}_{build}_XR_minus.bed",
