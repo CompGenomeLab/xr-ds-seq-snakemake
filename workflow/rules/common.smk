@@ -183,16 +183,18 @@ def allInput(build, metadata):
         inputList.append(f"{sdir}/{sprefix}_nucleotideTable.pdf")
         inputList.append(f"{sdir}/{sprefix}_dinucleotideTable.pdf")
         inputList.append(f"{sdir}/{sprefix}_length_distribution.pdf")
-        inputList.append(f"{sdir}/{sprefix}_plus.bw")
-        inputList.append(f"{sdir}/{sprefix}_minus.bw")
         inputList.append(f"{sdir}/{sprefix}_plus.bed") 
         inputList.append(f"{sdir}/{sprefix}_minus.bed") 
+        inputList.append(f"{sdir}/{sprefix}_plus.bw")
+        inputList.append(f"{sdir}/{sprefix}_minus.bw")
 
         if simulation:
             inputList.append(f"{sdir}/{sprefix}_sim_nucleotideTable.pdf")
             inputList.append(f"{sdir}/{sprefix}_sim_dinucleotideTable.pdf")
             inputList.append(f"{sdir}/{sprefix}_sim_plus.bed")
             inputList.append(f"{sdir}/{sprefix}_sim_minus.bed")
+            inputList.append(f"{sdir}/{sprefix}_sim_plus.bw")
+            inputList.append(f"{sdir}/{sprefix}_sim_minus.bw")
     
     if len(metadata.keys()) > 1:
 
