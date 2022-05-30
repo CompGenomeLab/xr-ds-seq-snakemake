@@ -52,7 +52,7 @@ rule simulation_xr:
         {input.genome} \
         {input.inp_file} \
         {params.ref_genome} \
-        {output.fa} \
         {output.bed} \
+        {output.fa} \
         {log}
         """
