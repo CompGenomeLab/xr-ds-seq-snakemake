@@ -15,37 +15,31 @@ rule all:
         lambda w: allInput(config["genome"]["build"], config["meta"]),
 
 # Downloading reference genome and generating related files  
-include: "workflow/rules/genome_download.smk"
-include: "workflow/rules/genome_build.smk"
-include: "workflow/rules/genome_indexing.smk"
-include: "workflow/rules/genome_idx2ron.smk"
+include: "workflow/rules/prepare_genome.smk"
 
-include: "workflow/rules/sra.smk"
-#include: "workflow/rules/rename_raw.smk"
+# Download and rename (if necessary) sample files
+include: "workflow/rules/download_sample.smk"
 
-include: "workflow/rules/sra_input.smk"
-#include: "workflow/rules/rename_raw_input.smk"
-
+# Quality control
 include: "workflow/rules/fastqc.smk"
-include: "workflow/rules/adaptor_handling.smk"
-include: "workflow/rules/align.smk"
-include: "workflow/rules/sort_rmPG.smk"
-include: "workflow/rules/mark_duplicates.smk"
-include: "workflow/rules/bam2bed.smk"
-include: "workflow/rules/sort_filter.smk"
-include: "workflow/rules/length_distribution.smk"
-include: "workflow/rules/plot_length.smk"
-include: "workflow/rules/length_mode.smk"
-include: "workflow/rules/sep_strands.smk"
-include: "workflow/rules/reposition.smk"
-include: "workflow/rules/bed2fasta.smk"
-include: "workflow/rules/nucleotide_table.smk"
-include: "workflow/rules/plot_nuc.smk"
-include: "workflow/rules/filtbyMotifs.smk"
-include: "workflow/rules/genomecov.smk"
-include: "workflow/rules/bedGraphToBigWig.smk"
-include: "workflow/rules/comb_strands.smk"
+
+# Adaptor handling, mapping, quality trimming, and converting to bed
+include: "workflow/rules/fastq2bed.smk"
+
+# Sorting, filtering, calculating length dist., filtering damage-seq samples by
+# motif
+include: "workflow/rules/process_bed.smk"
+
+# Simulating the sample reads
 include: "workflow/rules/simulation.smk"
-include: "workflow/rules/bam_correlation.smk"
-include: "workflow/rules/bam_corr_graphs.smk"
-include: "workflow/rules/cp_bed.smk"
+
+# BigWig files for igv
+include: "workflow/rules/bed2bigWig.smk"
+
+# Plots
+include: "workflow/rules/plot_length.smk"
+include: "workflow/rules/plot_nuc.smk"
+include: "workflow/rules/plot_bam_corr.smk"
+
+# Copy bed files to final destination
+include: "workflow/rules/copy_bed.smk"

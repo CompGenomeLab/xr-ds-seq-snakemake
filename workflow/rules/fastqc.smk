@@ -9,7 +9,7 @@ rule fastqc_se:
         samples='|'.join([s for s in config["meta"].keys()]),
     params: ""
     benchmark:
-        "logs/rule/analysis/{samples}/{samples}_fastqc.benchmark.txt",
+        "logs/rule/fastqc_se/{samples}.benchmark.txt",
     threads: 1
     wrapper:
         "0.69.0/bio/fastqc"
@@ -24,7 +24,7 @@ rule fastqc_pe:
         samples='|'.join([s for s in config["meta"].keys()]),
     params: ""
     benchmark:
-        "logs/rule/analysis/{samples}/{samples}_fastqc_{ext}.benchmark.txt",
+        "logs/rule/fastqc_pe/{samples}_{ext}.benchmark.txt",
     threads: 1
     wrapper:
         "0.69.0/bio/fastqc"

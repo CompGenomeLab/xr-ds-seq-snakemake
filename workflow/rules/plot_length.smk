@@ -8,9 +8,9 @@ rule plot_length:
     params:
         "{samples}_{build}_{method}",
     log:
-        "logs/rule/figs/{samples}/{samples}_{build}_{method}_plot_length.log",
+        "logs/rule/plot_length/{samples}_{build}_{method}.log",
     benchmark:
-        "logs/rule/figs/{samples}/{samples}_{build}_{method}_plot_length.benchmark.txt",
+        "logs/rule/plot_length/{samples}_{build}_{method}.benchmark.txt",
     conda:
         "../envs/plot_nuc.yaml"
     shell:  

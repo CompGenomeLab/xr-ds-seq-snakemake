@@ -1,4 +1,4 @@
-rule cp_bed_ds:
+rule copy_bed_ds:
     input:
         plus="results/DS/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_plus.bed",
         minus="results/DS/{samples}/{samples}_{build}_sorted_ds_dipyrimidines_minus.bed",
@@ -6,9 +6,9 @@ rule cp_bed_ds:
         plus="results/processed_files/{samples}_{build}_DS_plus.bed",
         minus="results/processed_files/{samples}_{build}_DS_minus.bed",
     log:
-        "logs/rule/analysis/{samples}/{samples}_{build}_cp_bed_ds.log",
+        "logs/rule/copy_bed_ds/{samples}_{build}.log",
     benchmark:
-        "logs/rule/analysis/{samples}/{samples}_{build}_cp_bed_ds.benchmark.txt",
+        "logs/rule/copy_bed_ds/{samples}_{build}.benchmark.txt",
     shell:  
         """
         (echo "`date -R`: Copy plus stranded reads..." &&
@@ -22,7 +22,7 @@ rule cp_bed_ds:
         {{ echo "`date -R`: Process failed..."; rm {output.minus}; exit 1; }}  )  >> {log} 2>&1
         """
 
-rule cp_bed_xr:
+rule copy_bed_xr:
     input:
         plus="results/XR/{samples}/{samples}_{build}_sorted_plus.bed",
         minus="results/XR/{samples}/{samples}_{build}_sorted_minus.bed",
@@ -30,9 +30,9 @@ rule cp_bed_xr:
         plus="results/processed_files/{samples}_{build}_XR_plus.bed",
         minus="results/processed_files/{samples}_{build}_XR_minus.bed",
     log:
-        "logs/rule/analysis/{samples}/{samples}_{build}_cp_bed_xr.log",
+        "logs/rule/copy_bed_xr/{samples}_{build}.log",
     benchmark:
-        "logs/rule/analysis/{samples}/{samples}_{build}_cp_bed_xr.benchmark.txt",
+        "logs/rule/copy_bed_xr/{samples}_{build}.benchmark.txt",
     shell:  
         """
         (echo "`date -R`: Copy plus stranded reads..." &&

@@ -11,9 +11,9 @@ rule simulation_ds:
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
     log:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation.log",
+        "logs/rule/simulation_ds/{samples}_{build}_{method}.log",
     benchmark:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation.benchmark.txt",
+        "logs/rule/simulation_ds/{samples}_{build}_{method}.benchmark.txt",
     conda:
         "../envs/simulation.yaml"
     shell:
@@ -40,9 +40,9 @@ rule simulation_xr:
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
     log:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation.log",
+        "logs/rule/simulation_xr/{samples}_{build}_{method}.log",
     benchmark:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_simulation.benchmark.txt",
+        "logs/rule/simulation_xr/{samples}_{build}_{method}.benchmark.txt",
     conda:
         "../envs/simulation.yaml"
     shell:

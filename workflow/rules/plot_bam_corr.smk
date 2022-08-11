@@ -1,4 +1,27 @@
-rule bam_corr_graphs:
+rule bam_correlation:
+    input:
+        lambda w: input4PCA(config["meta"], config["genome"]["build"]),
+    output:
+        out="results/readCounts.npz",
+        raw_out="results/readCounts.tab",
+    log:
+        "logs/rule/bam_correlation/bam_correlation.log",
+    benchmark:
+        "logs/rule/bam_correlation/bam_correlation.benchmark.txt",
+    conda:
+        "../envs/bam_correlation.yaml"
+    shell:  
+        """
+        (echo "`date -R`: MultiBam summary..." &&
+        multiBamSummary bins \
+        --bamfiles {input} \
+        --minMappingQuality 20 \
+        -out {output.out} --outRawCounts {output.raw_out} &&
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; rm {output.out}; exit 1; }} ) > {log} 2>&1
+        """
+
+rule plot_bam_corr:
     input:
         npz=rules.bam_correlation.output.out
     output:
@@ -11,9 +34,9 @@ rule bam_corr_graphs:
         pca=report("results/processed_files/PCA_readCounts.pdf", 
                 category="Correlation"),
     log:
-        "logs/rule/figs/bam_corr_graphs.log",
+        "logs/rule/plot_bam_corr/plot_bam_corr.log",
     benchmark:
-        "logs/rule/figs/bam_corr_graphs.benchmark.txt",
+        "logs/rule/plot_bam_corr/plot_bam_corr.benchmark.txt",
     conda:
         "../envs/bam_correlation.yaml"
     shell:  

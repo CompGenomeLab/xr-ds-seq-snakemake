@@ -10,9 +10,9 @@ rule genomecov_ds:
     params:
         read=lambda w, input: mappedReads(input[0], input[1]),
     log:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_genomecov_ds.log",
+        "logs/rule/genomecov_ds/{samples}_{build}_{method}.log",
     benchmark:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_genomecov_ds.benchmark.txt",
+        "logs/rule/genomecov_ds/{samples}_{build}_{method}.benchmark.txt",
     conda:
         "../envs/bedtools.yaml"
     shell:  
@@ -49,9 +49,9 @@ rule genomecov_xr:
     params:
         read=lambda w, input: mappedReads(input[0], input[1]),
     log:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_genomecov_xr.log",
+        "logs/rule/genomecov_xr/{samples}_{build}_{method}.log",
     benchmark:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_genomecov_xr.benchmark.txt",
+        "logs/rule/genomecov_xr/{samples}_{build}_{method}.benchmark.txt",
     conda:
         "../envs/bedtools.yaml"
     shell:  
@@ -88,9 +88,9 @@ rule genomecov_sim:
     params:
         read=lambda w, input: mappedReads(input[0], input[1]),
     log:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_genomecov_sim.log",
+        "logs/rule/genomecov_sim/{samples}_{build}_{method}.log",
     benchmark:
-        "logs/rule/analysis/{samples}/{samples}_{build}_{method}_genomecov_sim.benchmark.txt",
+        "logs/rule/genomecov_sim/{samples}_{build}_{method}.benchmark.txt",
     conda:
         "../envs/bedtools.yaml"
     shell:  
@@ -114,4 +114,48 @@ rule genomecov_sim:
         > {output.minus} &&
         echo "`date -R`: Success! Genome coverage is calculated." || 
         {{ echo "`date -R`: Process failed..."; rm {output.minus}; exit 1; }}  ) >> {log} 2>&1
+        """
+        
+rule bedGraphToBigWig:
+    input:
+        bdg="results/{method}/{samples}/{samples}_{build}_{method}_sorted_{strand}.bdg",
+        index=rules.genome_indexing.output,
+    output:
+        sort=temp("results/{method}/{samples}/{samples}_{build}_{method}_resorted_{strand}.bdg"),
+        bw="results/processed_files/{samples}_{build}_{method}_{strand}.bw",
+    log:
+        "logs/rule/bedGraphToBigWig/{samples}_{build}_{method}_{strand}.log",
+    benchmark:
+        "logs/rule/bedGraphToBigWig/{samples}_{build}_{method}_{strand}.benchmark.txt",
+    conda:
+        "../envs/bedGraphToBigWig.yaml"
+    shell:  
+        """
+        (echo "`date -R`: Converting bedGraph to bigWig..." &&
+        LC_COLLATE=C sort -k1,1 -k2,2n {input.bdg} > {output.sort} &&
+        bedGraphToBigWig {output.sort} {input.index} {output.bw} &&
+        echo "`date -R`: Success! Conversion is done." || 
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
+        """
+    
+rule bedGraphToBigWig_sim:
+    input:
+        bdg="results/{method}/{samples}/{samples}_{build}_{method}_sim_{strand}.bdg",
+        index=rules.genome_indexing.output,
+    output:
+        sort=temp("results/{method}/{samples}/{samples}_{build}_{method}_sim_resorted_{strand}.bdg"),
+        bw="results/processed_files/{samples}_{build}_{method}_sim_{strand}.bw", 
+    log:
+        "logs/rule/bedGraphToBigWig_sim/{samples}_{build}_{method}_{strand}.log",
+    benchmark:
+        "logs/rule/bedGraphToBigWig_sim/{samples}_{build}_{method}_{strand}.benchmark.txt",
+    conda:
+        "../envs/bedGraphToBigWig.yaml"
+    shell:  
+        """
+        (echo "`date -R`: Converting bedGraph to bigWig..." &&
+        LC_COLLATE=C sort -k1,1 -k2,2n {input.bdg} > {output.sort} &&
+        bedGraphToBigWig {output.sort} {input.index} {output.bw} &&
+        echo "`date -R`: Success! Conversion is done." || 
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
         """
