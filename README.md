@@ -85,20 +85,12 @@ recommended by Snakemake:
 Before running the workflow, you should edit the configuration files. 
 Both XR-seq and Damage-seq workflows run with the same configuration files, 
 namely: `config_initial.yaml` and `config.yaml`. 
-In most of the cases, 
-`config_initial.yaml` file shouldn't be modified 
-by the user since it contains the configuration settings 
-that are common for all XR-seq and Damage-seq experiments. 
-A config example and description of each parameter 
-for "config.yaml" are given below:
+In most of the cases, `config_initial.yaml` file shouldn't be modified 
+by the user since it contains the configuration settings that are common for 
+all XR-seq and Damage-seq experiments. A config example and description 
+of each parameter for "config.yaml" are given below:
 
 ```
-sample: 
- - "NHF1_CPD_1h_XR_rep1"
- - "NHF1_CPD_1h_XR_rep2"
- - "NHF1_CPD_1h_DS_rep1"
- - "NHF1_CPD_1h_DS_rep2"
-
 meta: 
   NHF1_CPD_1h_XR_rep1:
     srr_id: "SRR3062593:SRR3062594:SRR3062595" 
@@ -138,29 +130,15 @@ genome:
   link: "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/GRCh37.p13.genome.fa.gz"
 ```
 
-- `sample`: The name of the sample file w/o the extension. 
-    Multiple sample names can be given in the below format:
-
-    ```
-    sample: 
-        - "SAMPLE_1"
-        - "SAMPLE_2"
-        - "SAMPLE_3"
-    ```
-
-    - Using the given sample name, the workflow will look for 
-        `{SAMPLE}.fastq.gz` as raw data. 
-        Therefore, the fastq file must be gzipped before running the workflow.
-
-    - If the layout of the given sample is paired-end, 
-        the workflow will look for 
-        `{SAMPLE}_R1.fastq.gz`, `{SAMPLE}_R2.fastq.gz` and 
-        `{SAMPLE}_1.fastq.gz`, `{SAMPLE}_2.fastq.gz` as raw data.
-        Therefore, paired-end sample files must contain `_R1/2` or `_1/2` 
-        suffixes and the suffixes should not be given 
-        in the configuration file to the `sample`.
-
-- `meta`: contains the metadata of each sample. 
+- `meta`: contains the name of each sample w/o the extension.
+    Using the given sample name, the workflow will look for `{SAMPLE}.fastq.gz` 
+    as raw data. Therefore, the fastq file must be gzipped before running the 
+    workflow. If the layout of the given sample is paired-end, the workflow will 
+    look for `{SAMPLE}_R1.fastq.gz`, `{SAMPLE}_R2.fastq.gz` or 
+    `{SAMPLE}_1.fastq.gz`, `{SAMPLE}_2.fastq.gz` as raw data. Therefore, 
+    paired-end sample files must contain `_R1/2` or `_1/2` suffixes and the 
+    suffixes should not be given to the sample names under `meta`. The 
+    description of parameters under each sample name are below: 
 
     - `srr_id`: The SRR code of the sample. 
 
@@ -229,9 +207,8 @@ genome:
 After adjusting the configuration file, you can run the workflow 
 from `xr-ds-seq-snakemake` directory.
 
-    ```
     snakemake --use-conda --cores 64 --keep-going --rerun-incomplete -pr 
-    ```
+
 
 | Note: To run the workflow on [Slurm Workload Manager](https://slurm.schedmd.com/srun.html) as set of jobs, `--profile` flag must be provided instead of `--cores`: |  
 | --- |
