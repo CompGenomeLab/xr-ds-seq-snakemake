@@ -8,6 +8,12 @@ import subprocess
 
 def getPaired(sample, read, sample_dir):
 
+    """"
+    Finds the suffix of a given sample name.
+
+    Used rules: rename_raw, rename_raw_input 
+    """"
+
     pairedR1 = f"{sample_dir}{sample}_R1.fastq.gz"
     paired1 = f"{sample_dir}{sample}_1.fastq.gz"
     
@@ -24,6 +30,12 @@ def getPaired(sample, read, sample_dir):
         return f"{sample_dir}{sample}_2.fastq.gz"
 
 def getMethodParams(wildcards, metadata, parameter, XR, DS):
+
+    """"
+    Retrieves the given parameters from config_initial.yaml. 
+
+    Used rules: cutadapt_se, cutadapt_pe, bam2bed_se, bam2bed_pe
+    """"
 
     method = metadata[wildcards.samples]["method"].upper()
     layout = metadata[wildcards.samples]["layout"].lower()
@@ -61,6 +73,12 @@ def getMethodParams(wildcards, metadata, parameter, XR, DS):
 
 def input4filter(wildcards, metadata):
 
+    """"
+    Retreives the input file of sort_filter rule.
+
+    Used rules: sort_filter
+    """"
+
     layout = metadata[wildcards.samples]["layout"].lower()
 
     if layout == "single":
@@ -70,14 +88,17 @@ def input4filter(wildcards, metadata):
 
 def input4inpFasta(wildcards, metadata):
 
+    """"
+    Retreives the input file of bed2fasta_input rule based on the simulation 
+    info in the config file.
+
+    Used rules: bed2fasta_input
+    """"
+
     for sample in metadata.keys():
 
-        try:
-            if metadata[sample]["simulation_input"] == wildcards.samples:
-                layout = metadata[sample]["simulation_input_layout"]
-                break
-        except:
-            continue
+        if metadata[sample]["simulation"]["input"]["name"] == wildcards.samples:
+            layout = metadata[sample]["simulation"]["input"]["layout"]
 
     if layout.lower() == "single":
         return "results/input/{samples}/{samples}_{build}_se.bed"
@@ -85,6 +106,12 @@ def input4inpFasta(wildcards, metadata):
         return "results/input/{samples}/{samples}_{build}_pe.bed"
 
 def input4PCA(metadata, build):
+
+    """"
+    Retreives the input file of bam_correlation rule.
+
+    Used rules: bam_correlation
+    """"
 
     inputList = []
     for sample in metadata.keys():
@@ -101,6 +128,12 @@ def input4PCA(metadata, build):
 
 def input4nucTable(wildcards, metadata):
 
+    """"
+    Retreives the input file of nucleotide_table rule.
+
+    Used rules: nucleotide_table
+    """"
+
     method = metadata[wildcards.samples]["method"].upper()
 
     if method == "XR":
@@ -109,6 +142,13 @@ def input4nucTable(wildcards, metadata):
         return "results/DS/{samples}/{samples}_{build}_sorted_10.fa"
 
 def getMotif(sample, product):
+
+    """"
+    Filters reads with a motif based on the damage type of the damage-seq 
+    sample.
+
+    Used rules: filtbyMotifs
+    """"
 
     if product.lower() in ["oxaliplatin", "cisplatin", "bpdedg"]: 
         return "'.{4}(g|G){2}.{4}'"
@@ -121,6 +161,12 @@ def getMotif(sample, product):
 
 def getDinuc(sample, product):
     
+    """"
+    Selects the nucleotides to plot based on the damage type of the sample.
+
+    Used rules: plot_nuc, plot_nuc_sim
+    """"
+
     if product.lower() in ["oxaliplatin", "cisplatin"]: 
         return "'GG'"
     
@@ -129,15 +175,25 @@ def getDinuc(sample, product):
 
 def getInput(sample, metadata, build):
 
-    if "simulation_input" in metadata[sample]:
+    """"
+    Retrieves the input file of the sample for simulation.
 
-        input_name = metadata[sample]["simulation_input"]    
+    Used rules: simulation_ds, simulation_xr
+    """"
+
+    if "name" in metadata[sample]["simulation"]["input"]:
+
+        input_name = metadata[sample]["simulation"]["input"]["name"]    
         return f"results/input/{input_name}/{input_name}_{build}.fasta"
     
     else:
         return f"resources/ref_genomes/{build}/genome_{build}.ron" 
 
 def lineNum(file):
+
+    """"
+    Calculates the line number of a given file.
+    """"
     
     linenum = 0
     if os.path.exists(file):
@@ -156,6 +212,13 @@ def lineNum(file):
 
 def mappedReads(*files):
 
+    """"
+    Sums the line number of all given files. Used for calculated mapped reads
+    of a sample.
+
+    Used rules: genomecov_ds, genomecov_xr, genomecov_sim
+    """"
+
     lineNumber = 0
     for file in files:
         lineNumber += lineNum(str(file))
@@ -164,6 +227,12 @@ def mappedReads(*files):
 
 def allInput(build, metadata):
 
+    """"
+    Returns the names of the output files to be produced when the pipeline ends.
+
+    Used rules: all (this is the name of the rule)
+    """"
+
     inputList = []
     for sample in metadata.keys():
 
@@ -171,7 +240,7 @@ def allInput(build, metadata):
         sdir = "results/processed_files" 
         sprefix = f"{sample}_{build}_{method}"
         layout = metadata[sample]["layout"]
-        simulation = metadata[sample]["simulation_enabled"]
+        simulation = metadata[sample]["simulation"]["enabled"]
 
 
         if layout.lower() == "single":
