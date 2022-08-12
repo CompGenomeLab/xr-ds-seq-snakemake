@@ -87,7 +87,6 @@ meta:
     simulation:
       enabled: True
       input: 
-        enabled: True
         name: "SRR5461463"
         layout: "paired"
   NHF1_CPD_1h_XR_rep2:
@@ -98,7 +97,6 @@ meta:
     simulation:
       enabled: True
       input: 
-        enabled: True
         name: "SRR5461463"
         layout: "paired"
   NHF1_CPD_1h_DS_rep1:
@@ -109,7 +107,6 @@ meta:
     simulation:
       enabled: True
       input: 
-        enabled: True
         name: "SRR5461463"
         layout: "paired"
   NHF1_CPD_1h_DS_rep2:
@@ -120,7 +117,6 @@ meta:
     simulation:
       enabled: True
       input: 
-        enabled: True
         name: "SRR5461463"
         layout: "paired"
 
@@ -167,29 +163,28 @@ genome:
         - Cisplatin: `cisplatin`;
         - Oxaliplatin: `oxaliplatin`. 
 
-    - `simulation_enabled`: True if you want to generate simulated reads of 
+    - `simulation`: 
+    
+        - `enabled`: True if you want to generate simulated reads of 
         your sample via [boquila](https://github.com/CompGenomeLab/boquila). 
         If not, False should be provided.
 
-    - `simulation_input`: Simulation can be either done using 
-        the reference genome or with a provided input file. If an input file
-        will be used, it's SRR code should be given. 
+        - `input`: If simulation will be done without an input file, `input` 
+                parameter and its subparameters should be removed.
+                Contains `name` and `layout` parameters:
+        
+            - `name`: Simulation can be either done using the reference genome 
+                or with a provided input file. If an input file
+                will be used, it's SRR code should be given. 
+                If the srr file of the input is already provided in the 
+                `resources/input/` directory in gzipped fastq format, 
+                workflow will directly use that file. Even in that case,
+                this parameter should be used as it will be used to set the name
+                of the input file.
 
-        - If the srr file of the input is already provided in the 
-            `resources/input/` directory in gzipped fastq format, 
-            workflow will directly use that file. Even in that case,
-            this parameter should be used as it will be used to set the name
-            of the input file.
-
-        - If simulation will be done without an input file, this parameter 
-            should be removed.
-
-    - `simulation_input_layout`: Whether the given input file is sequenced as 
-        paired-end or single-end. 
-        'Single' or 'Paired' (case-insensitive).
-
-        - If simulation will be done without an input file, this parameter 
-            should be removed.
+            - `layout`: Whether the given input file is sequenced as 
+                paired-end or single-end. 
+                'Single' or 'Paired' (case-insensitive).
 
 - `genome`: Contains 2 parameters, which are `build` and `link`.
 
