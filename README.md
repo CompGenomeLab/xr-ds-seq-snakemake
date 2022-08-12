@@ -84,33 +84,45 @@ meta:
     method: "XR"
     layout: "single"
     product: "CPD"
-    simulation_enabled: True
-    simulation_input: "SRR5461463" 
-    simulation_input_layout: "paired"
+    simulation:
+      enabled: True
+      input: 
+        enabled: True
+        name: "SRR5461463"
+        layout: "paired"
   NHF1_CPD_1h_XR_rep2:
     srr_id: "SRR3062596:SRR3062597:SRR3062598" 
     method: "XR"
     layout: "single"
     product: "CPD"
-    simulation_enabled: True
-    simulation_input: "SRR5461463" 
-    simulation_input_layout: "paired"
+    simulation:
+      enabled: True
+      input: 
+        enabled: True
+        name: "SRR5461463"
+        layout: "paired"
   NHF1_CPD_1h_DS_rep1:
     srr_id: "SRR5461433" 
     method: "DS"
     layout: "paired"
     product: "CPD"
-    simulation_enabled: True
-    simulation_input: "SRR5461463" 
-    simulation_input_layout: "paired"
+    simulation:
+      enabled: True
+      input: 
+        enabled: True
+        name: "SRR5461463"
+        layout: "paired"
   NHF1_CPD_1h_DS_rep2:
     srr_id: "SRR5461434" 
     method: "DS"
     layout: "paired"
     product: "CPD"
-    simulation_enabled: True
-    simulation_input: "SRR5461463" 
-    simulation_input_layout: "paired"
+    simulation:
+      enabled: True
+      input: 
+        enabled: True
+        name: "SRR5461463"
+        layout: "paired"
 
 genome:
   build: "hg19"
