@@ -2,7 +2,7 @@ rule sra_se:
     output:
         "resources/samples/{samples}.fastq.gz", 
     params:
-        srr=lambda w: config["meta"][w.samples]["srr_id"],
+        srr=lambda w: getSRR(w, config["meta"]), 
         name="{samples}",
     log:
         "logs/rule/sra_se/{samples}.log",
@@ -50,7 +50,7 @@ rule sra_pe:
         read1="resources/samples/{samples}_1.fastq.gz", 
         read2="resources/samples/{samples}_2.fastq.gz", 
     params:
-        srr=lambda w: config["meta"][w.samples]["srr_id"],
+        srr=lambda w: getSRR(w, config["meta"]), 
         name="{samples}",
     log:
         "logs/rule/sra_pe/{samples}.log",
