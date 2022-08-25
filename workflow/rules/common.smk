@@ -71,6 +71,19 @@ def getMethodParams(wildcards, metadata, parameter, XR, DS):
         elif method == "DS":
             return DS["samtools_pe"]
 
+def getSRR(wildcards, metadata):
+
+    """
+    Gets the SRR id if there is one. 
+
+    Used rules: sra_se, sra_pe
+    """
+
+    if "srr_id" in metadata[wildcards.samples]:
+        return metadata[wildcards.samples]["srr_id"]
+    else:
+        return " "
+
 def input4filter(wildcards, metadata):
 
     """
@@ -201,11 +214,9 @@ def lineNum(file):
             for line in f:
                 linenum += 1
 
-    warnMessage = (f"\n{file} file is either empty or does not exists!\n" + 
-        "It is expected if this is a dry-run. The file will be produced " + 
-        "after the execution.")
+    warnMessage = (f"\n{file} file is empty!\n")
 
-    if linenum == 0:
+    if linenum == 0 and os.path.exists(file):
         warnings.warn(warnMessage)
 
     return linenum
