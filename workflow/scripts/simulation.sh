@@ -47,6 +47,9 @@ else
 
     ( echo "`date -R`: Aligning fasta file..." &&
     bowtie2 \
+    -p 16 \
+    --seed 1 \
+    --reorder \
     -x $4 \
     -f $6 -S $6.sam &&
     echo "`date -R`: Success! Alignment is done." || 

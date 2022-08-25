@@ -47,8 +47,8 @@ rule bowtie2_se:
         bam="results/{method}/{samples}/{samples}_cutadapt_se_{build}.bam",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
-        extra="--seed 1",
-    threads: 16  
+        extra="--seed 1 --reorder",
+    threads: 32  
     log:
         "logs/rule/bowtie2_se/{samples}_{build}_{method}.log",
     benchmark:
@@ -81,8 +81,8 @@ rule bowtie2_pe:
         bam="results/{method}/{samples}/{samples}_cutadapt_pe_{build}.bam",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
-        extra="-X 1000 --seed 1",
-    threads: 16  
+        extra="-X 1000 --seed 1 --reorder",
+    threads: 32  
     log:
         "logs/rule/bowtie2_pe/{samples}_{build}_{method}.log",
     benchmark:
@@ -115,8 +115,8 @@ rule bowtie2_se_input:
         bam="results/input/{samples}/{samples}_se_{build}.bam",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
-        extra="--seed 1",
-    threads: 16  
+        extra="--seed 1 --reorder",
+    threads: 32  
     log:
         "logs/rule/bowtie2_se_input/{samples}_{build}.log",
     benchmark:
@@ -149,8 +149,8 @@ rule bowtie2_pe_input:
         bam="results/input/{samples}/{samples}_pe_{build}.bam",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
-        extra="-X 1000 --seed 1",
-    threads: 16  
+        extra="-X 1000 --seed 1 --reorder",
+    threads: 32  
     log:
         "logs/rule/bowtie2_pe_input/{samples}_{build}.log",
     benchmark:
