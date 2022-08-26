@@ -1,8 +1,5 @@
-channels:
-  - bioconda
-  - conda-forge
-  - defaults
+name: align
 dependencies:
-  - bowtie2 ==2.4.1  
-  - samtools ==1.10
-  - tbb ==2020.2
+  - bioconda::bowtie2 ==2.4.1  
+  - bioconda::samtools ==1.10
+  - conda-forge::tbb ==2020.2

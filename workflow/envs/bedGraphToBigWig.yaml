@@ -1,6 +1,3 @@
-channels:
-  - bioconda
-  - conda-forge
-  - defaults
+name: bedGraphToBigWig
 dependencies:
-  - ucsc-bedgraphtobigwig == 377
+  - bioconda::ucsc-bedgraphtobigwig == 377

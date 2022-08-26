@@ -1,6 +1,4 @@
 name: plot_nuc
-channels:
-  - defaults
 dependencies:
   - conda-forge::r-base ==3.5.1
   - conda-forge::r-argparser ==0.4

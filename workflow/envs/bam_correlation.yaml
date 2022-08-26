@@ -1,5 +1,3 @@
 name: bam_correlation
-channels:
-  - bioconda
 dependencies:
-  - deeptools ==3.1.3
+  - bioconda::deeptools ==3.1.3
