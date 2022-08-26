@@ -56,8 +56,15 @@ rule genome_indexing:
         "logs/rule/genome_indexing/{build}.log",
     benchmark:
         "logs/rule/genome_indexing/{build}.benchmark.txt",
-    wrapper:
-        "0.69.0/bio/samtools/faidx"
+    conda:
+        "../envs/bedtools.yaml"
+    shell:
+        """
+        (echo "`date -R`: Creating fai file..." &&
+        samtools faidx {input} &&
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  ) > {log} 2>&1
+        """
 
 rule genome_index2ron:
     input:

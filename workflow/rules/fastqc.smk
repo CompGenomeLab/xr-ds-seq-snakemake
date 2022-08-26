@@ -7,12 +7,29 @@ rule fastqc_se:
         zip="results/processed_files/{samples}_fastqc.zip",
     wildcard_constraints:
         samples='|'.join([s for s in config["meta"].keys()]),
-    params: ""
+    params: 
+        extra="",
+        tmpdir="results/processed_files/{samples}",
     benchmark:
         "logs/rule/fastqc_se/{samples}.benchmark.txt",
-    threads: 1
-    wrapper:
-        "0.69.0/bio/fastqc"
+    threads: 16
+    conda:
+        "../envs/fastqc.yaml"
+    shell:
+        """
+        (echo "`date -R`: FastQC..." &&
+        mkdir -p {params.tmpdir} \
+        fastqc \
+        {params.extra} \
+        -t {threads} \
+        --outdir {params.tmpdir} \
+        {input} &&
+        mv {params.tmpdir}/{wildcards.samples}.html {output.html} && 
+        mv {params.tmpdir}/{wildcards.samples}_fastqc.zip {output.zip} &&
+        rmdir {params.tmpdir} && 
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1 
+        """
 
 rule fastqc_pe:
     input:
@@ -22,9 +39,26 @@ rule fastqc_pe:
         zip="results/processed_files/{samples}_{ext}_fastqc.zip", 
     wildcard_constraints:
         samples='|'.join([s for s in config["meta"].keys()]),
-    params: ""
+    params: 
+        extra="",
+        tmpdir="",
     benchmark:
         "logs/rule/fastqc_pe/{samples}_{ext}.benchmark.txt",
-    threads: 1
-    wrapper:
-        "0.69.0/bio/fastqc"
+    threads: 16
+    conda:
+        "../envs/fastqc.yaml"
+    shell:
+        """
+        (echo "`date -R`: FastQC..." &&
+        mkdir -p {params.tmpdir} \
+        fastqc \
+        {params.extra} \
+        -t {threads} \
+        --outdir {params.tmpdir} \
+        {input} &&
+        mv {params.tmpdir}/{wildcards.samples}.html {output.html} && 
+        mv {params.tmpdir}/{wildcards.samples}_fastqc.zip {output.zip} &&
+        rmdir {params.tmpdir} && 
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1 
+        """

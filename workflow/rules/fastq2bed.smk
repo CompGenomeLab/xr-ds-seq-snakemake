@@ -10,12 +10,25 @@ rule cutadapt_se:
             config["XR"], config["DS"]),
         extra=lambda w: getMethodParams(w, config["meta"], "cutadapt", 
             config["XR"], config["DS"]),
+    threads: 32
     log:
         "logs/rule/cutadapt_se/{samples}_{method}.log",
     benchmark:
         "logs/rule/cutadapt_se/{samples}_{method}.benchmark.txt",
-    wrapper:
-        "0.75.0/bio/cutadapt/se"
+    conda:
+        "../envs/cutadapt.yaml"
+    shell:
+        """
+        (echo "`date -R`: Trimming adapters..." &&
+        cutadapt \
+        -j {threads} \
+        {params.adapters} \
+        {params.extra} \
+        -o {output.fastq} {input} \
+        > {output.qc} &&
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
+        """
 
 rule cutadapt_pe:
     input:
@@ -30,13 +43,27 @@ rule cutadapt_pe:
             config["XR"], config["DS"]),
         extra=lambda w: getMethodParams(w, config["meta"], "cutadapt", 
             config["XR"], config["DS"]),
+    threads: 32
     log:
         "logs/rule/cutadapt_pe/{samples}_{method}.log",
     benchmark:
         "logs/rule/cutadapt_pe/{samples}_{method}.benchmark.txt",
-    wrapper:
-        "0.75.0/bio/cutadapt/pe"
-
+    conda:
+        "../envs/cutadapt.yaml"
+    shell:
+        """
+        (echo "`date -R`: Trimming adapters for paired-end..." &&
+        cutadapt \
+        -j {threads} \
+        {params.adapters} \
+        {params.extra} \
+        -o {output.fastq1} \
+        -p {output.fastq2} \
+        {input} \
+        > {output.qc} &&
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
+        """
 
 rule bowtie2_se:
     input:
@@ -234,8 +261,21 @@ rule mark_duplicates_se:
         "logs/rule/mark_duplicates_se/{samples}_{method}_{build}.log",
     params:
         extra="--REMOVE_DUPLICATES true",
-    wrapper:
-        "v1.3.2/bio/picard/markduplicates"
+        tmpdir="results/{method}/{samples}/",
+    conda:
+        "../envs/picard.yaml"
+    shell:
+        """
+        (echo "`date -R`: Removing duplicates..." &&
+        picard MarkDuplicates \
+        {params.extra} \
+        {input} \
+        --TMP_DIR {params.tmpdir} \
+        --OUTPUT {output.bam} \
+        --METRICS_FILE {output.metrics} &&
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
+        """
 
 rule mark_duplicates_pe:
     input:
@@ -247,8 +287,21 @@ rule mark_duplicates_pe:
         "logs/rule/mark_duplicates_pe/{samples}_{method}_{build}.log",
     params:
         extra="--REMOVE_DUPLICATES true",
-    wrapper:
-        "v1.3.2/bio/picard/markduplicates"
+        tmpdir="results/{method}/{samples}/",
+    conda:
+        "../envs/picard.yaml"
+    shell:
+        """
+        (echo "`date -R`: Removing duplicates..." &&
+        picard MarkDuplicates \
+        {params.extra} \
+        {input} \
+        --TMP_DIR {params.tmpdir} \
+        --OUTPUT {output.bam} \
+        --METRICS_FILE {output.metrics} &&
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
+        """
 
 rule bam2bed_se:
     input:
