@@ -10,6 +10,8 @@ rule fastqc_se:
     params: 
         extra="",
         tmpdir="results/processed_files/{samples}",
+    log:
+        "logs/rule/fastqc_se/{samples}.log",
     benchmark:
         "logs/rule/fastqc_se/{samples}.benchmark.txt",
     threads: 16
@@ -41,7 +43,9 @@ rule fastqc_pe:
         samples='|'.join([s for s in config["meta"].keys()]),
     params: 
         extra="",
-        tmpdir="",
+        tmpdir="results/processed_files/{samples}_{ext}",
+    log:
+        "logs/rule/fastqc_pe/{samples}_{ext}.log",
     benchmark:
         "logs/rule/fastqc_pe/{samples}_{ext}.benchmark.txt",
     threads: 16
