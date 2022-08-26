@@ -10,6 +10,7 @@ rule simulation_ds:
         fa="results/{method}/{samples}/{samples}_{build}_ds_sim.fa",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
+    threads: 16
     log:
         "logs/rule/simulation_ds/{samples}_{build}_{method}.log",
     benchmark:
@@ -39,6 +40,7 @@ rule simulation_xr:
         fa="results/{method}/{samples}/{samples}_{build}_xr_sim.fa",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
+    threads: 16
     log:
         "logs/rule/simulation_xr/{samples}_{build}_{method}.log",
     benchmark:
