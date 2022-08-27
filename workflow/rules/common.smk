@@ -255,10 +255,10 @@ def allInput(build, metadata):
 
 
         if layout.lower() == "single":
-            inputList.append(f"{sdir}/{sample}.html")
+            inputList.append(f"{sdir}/{sample}_fastqc.html")
         elif layout.lower() == "paired":
-            inputList.append(f"{sdir}/{sample}_1.html")
-            inputList.append(f"{sdir}/{sample}_2.html")
+            inputList.append(f"{sdir}/{sample}_1_fastqc.html")
+            inputList.append(f"{sdir}/{sample}_2_fastqc.html")
 
         inputList.append(f"{sdir}/{sprefix}_nucleotideTable.pdf")
         inputList.append(f"{sdir}/{sprefix}_dinucleotideTable.pdf")
