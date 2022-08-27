@@ -207,6 +207,9 @@ rule sort_rmPG_se:
     output:
         header=temp("results/{method}/{samples}/{samples}_cutadapt_se_{build}_header.txt"),
         sort=temp("results/{method}/{samples}/{samples}_cutadapt_se_{build}_samSorted.bam"),
+    params:
+        tmpdir="results/{method}/{samples}/",
+    threads: 16
     log:
         "logs/rule/sort_rmPG_se/{samples}_{method}_{build}.log",
     benchmark:
@@ -221,7 +224,8 @@ rule sort_rmPG_se:
         {{ echo "`date -R`: Process failed..."; rm {output.header}; exit 1; }}  ) > {log} 2>&1
 
         (echo "`date -R`: Parsing the headers..." &&
-        samtools reheader {output.header} {input} | samtools sort -o {output.sort} &&
+        samtools reheader {output.header} {input} | 
+        samtools sort -o {output.sort} -@ {threads} -T {params.tmpdir} &&
         echo "`date -R`: Success!" || 
         {{ echo "`date -R`: Process failed..."; rm {output.sort}; exit 1; }}  ) >> {log} 2>&1
         """
@@ -232,6 +236,9 @@ rule sort_rmPG_pe:
     output:
         header=temp("results/{method}/{samples}/{samples}_cutadapt_pe_{build}_header.txt"),
         sort=temp("results/{method}/{samples}/{samples}_cutadapt_pe_{build}_samSorted.bam"),
+    params:
+        tmpdir="results/{method}/{samples}/",
+    threads: 16
     log:
         "logs/rule/sort_rmPG_pe/{samples}_{method}_{build}.log",
     benchmark:
@@ -246,7 +253,8 @@ rule sort_rmPG_pe:
         {{ echo "`date -R`: Process failed..."; rm {output.header}; exit 1; }}  ) > {log} 2>&1
 
         (echo "`date -R`: Reheader and sort..." &&
-        samtools reheader {output.header} {input} | samtools sort -o {output.sort} &&
+        samtools reheader {output.header} {input} | 
+        samtools sort -o {output.sort} -@ {threads} -T {params.tmpdir} &&
         echo "`date -R`: Success!" || 
         {{ echo "`date -R`: Process failed..."; rm {output.sort}; exit 1; }}  ) >> {log} 2>&1
         """
@@ -269,7 +277,7 @@ rule mark_duplicates_se:
         (echo "`date -R`: Removing duplicates..." &&
         picard MarkDuplicates \
         {params.extra} \
-        {input} \
+        --INPUT {input} \
         --TMP_DIR {params.tmpdir} \
         --OUTPUT {output.bam} \
         --METRICS_FILE {output.metrics} &&
@@ -295,7 +303,7 @@ rule mark_duplicates_pe:
         (echo "`date -R`: Removing duplicates..." &&
         picard MarkDuplicates \
         {params.extra} \
-        {input} \
+        --INPUT {input} \
         --TMP_DIR {params.tmpdir} \
         --OUTPUT {output.bam} \
         --METRICS_FILE {output.metrics} &&
@@ -313,6 +321,8 @@ rule bam2bed_se:
     params:
         q_trim=lambda w: getMethodParams(w, config["meta"], "samtools", 
             config["XR"], config["DS"]), 
+        tmpdir="results/{method}/{samples}/",
+    threads: 16
     log:
         "logs/rule/bam2bed_se/{samples}_{build}_{method}.log",
     benchmark:
@@ -322,7 +332,7 @@ rule bam2bed_se:
     shell:  
         """
         (echo "`date -R`: Sorting (coordinates) bam file..." &&
-        samtools sort {input} > {output.bam} &&
+        samtools sort {input} -o {output.bam} -@ {threads} -T {params.tmpdir} &&
         echo "`date -R`: Success! Bam file is sorted." || 
         {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
 
@@ -349,6 +359,8 @@ rule bam2bed_pe:
     params:
         q_trim=lambda w: getMethodParams(w, config["meta"], "samtools", 
             config["XR"], config["DS"]), 
+        tmpdir="results/{method}/{samples}/",
+    threads: 16
     log:
         "logs/rule/bam2bed_pe/{samples}_{build}_{method}.log",
     benchmark:
@@ -358,12 +370,14 @@ rule bam2bed_pe:
     shell:  
         """
         (echo "`date -R`: Sorting (name) bam file..." &&
-        samtools sort -n {input} > {output.bam} &&
+        samtools sort -n {input} -o {output.bam} \
+        -@ {threads} -T {params.tmpdir} &&
         echo "`date -R`: Success! Bam file is sorted." || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  ) > {log} 2>&1
 
         (echo "`date -R`: Sorting (coordinates) bam file..." &&
-        samtools sort {input} > {output.bam2} &&
+        samtools sort {input} -o {output.bam2} \
+        -@ {threads} -T {params.tmpdir} &&
         echo "`date -R`: Success! Bam file is sorted." || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
 
@@ -394,6 +408,8 @@ rule bam2bed_se_input:
         idx="results/input/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam.bai",
     params:
         q_trim="-q 20",
+        tmpdir="results/input/{samples}/",
+    threads: 16
     log:
         "logs/rule/bam2bed_se_input/{samples}_{build}.log",
     benchmark:
@@ -403,7 +419,7 @@ rule bam2bed_se_input:
     shell:  
         """
         (echo "`date -R`: Sorting (coordinates) bam file..." &&
-        samtools sort {input} > {output.bam} &&
+        samtools sort {input} -o {output.bam} -@ {threads} -T {params.tmpdir} &&
         echo "`date -R`: Success! Bam file is sorted." || 
         {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
 
@@ -429,6 +445,8 @@ rule bam2bed_pe_input:
         idx="results/input/{samples}/{samples}_{build}_pe_sortedbyCoordinates.bam.bai",
     params:
         q_trim="-q 20 -bf 0x2",
+        tmpdir="results/input/{samples}/",
+    threads: 16
     log:
         "logs/rule/bam2bed_pe_input/{samples}_{build}.log",
     benchmark:
@@ -438,12 +456,14 @@ rule bam2bed_pe_input:
     shell:  
         """
         (echo "`date -R`: Sorting (name) bam file..." &&
-        samtools sort -n {input} > {output.bam} &&
+        samtools sort -n {input} -o {output.bam} \
+        -@ {threads} -T {params.tmpdir} &&
         echo "`date -R`: Success! Bam file is sorted." || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  ) > {log} 2>&1
 
         (echo "`date -R`: Sorting (coordinates) bam file..." &&
-        samtools sort {input} > {output.bam2} &&
+        samtools sort {input} -o {output.bam2} \
+        -@ {threads} -T {params.tmpdir} &&
         echo "`date -R`: Success! Bam file is sorted." || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
 
