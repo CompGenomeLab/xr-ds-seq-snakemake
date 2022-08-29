@@ -1,3 +1,20 @@
-jobs: 220
-cluster: "sbatch -p {resources.partition} -J {rule}.job --nodes=1 --mem {resources.memory} -c {resources.cpus} --ntasks 1 -e logs/cluster/{rule}_%A.err --output=/dev/null"
-default-resources: [cpus=4, memory='64G', partition='mid_investor']
+jobs: 220 
+cluster: "sbatch -A {resources.account} -p {resources.partition} -J {rule}.job --qos {resources.partition} --cpus-per-task={threads} -e logs/cluster/{rule}_%A.err --output=/dev/null"
+
+set-resources: [
+  bowtie2_se:partition='mid_investor', 
+  bowtie2_pe:partition='mid_investor',
+  bowtie2_se_input:partition='mid_investor', 
+  bowtie2_pe_input:partition='mid_investor',
+  bam2bed_se:partition='mid_investor',
+  bam2bed_pe:partition='mid_investor',
+  bam2bed_se_input:partition='mid_investor',
+  bam2bed_pe_input:partition='mid_investor',
+  simulation_ds:partition='mid_investor',
+  simulation_xr:partition='mid_investor',
+  ]
+
+
+default-resources: [account='investor', partition='short_investor']
+# default-resources: [account='investor', partition='mem']
+# default-resources: [account='mdbf', partition='mid_mdbf']
