@@ -3,8 +3,8 @@ rule nucleotide_table:
     input:
         lambda w: input4nucTable(w, config["meta"]),
     output:
-        dinuc=temp("results/{method}/{samples}/{samples}_{build}_sorted_dinucleotideTable.txt"),
-        nuc=temp("results/{method}/{samples}/{samples}_{build}_sorted_nucleotideTable.txt"),
+        dinuc="results/{method}/{samples}/{samples}_{build}_sorted_dinucleotideTable.txt",
+        nuc="results/{method}/{samples}/{samples}_{build}_sorted_nucleotideTable.txt",
     log:
         "logs/rule/nucleotide_table/{samples}_{build}_{method}.log",
     benchmark:
@@ -34,8 +34,8 @@ rule nucleotide_table_ds_sim:
     input:
         "results/{method}/{samples}/{samples}_{build}_ds_sim.fa",
     output:
-        dinuc=temp("results/{method}/{samples}/{samples}_{build}_DS_sim_dinucleotideTable.txt"),
-        nuc=temp("results/{method}/{samples}/{samples}_{build}_DS_sim_nucleotideTable.txt"),
+        dinuc="results/{method}/{samples}/{samples}_{build}_DS_sim_dinucleotideTable.txt",
+        nuc="results/{method}/{samples}/{samples}_{build}_DS_sim_nucleotideTable.txt",
     log:
         "logs/rule/nucleotide_table_ds_sim/{samples}_{build}_{method}.log",
     benchmark:
@@ -65,9 +65,9 @@ rule nucleotide_table_xr_sim:
     input:
         "results/{method}/{samples}/{samples}_{build}_xr_sim.fa",
     output:
-        dinuc=temp("results/{method}/{samples}/{samples}_{build}_XR_sim_dinucleotideTable.txt"),
-        nuc=temp("results/{method}/{samples}/{samples}_{build}_XR_sim_nucleotideTable.txt"),
-        filt=temp("results/{method}/{samples}/{samples}_{build}_XR_sim_filt.fa"),
+        dinuc="results/{method}/{samples}/{samples}_{build}_XR_sim_dinucleotideTable.txt",
+        nuc="results/{method}/{samples}/{samples}_{build}_XR_sim_nucleotideTable.txt",
+        filt="results/{method}/{samples}/{samples}_{build}_XR_sim_filt.fa",
     log:
         "logs/rule/nucleotide_table_xr_sim/{samples}_{build}_{method}.log",
     benchmark:

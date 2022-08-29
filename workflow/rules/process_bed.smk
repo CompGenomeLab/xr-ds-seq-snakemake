@@ -23,7 +23,7 @@ rule length_distribution:
     input:
         rules.sort_filter.output
     output:
-        temp("results/{method}/{samples}/{samples}_{build}_length_distribution.txt"),
+        "results/{method}/{samples}/{samples}_{build}_length_distribution.txt",
     log:
         "logs/rule/length_distribution/{samples}_{build}_{method}.log",
     benchmark:
@@ -45,7 +45,7 @@ rule length_mode:
         bed=rules.sort_filter.output,
         ld=rules.length_distribution.output,
     output:
-        temp("results/{method}/{samples}/{samples}_{build}_lengthMode.bed"),
+        "results/{method}/{samples}/{samples}_{build}_lengthMode.bed",
     log:
         "logs/rule/length_mode/{samples}_{build}_{method}.log",
     benchmark:
