@@ -5,6 +5,7 @@ library(argparser)
 library("tidyr")
 library(dplyr)
 library(futile.logger)
+set.seed(1) 
 
 ######## Arguments ##########
 p <- arg_parser("producing di/nucleotide contents")

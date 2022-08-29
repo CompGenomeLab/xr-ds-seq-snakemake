@@ -3,6 +3,7 @@
 library("ggplot2")
 library(argparser)
 library(futile.logger)
+set.seed(1) 
 
 ######## Arguments ##########
 p <- arg_parser("producing the length distribution plot")
