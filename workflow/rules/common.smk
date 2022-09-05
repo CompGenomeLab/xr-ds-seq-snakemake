@@ -28,6 +28,8 @@ def getPaired(sample, read, sample_dir):
 
     elif os.path.isfile(paired1) and read == "reverse":
         return f"{sample_dir}{sample}_2.fastq.gz"
+    else:
+        return ""
 
 def getMethodParams(wildcards, metadata, parameter, XR, DS):
 

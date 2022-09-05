@@ -27,19 +27,11 @@ include: "workflow/rules/fastqc.smk"
 include: "workflow/rules/fastq2bed.smk"
 
 # Sorting, filtering, calculating length dist., filtering damage-seq samples by
-# motif
+# motif, producing bigwig files
 include: "workflow/rules/process_bed.smk"
 
 # Simulating the sample reads
 include: "workflow/rules/simulation.smk"
 
-# BigWig files for igv
-include: "workflow/rules/bed2bigWig.smk"
-
-# Plots
-include: "workflow/rules/plot_length.smk"
-include: "workflow/rules/plot_nuc.smk"
-include: "workflow/rules/plot_bam_corr.smk"
-
-# Copy bed files to final destination
-include: "workflow/rules/copy_bed.smk"
+# Plotting length distribution, nucleotide enrichment, and bam correlations
+include: "workflow/rules/plot.smk"
