@@ -165,13 +165,13 @@ def getMotif(sample, product):
     Used rules: filtbyMotifs
     """
 
-    if product.lower() in ["oxaliplatin", "cisplatin", "bpdedg"]: 
+    if product.lower().strip() in ["oxaliplatin", "cisplatin", "bpdedg"]: 
         return "'.{4}(g|G){2}.{4}'"
     
-    elif product.lower() in ["64", "64pp", "(6-4)pp", "6-4pp", "cpd"]: 
+    elif product.lower().strip() in ["64", "64pp", "(6-4)pp", "6-4pp", "64-pp", "cpd"]: 
         return "'.{4}(c|t|C|T){2}.{4}'"
 
-    elif product.lower() == "na":
+    elif product.lower().strip() == "na":
         return "'.{10}'"
 
 def getDinuc(sample, product):
