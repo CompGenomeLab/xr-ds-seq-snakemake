@@ -31,7 +31,7 @@ This repository contains xr-seq and damage-seq workflows.
     ```
     conda install -c conda-forge mamba=0.25.0
 
-    mamba create -c bioconda -c conda-forge -c r -n repair snakemake=7.12.1 python=3.8
+    mamba create -c bioconda -c conda-forge -c r -n repair snakemake=7.12.1 python=3.8 tabulate=0.8.10
 
     conda activate repair
     ```
