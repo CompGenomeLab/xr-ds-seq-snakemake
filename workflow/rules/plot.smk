@@ -53,6 +53,37 @@ rule nucleotide_table:
         >> {log} 2>&1
         """
 
+rule nucleotide_table_after_filt:
+    input:
+        lambda w: input4nucTable(w, config["meta"], filtered=True),
+    output:
+        dinuc="results/{method}/{samples}/{samples}_{build}_sorted_filt_dinucleotideTable.txt",
+        nuc="results/{method}/{samples}/{samples}_{build}_sorted_filt_nucleotideTable.txt",
+    log:
+        "logs/rule/nucleotide_table_after_filt/{samples}_{build}_{method}.log",
+    benchmark:
+        "logs/rule/nucleotide_table_after_filt/{samples}_{build}_{method}.benchmark.txt",
+    shell:  
+        """
+        (echo "`date -R`: Calculating dinucleotide abundance table..." &&
+        workflow/scripts/fa2kmerAbundanceTable.py \
+        -i {input} \
+        -k 2 \
+        -o {output.dinuc} &&
+        echo "`date -R`: Success! Dinucleotide abundance table is calculated." ||
+        {{ echo "`date -R`: Dinucleotide abundace table cannot be calculated..."; rm {output.dinuc}; exit 1; }}  ) \
+        > {log} 2>&1
+
+        (echo "`date -R`: Calculating nucleotide abundance table..." &&
+        workflow/scripts/fa2kmerAbundanceTable.py \
+        -i {input} \
+        -k 1 \
+        -o {output.nuc}  &&
+        echo "`date -R`: Success! Nucleotide abundance table is calculated." ||
+        {{ echo "`date -R`: Nucleotide abundace table cannot be calculated..."; rm {output.nuc}; exit 1; }}  ) \
+        >> {log} 2>&1
+        """
+
 rule nucleotide_table_ds_sim:
     input:
         "results/{method}/{samples}/{samples}_{build}_ds_sim.fa",
@@ -142,6 +173,42 @@ rule plot_nuc:
         "logs/rule/plot_nuc/{samples}_{build}_{method}.log",
     benchmark:
         "logs/rule/plot_nuc/{samples}_{build}_{method}.benchmark.txt",
+    conda:
+        "../envs/plot_nuc.yaml"
+    shell:  
+        """
+        Rscript workflow/scripts/nucleotidePlot.r \
+        -i {input.dinuc} \
+        -k 2 \
+        -s {params.name} \
+        -f {params.motif} \
+        -o {output.dinuc} \
+        -l {log}
+
+        Rscript workflow/scripts/nucleotidePlot.r \
+        -i {input.nuc} \
+        -k 1 \
+        -s {params.name} \
+        -o {output.nuc} \
+        -l {log}
+        """
+
+rule plot_nuc_after_filt:
+    input:
+        dinuc=rules.nucleotide_table_after_filt.output.dinuc,
+        nuc=rules.nucleotide_table_after_filt.output.nuc,
+    output:
+        dinuc=report("results/processed_files/{samples}_{build}_{method}_filt_dinucleotideTable.pdf", 
+                    category="Nucleotide Content"),
+        nuc=report("results/processed_files/{samples}_{build}_{method}_filt_nucleotideTable.pdf", 
+                    category="Nucleotide Content"),
+    params:
+        motif=lambda w: getDinuc(w.samples, config["meta"][w.samples]["product"]),
+        name="{samples}_{build}_{method}_filt",
+    log:
+        "logs/rule/plot_nuc_after_filt/{samples}_{build}_{method}.log",
+    benchmark:
+        "logs/rule/plot_nuc_after_filt/{samples}_{build}_{method}.benchmark.txt",
     conda:
         "../envs/plot_nuc.yaml"
     shell:  

@@ -141,7 +141,7 @@ def input4PCA(metadata, build):
 
     return inputList
 
-def input4nucTable(wildcards, metadata):
+def input4nucTable(wildcards, metadata, filtered=False):
 
     """
     Retreives the input file of nucleotide_table rule.
@@ -153,6 +153,8 @@ def input4nucTable(wildcards, metadata):
 
     if method == "XR":
         return "results/XR/{samples}/{samples}_{build}_lengthMode.fa"
+    elif method == "DS" and filtered:    
+        return "results/DS/{samples}/{samples}_{build}_sorted_filt_10.fa"
     elif method == "DS":    
         return "results/DS/{samples}/{samples}_{build}_sorted_10.fa"
 
@@ -264,6 +266,8 @@ def allInput(build, metadata):
 
         inputList.append(f"{sdir}/{sprefix}_nucleotideTable.pdf")
         inputList.append(f"{sdir}/{sprefix}_dinucleotideTable.pdf")
+        inputList.append(f"{sdir}/{sprefix}_filt_nucleotideTable.pdf")
+        inputList.append(f"{sdir}/{sprefix}_filt_dinucleotideTable.pdf")
         inputList.append(f"{sdir}/{sprefix}_length_distribution.pdf")
         inputList.append(f"{sdir}/{sprefix}_plus.bed") 
         inputList.append(f"{sdir}/{sprefix}_minus.bed") 
