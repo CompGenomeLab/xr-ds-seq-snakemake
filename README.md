@@ -194,6 +194,18 @@ genome:
     - `link`: The url of the reference fasta file to be retrieved. The file 
         should be gzipped.
 
+    - If the genome file is already downloaded, `link` parameter can be set as 
+        an empty string. The genome file should be stored in 
+        `resources/ref_genomes/{build}/` named as `genome_{build}.fa` 
+        where `{build}` should be the string given in `build` parameter.
+
+    - In addition, if bowtie2 indexing is completed as well, it can be stored in
+        `resources/ref_genomes/{build}/Bowtie2/`, with files having 
+        `genome_{build}` prefix. However, since snakemake re-runs a rule if an 
+        input file is modified, one should check the modification date of the
+        index files - date must be older than that of genome file - to prevent
+        overwriting the already prepared index files.   
+
 <br>
 
 ## Usage
