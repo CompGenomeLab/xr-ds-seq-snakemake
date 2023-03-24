@@ -4,12 +4,15 @@
 configfile: "config/config_initial.yaml" 
 configfile: "config/config.yaml"
 
+# singularity image to use
+singularity: "docker://azgarian/xr-ds-snakemake:main"
+
 include: "workflow/rules/common.smk"
 
 wildcard_constraints:
     build=config["genome"]["build"],
     method="XR|DS"
-    
+
 rule all:
     input:
         lambda w: allInput(config["genome"]["build"], config["meta"]),
