@@ -26,3 +26,5 @@ sratoolkit.3.0.0-ubuntu64/*
 sratoolkit.3.0.0-ubuntu64.tar.gz
 
 report*
+
+.DS_Store
