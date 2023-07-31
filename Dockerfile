@@ -1,4 +1,4 @@
-FROM condaforge/mambaforge:latest
+FROM condaforge/mambaforge:22.11.1-4
 LABEL io.github.snakemake.containerized="true"
 LABEL io.github.snakemake.conda_env_hash="2795c90a388a0867ec21c476d74184b5ada7f0b0c9badeaf86b71756586b9166"
 

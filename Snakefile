@@ -5,7 +5,7 @@ configfile: "config/config_initial.yaml"
 configfile: "config/config.yaml"
 
 # singularity image to use
-singularity: "docker://azgarian/xr-ds-snakemake:main"
+containerized: "docker://azgarian/snakemake:1.0"
 
 include: "workflow/rules/common.smk"
 
