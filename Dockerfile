@@ -1,6 +1,6 @@
-FROM condaforge/mambaforge:22.11.1-4
+FROM condaforge/mambaforge:23.1.0-4
 LABEL io.github.snakemake.containerized="true"
-LABEL io.github.snakemake.conda_env_hash="2795c90a388a0867ec21c476d74184b5ada7f0b0c9badeaf86b71756586b9166"
+LABEL io.github.snakemake.conda_env_hash="ef803ce875f5c8c176ad26513471247c75da4110957cf0d3ab9000333ff403db"
 
 # Step 1: Retrieve conda environments
 
@@ -100,12 +100,13 @@ COPY workflow/envs/simulation.yaml /conda-envs/b95925071e90477716cb31b521bb84a9/
 
 # Conda environment:
 #   source: workflow/envs/sra.yaml
-#   prefix: /conda-envs/25ef06dcfd9a3944b25499c543688a44
+#   prefix: /conda-envs/1db9e64e79db8701de71b5ee4b4d09ee
 #   name: sra
 #   dependencies:
-#     - bioconda::sra-tools ==3.0.0
-RUN mkdir -p /conda-envs/25ef06dcfd9a3944b25499c543688a44
-COPY workflow/envs/sra.yaml /conda-envs/25ef06dcfd9a3944b25499c543688a44/environment.yaml
+#     - bioconda::sra-tools ==3.0.6
+RUN mkdir -p /conda-envs/1db9e64e79db8701de71b5ee4b4d09ee
+COPY workflow/envs/sra.yaml /conda-envs/1db9e64e79db8701de71b5ee4b4d09ee/environment.yaml
+COPY workflow/envs/user-settings.mkfg /root/.ncbi/user-settings.mkfg
 
 # Step 2: Generate conda environments
 
@@ -118,5 +119,5 @@ RUN mamba env create --prefix /conda-envs/43837407976759d77bf1da9da340da71 --fil
     mamba env create --prefix /conda-envs/4b4f4dd9bad1debd8d48c405b4a6415e --file /conda-envs/4b4f4dd9bad1debd8d48c405b4a6415e/environment.yaml && \
     mamba env create --prefix /conda-envs/095ac112bf1947f3cf84f022c319c8fb --file /conda-envs/095ac112bf1947f3cf84f022c319c8fb/environment.yaml && \
     mamba env create --prefix /conda-envs/b95925071e90477716cb31b521bb84a9 --file /conda-envs/b95925071e90477716cb31b521bb84a9/environment.yaml && \
-    mamba env create --prefix /conda-envs/25ef06dcfd9a3944b25499c543688a44 --file /conda-envs/25ef06dcfd9a3944b25499c543688a44/environment.yaml && \
+    mamba env create --prefix /conda-envs/1db9e64e79db8701de71b5ee4b4d09ee --file /conda-envs/1db9e64e79db8701de71b5ee4b4d09ee/environment.yaml && \
     mamba clean --all -y

@@ -29,9 +29,9 @@ This repository contains xr-seq and damage-seq workflows.
     and create the environment using mamba:
 
     ```
-    conda install -c conda-forge mamba=0.25.0
+    conda install -c conda-forge mamba
 
-    mamba create -c bioconda -c conda-forge -c r -n repair snakemake=7.12.1 python=3.8 tabulate=0.8.10
+    mamba create -c bioconda -c conda-forge -c r -n repair snakemake singularity=3.6.3
 
     conda activate repair
     ```
@@ -213,12 +213,12 @@ genome:
 After adjusting the configuration file, you can run the workflow 
 from `xr-ds-seq-snakemake` directory.
 
-    snakemake --use-conda --cores 64 --keep-going --rerun-incomplete -pr 
+    snakemake --use-conda --use-singularity --cores 64 --keep-going --rerun-incomplete -pr 
 
 
 | Note: To run the workflow on [Slurm Workload Manager](https://slurm.schedmd.com/srun.html) as set of jobs, `--profile` flag must be provided instead of `--cores`: |  
 | --- |
-    snakemake --use-conda --profile config/slurm --keep-going --rerun-incomplete -pr
+    snakemake --use-conda --use-singularity --profile config/slurm --keep-going --rerun-incomplete -pr
 
 An example of Slurm configuration file can be found in `config/slurm/config.yaml`.
 
