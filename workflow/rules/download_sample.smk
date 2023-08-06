@@ -19,6 +19,8 @@ rule sra_se:
         touch resources/samples/{params.name}.fastq
         touch {log}
 
+        mkdir -p resources/samples/tmp
+
         srrList=$(echo {params.srr} | tr ":" "\\n")
         echo $srrList >> {log}
 
@@ -28,15 +30,15 @@ rule sra_se:
             -O resources/samples/ &&
             vdb-validate resources/samples/$srr &&
             fastq-dump \
-            resources/samples/${{srr}}/${{srr}}.sra \
-            --outdir resources/samples/ &&
+            resources/samples/tmp/${{srr}}/${{srr}}.sra \
+            --outdir resources/samples/tmp &&
             echo "`date -R`: Download is successful!" || 
             {{ echo "`date -R`: Process failed..."; exit 1; }} ) \
             >> {log} 2>&1 
 
-            cat resources/samples/${{srr}}.fastq >> resources/samples/{params.name}.fastq
+            cat resources/samples/tmp/${{srr}}.fastq >> resources/samples/{params.name}.fastq
 
-            rm resources/samples/${{srr}}.fastq ; done
+            rm resources/samples/tmp/${{srr}}.fastq ; done
 
         (echo "`date -R`: Zipping srr file..." &&
         gzip resources/samples/{params.name}.fastq &&
@@ -69,27 +71,29 @@ rule sra_pe:
         touch {log}
         echo "`date -R`: paired-end layout" >> {log}
 
+        mkdir -p resources/samples/tmp
+
         srrList=$(echo {params.srr} | tr ":" "\\n")
         echo $srrList >> {log}
 
         for srr in $srrList; do
             (echo "`date -R`: Downloading $srr files..." &&
             prefetch $srr \
-            -O resources/samples/ &&
-            vdb-validate resources/samples/$srr &&
+            -O resources/samples/tmp/ &&
+            vdb-validate resources/samples/tmp/$srr &&
             fastq-dump \
-            resources/samples/${{srr}}/${{srr}}.sra \
-            --outdir resources/samples/ \
+            resources/samples/tmp/${{srr}}/${{srr}}.sra \
+            --outdir resources/samples/tmp/ \
             --split-files &&
             echo "`date -R`: Download is successful!" || 
             {{ echo "`date -R`: Process failed..."; exit 1; }}  ) \
             >> {log} 2>&1
 
-            cat resources/samples/${{srr}}_1.fastq >> resources/samples/{params.name}_1.fastq
-            cat resources/samples/${{srr}}_2.fastq >> resources/samples/{params.name}_2.fastq
+            cat resources/samples/tmp/${{srr}}_1.fastq >> resources/samples/{params.name}_1.fastq
+            cat resources/samples/tmp/${{srr}}_2.fastq >> resources/samples/{params.name}_2.fastq
 
-            rm resources/samples/${{srr}}_1.fastq
-            rm resources/samples/${{srr}}_2.fastq ; done
+            rm resources/samples/tmp/${{srr}}_1.fastq
+            rm resources/samples/tmp/${{srr}}_2.fastq ; done
 
         (echo "`date -R`: Zipping srr file..." &&
         gzip resources/samples/{params.name}_1.fastq &&
@@ -120,19 +124,23 @@ rule sra_se_input:
         srrList=$(echo {params.name} | tr ":" "\\n")
         echo "`date -R`: $srrList" >> {log}
 
+        mkdir -p resources/input/tmp
+
         for srr in $srrList; do
             (echo "`date -R`: Downloading $srr files..." &&
             prefetch $srr \
-            -O resources/input/ &&
-            vdb-validate resources/input/$srr &&
+            -O resources/input/tmp/ &&
+            vdb-validate resources/input/tmp/$srr &&
             fastq-dump \
-            resources/input/${{srr}}/${{srr}}.sra \
-            --outdir resources/input/ &&
+            resources/input/tmp/${{srr}}/${{srr}}.sra \
+            --outdir resources/input/tmp/ &&
             echo "`date -R`: Download is successful!" || 
             {{ echo "`date -R`: Process failed..."; exit 1; }} ) \
             >> {log} 2>&1 
 
-            cat resources/input/${{srr}}.fastq >> resources/input/{params.name}.fastq ; done
+            cat resources/input/tmp/${{srr}}.fastq >> resources/input/{params.name}.fastq
+
+            rm resources/input/tmp/${{srr}}.fastq ; done
 
         (echo "`date -R`: Zipping srr file..." &&
         gzip resources/input/{params.name}.fastq &&
@@ -162,24 +170,26 @@ rule sra_pe_input:
         touch {log}
         echo "`date -R`: paired-end layout" >> {log}
 
+        mkdir -p resources/input/tmp/
+
         srrList=$(echo {params.name} | tr ":" "\\n")
         echo "`date -R`: $srrList" >> {log}
 
         for srr in $srrList; do
             (echo "`date -R`: Downloading $srr files..." &&
             prefetch $srr \
-            -O resources/input/ &&
-            vdb-validate resources/input/$srr &&
+            -O resources/input/tmp/ &&
+            vdb-validate resources/input/tmp/$srr &&
             fastq-dump \
-            resources/input/${{srr}}/${{srr}}.sra \
-            --outdir resources/input/ \
+            resources/input/tmp/${{srr}}/${{srr}}.sra \
+            --outdir resources/input/tmp/ \
             --split-files &&
             echo "`date -R`: Download is successful!" || 
             {{ echo "`date -R`: Process failed..."; exit 1; }}  ) \
             >> {log} 2>&1
 
-            cat resources/input/${{srr}}_1.fastq >> resources/input/{params.name}_1.fastq
-            cat resources/input/${{srr}}_2.fastq >> resources/input/{params.name}_2.fastq ; done
+            cat resources/input/tmp/${{srr}}_1.fastq >> resources/input/{params.name}_1.fastq
+            cat resources/input/tmp/${{srr}}_2.fastq >> resources/input/{params.name}_2.fastq ; done
 
         (echo "`date -R`: Zipping srr file..." &&
         gzip resources/input/{params.name}_1.fastq &&
