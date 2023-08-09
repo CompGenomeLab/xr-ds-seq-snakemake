@@ -27,8 +27,8 @@ rule sra_se:
         for srr in $srrList; do
             (echo "`date -R`: Downloading $srr files..." &&
             prefetch $srr \
-            -O resources/samples/ &&
-            vdb-validate resources/samples/$srr &&
+            -O resources/samples/tmp &&
+            vdb-validate resources/samples/tmp/$srr &&
             fastq-dump \
             resources/samples/tmp/${{srr}}/${{srr}}.sra \
             --outdir resources/samples/tmp &&
