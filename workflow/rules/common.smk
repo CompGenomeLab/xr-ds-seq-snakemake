@@ -110,10 +110,12 @@ def input4inpFasta(wildcards, metadata):
     Used rules: bed2fasta_input
     """
 
-    for sample in metadata.keys():
+    for sample, value in metadata.items():
 
-        if metadata[sample]["simulation"]["input"]["name"] == wildcards.samples:
-            layout = metadata[sample]["simulation"]["input"]["layout"]
+        if "input" in value["simulation"]:
+            if value["simulation"]["input"]["name"] == wildcards.samples:
+                layout = value["simulation"]["input"]["layout"]
+                break
 
     if layout.lower() == "single":
         return "results/input/{samples}/{samples}_{build}_se.bed"
