@@ -24,7 +24,6 @@ then
     --bed $5 \
     --ref $2 \
     --seed 1 \
-    --sens 2 \
     --kmer 2 \
     --regions $3 \
     > $6 &&
@@ -41,7 +40,6 @@ else
     --inseqFasta \
     --inseq $3 \
     --seed 1 \
-    --sens 2 \
     --kmer 2 \
     > $6 &&
     { echo "`date -R`: Success! Simulation is done."; rm $1.fa; }  || 
