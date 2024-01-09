@@ -259,6 +259,35 @@ rule sort_rmPG_pe:
         {{ echo "`date -R`: Process failed..."; rm {output.sort}; exit 1; }}  ) >> {log} 2>&1
         """
 
+rule sort_rmPG_pe_input:
+    input:
+        rules.bowtie2_pe_input.output.bam,
+    output:
+        header=temp("results/input/{samples}/{samples}_pe_{build}_header.txt"),
+        sort=temp("results/input/{samples}/{samples}_pe_{build}_samSorted.bam"),
+    params:
+        tmpdir="results/input/{samples}/",
+    threads: 16
+    log:
+        "logs/rule/sort_rmPG_pe_input/{samples}_{build}.log",
+    benchmark:
+        "logs/rule/sort_rmPG_pe_input/{samples}_{build}.benchmark.txt",
+    conda:
+        "../envs/bedtools.yaml"
+    shell:
+        """
+        (echo "`date -R`: Parsing the headers excluding the @PG headers..." &&
+        samtools view -H {input} | grep -v "^@PG" > {output.header} &&
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; rm {output.header}; exit 1; }}  ) > {log} 2>&1
+
+        (echo "`date -R`: Reheader and sort..." &&
+        samtools reheader {output.header} {input} | 
+        samtools sort -o {output.sort} -@ {threads} -T {params.tmpdir} &&
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; rm {output.sort}; exit 1; }}  ) >> {log} 2>&1
+        """
+
 rule mark_duplicates_se:
     input:
         rules.sort_rmPG_se.output.sort,
@@ -296,6 +325,32 @@ rule mark_duplicates_pe:
     params:
         extra="--REMOVE_DUPLICATES true",
         tmpdir="results/{method}/{samples}/",
+    conda:
+        "../envs/picard.yaml"
+    shell:
+        """
+        (echo "`date -R`: Removing duplicates..." &&
+        picard MarkDuplicates \
+        {params.extra} \
+        --INPUT {input} \
+        --TMP_DIR {params.tmpdir} \
+        --OUTPUT {output.bam} \
+        --METRICS_FILE {output.metrics} &&
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
+        """
+
+rule mark_duplicates_pe_input:
+    input:
+        rules.sort_rmPG_pe_input.output.sort,
+    output:
+        bam="results/input/{samples}/{samples}_dedup_pe_{build}.bam",
+        metrics="results/input/{samples}/{samples}_pe_dedup_{build}.metrics.txt",
+    log:
+        "logs/rule/mark_duplicates_pe_input/{samples}_{build}.log",
+    params:
+        extra="--REMOVE_DUPLICATES true",
+        tmpdir="results/input/{samples}/",
     conda:
         "../envs/picard.yaml"
     shell:
@@ -437,7 +492,7 @@ rule bam2bed_se_input:
 
 rule bam2bed_pe_input:
     input:
-        rules.bowtie2_pe_input.output.bam,
+        rules.mark_duplicates_pe_input.output.bam,
     output:
         bed="results/input/{samples}/{samples}_{build}_pe.bed",
         bam=temp("results/input/{samples}/{samples}_{build}_sorted.bam"),
