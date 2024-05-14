@@ -1,8 +1,24 @@
 #!/bin/env python
 
+import snakemake
+version = snakemake.__version__
+
 #### configuration file ####
 configfile: "config/config_initial.yaml" 
 configfile: "config/config.yaml"
+
+is_profile_used = snakemake.snakemake.options.profile is not None
+if is_profile_used:
+    # If Snakemake version is 8 or above
+    if version >= '8.0':
+        # Configure for Snakemake >= 8.0
+        config['executor'] = "cluster-generic"
+        config['cluster-generic-submit-cmd'] = "sbatch -A {resources.account} -p {resources.partition} -J {rule}.job --qos {resources.partition} --cpus-per-task={threads} -e logs/cluster/{rule}_%A.err --output=/dev/null"
+        config['software-deployment-method'] = "conda"
+    else:
+        # Configure for Snakemake < 8.0
+        config['cluster'] = "sbatch -A {resources.account} -p {resources.partition} -J {rule}.job --qos {resources.partition} --cpus-per-task={threads} -e logs/cluster/{rule}_%A.err --output=/dev/null"
+        config['use-conda'] = True
 
 # singularity image to use
 containerized: "docker://azgarian/snakemake:1.2"

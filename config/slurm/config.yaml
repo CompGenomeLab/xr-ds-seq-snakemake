@@ -1,5 +1,8 @@
 jobs: 220 
-cluster: "sbatch -A {resources.account} -p {resources.partition} -J {rule}.job --qos {resources.partition} --cpus-per-task={threads} -e logs/cluster/{rule}_%A.err --output=/dev/null"
+
+printshellcmds: True
+keep-going: True
+rerun-incomplete: True
 
 set-resources: [
   bowtie2_se:partition='mid_investor', 

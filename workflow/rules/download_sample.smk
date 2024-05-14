@@ -112,6 +112,8 @@ rule sra_se_input:
         "logs/rule/sra_se_input/{samples}.log",
     benchmark:
         "logs/rule/sra_se_input/{samples}.benchmark.txt",
+    wildcard_constraints:
+        samples='|'.join(set([config["meta"][x]["simulation"]["input"]["name"] for x in config["meta"].keys() if "input" in config["meta"][x]["simulation"]]))
     conda:
         "../envs/sra.yaml"
     threads:
@@ -159,6 +161,8 @@ rule sra_pe_input:
         "logs/rule/sra_pe_input/{samples}.log",
     benchmark:
         "logs/rule/sra_pe_input/{samples}.benchmark.txt",
+    wildcard_constraints:
+        samples='|'.join(set([config["meta"][x]["simulation"]["input"]["name"] for x in config["meta"].keys() if "input" in config["meta"][x]["simulation"]]))
     conda:
         "../envs/sra.yaml"
     threads:
