@@ -33,6 +33,8 @@ This repository contains xr-seq and damage-seq workflows.
 
     mamba create -c conda-forge -c bioconda -c r -n repair snakemake=8.11.3 singularity=3.8.6
 
+    pip install snakemake-executor-plugin-cluster-generic
+
     conda activate repair
     ```
 
