@@ -34,7 +34,7 @@ rule length_distribution:
         awk '{{print $3-$2}}' {input} |&
         sort -k1,1n |& 
         uniq -c |& 
-        sed 's/\s\s*/ /g' |&
+        sed 's/\\s\\s*/ /g' |&
         awk '{{print $2"\\t"$1}}' > {output} &&
         echo "`date -R`: Success! Length distribution is calculated." || 
         {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
