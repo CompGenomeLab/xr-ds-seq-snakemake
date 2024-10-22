@@ -6,7 +6,7 @@ import subprocess
 
 ################### Helper Functions ###########################################
 
-def getPaired(sample, read, sample_dir):
+def getPaired(sample, sample_dir):
 
     """
     Finds the suffix of a given sample name.
@@ -17,17 +17,12 @@ def getPaired(sample, read, sample_dir):
     pairedR1 = f"{sample_dir}{sample}_R1.fastq.gz"
     paired1 = f"{sample_dir}{sample}_1.fastq.gz"
     
-    if os.path.isfile(pairedR1) and read == "forward":
-        return f"{sample_dir}{sample}_R1.fastq.gz"
+    if os.path.isfile(pairedR1):
+        return (pairedR1, pairedR1.replace("R1.fastq.gz", "R2.fastq.gz"))
 
-    elif os.path.isfile(pairedR1) and read == "reverse":
-        return f"{sample_dir}{sample}_R2.fastq.gz"
+    elif os.path.isfile(paired1):
+        return (paired1, paired1.replace("1.fastq.gz", "2.fastq.gz"))
 
-    elif os.path.isfile(paired1) and read == "forward":
-        return f"{sample_dir}{sample}_1.fastq.gz"
-
-    elif os.path.isfile(paired1) and read == "reverse":
-        return f"{sample_dir}{sample}_2.fastq.gz"
     else:
         return ""
 
@@ -41,37 +36,24 @@ def getMethodParams(wildcards, metadata, parameter, XR, DS):
 
     method = metadata[wildcards.samples]["method"].upper()
     layout = metadata[wildcards.samples]["layout"].lower()
+    lo = "se" if layout == "single" else "pe"
 
-    if parameter.lower() == "adaptor" and layout== "single":
-        if method == "XR":
-            return XR["adaptor_se"]
-        elif method == "DS":
-            return DS["adaptor_se"]
-    elif parameter.lower() == "adaptor" and layout== "paired":
-        if method == "XR":
-            return XR["adaptor_pe"]
-        elif method == "DS":
-            return DS["adaptor_pe"]
-    elif parameter.lower() == "cutadapt" and layout== "single":
-        if method == "XR":
-            return XR["cutadapt_se"]
-        elif method == "DS":
-            return DS["cutadapt_se"]
-    elif parameter.lower() == "cutadapt" and layout== "paired":
-        if method == "XR":
-            return XR["cutadapt_pe"]
-        elif method == "DS":
-            return DS["cutadapt_pe"]
-    elif parameter.lower() == "samtools" and layout== "single":
-        if method == "XR":
-            return XR["samtools_se"]
-        elif method == "DS":
-            return DS["samtools_se"]
-    elif parameter.lower() == "samtools" and layout== "paired":
-        if method == "XR":
-            return XR["samtools_pe"]
-        elif method == "DS":
-            return DS["samtools_pe"]
+    return XR[f"{parameter.lower()}_{lo}"] if method == "XR" else DS[f"{parameter.lower()}_{lo}"]
+
+def getPossibleInputNames(metadata):
+
+    """
+    Gets all the possible SRR ids for input files if there is one. 
+
+    Used rules: sra_se_input, sra_pe_input
+    """  
+
+    input_list = []
+    for sample in metadata.keys():
+        if "input" in metadata[sample]["simulation"]:
+            input_list.append(metadata[sample]["simulation"]["input"]["name"])
+
+    return input_list
 
 def getSRR(wildcards, metadata):
 
@@ -86,79 +68,59 @@ def getSRR(wildcards, metadata):
     else:
         return " "
 
-def input4filter(wildcards, metadata):
+def input4rule(wildcards, metadata, rule, filtered=False, build=config["genome"]["build"]):
 
     """
-    Retreives the input file of sort_filter rule.
+    Retreives the input file/s for given rule.
 
-    Used rules: sort_filter
+    Used rules: sort_filter, bed2fasta_input, bam_correlation, nucleotide_table,
+                simulation_ds, simulation_xr
     """
 
-    layout = metadata[wildcards.samples]["layout"].lower()
+    if rule == "sort_filter":
 
-    if layout == "single":
-        return "results/{method}/{samples}/{samples}_{build}_se.bed"
-    elif layout == "paired":    
-        return "results/{method}/{samples}/{samples}_{build}_pe.bed"
+        layout = metadata[wildcards.samples]["layout"].lower()
+        lo = "se" if layout == "single" else "pe"
+        return "results/{method}/{samples}/{samples}_{build}" + f"_{lo}.bed"
 
-def input4inpFasta(wildcards, metadata):
+    elif rule == "bed2fasta_input":
 
-    """
-    Retreives the input file of bed2fasta_input rule based on the simulation 
-    info in the config file.
+        for sample, value in metadata.items():
+            if "input" in value["simulation"]:
+                if value["simulation"]["input"]["name"] == wildcards.samples:
+                    layout = value["simulation"]["input"]["layout"].lower()
+                    break
 
-    Used rules: bed2fasta_input
-    """
+        lo = "se" if layout == "single" else "pe"
+        return "results/input/{samples}/{samples}_{build}" + f"_{lo}.bed"
 
-    for sample, value in metadata.items():
+    elif rule == "bam_correlation":
 
-        if "input" in value["simulation"]:
-            if value["simulation"]["input"]["name"] == wildcards.samples:
-                layout = value["simulation"]["input"]["layout"]
-                break
+        inputList = []
+        for sample in metadata.keys():
+            lo = "se" if metadata[sample]["layout"].lower() == "single" else "pe"
+            method = metadata[sample]["method"].upper()
+            inputList.append(f"results/{method}/{sample}/{sample}_{build}_{lo}_sortedbyCoordinates.bam")
 
-    if layout.lower() == "single":
-        return "results/input/{samples}/{samples}_{build}_se.bed"
-    elif layout.lower() == "paired":    
-        return "results/input/{samples}/{samples}_{build}_pe.bed"
+        return inputList
 
-def input4PCA(metadata, build):
+    elif rule == "nucleotide_table":
 
-    """
-    Retreives the input file of bam_correlation rule.
+        method = metadata[wildcards.samples]["method"].upper()
+        if method == "XR":
+            ext = "_lengthMode.fa"
+        elif method == "DS":
+            ext = "_sorted_filt_10.fa" if filtered else "_sorted_10.fa"
 
-    Used rules: bam_correlation
-    """
+        return "results/DS/{samples}/{samples}_{build}" + ext
 
-    inputList = []
-    for sample in metadata.keys():
+    elif rule == "simulation_xr" or rule == "simulation_ds":
 
-        layout = metadata[sample]["layout"].lower()
-        method = metadata[sample]["method"].upper()
-
-        if layout == "single":
-            inputList.append(f"results/{method}/{sample}/{sample}_{build}_se_sortedbyCoordinates.bam")
-        elif layout == "paired":   
-            inputList.append(f"results/{method}/{sample}/{sample}_{build}_pe_sortedbyCoordinates.bam")
-
-    return inputList
-
-def input4nucTable(wildcards, metadata, filtered=False):
-
-    """
-    Retreives the input file of nucleotide_table rule.
-
-    Used rules: nucleotide_table
-    """
-
-    method = metadata[wildcards.samples]["method"].upper()
-
-    if method == "XR":
-        return "results/XR/{samples}/{samples}_{build}_lengthMode.fa"
-    elif method == "DS" and filtered:    
-        return "results/DS/{samples}/{samples}_{build}_sorted_filt_10.fa"
-    elif method == "DS":    
-        return "results/DS/{samples}/{samples}_{build}_sorted_10.fa"
+        if "input" in metadata[wildcards.samples]["simulation"]:
+            input_name = metadata[wildcards.samples]["simulation"]["input"]["name"]    
+            return f"results/input/{input_name}/{input_name}_{build}.fasta"      
+        else:
+            return f"resources/ref_genomes/{build}/genome_{build}.ron" 
 
 def getMotif(sample, product):
 
@@ -191,22 +153,6 @@ def getDinuc(sample, product):
     
     elif product.lower() in ["64", "64pp", "(6-4)pp", "6-4pp", "cpd"]: 
         return "'CC','CT','TC','TT'"
-
-def getInput(sample, metadata, build):
-
-    """
-    Retrieves the input file of the sample for simulation.
-
-    Used rules: simulation_ds, simulation_xr
-    """
-
-    if "input" in metadata[sample]["simulation"]:
-
-        input_name = metadata[sample]["simulation"]["input"]["name"]    
-        return f"results/input/{input_name}/{input_name}_{build}.fasta"
-    
-    else:
-        return f"resources/ref_genomes/{build}/genome_{build}.ron" 
 
 def lineNum(file):
 

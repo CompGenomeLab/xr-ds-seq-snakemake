@@ -112,6 +112,8 @@ rule sra_se_input:
         "logs/rule/sra_se_input/{samples}.log",
     benchmark:
         "logs/rule/sra_se_input/{samples}.benchmark.txt",
+    wildcard_constraints:
+        samples='|'.join(getPossibleInputNames(config["meta"]))
     conda:
         "../envs/sra.yaml"
     threads:
@@ -159,6 +161,8 @@ rule sra_pe_input:
         "logs/rule/sra_pe_input/{samples}.log",
     benchmark:
         "logs/rule/sra_pe_input/{samples}.benchmark.txt",
+    wildcard_constraints:
+        samples='|'.join(getPossibleInputNames(config["meta"]))
     conda:
         "../envs/sra.yaml"
     threads:
@@ -201,8 +205,8 @@ rule sra_pe_input:
 
 rule rename_raw:
     input:
-        r1=lambda w: getPaired(w.samples, "forward", "resources/samples/"),
-        r2=lambda w: getPaired(w.samples, "reverse", "resources/samples/"),
+        r1=lambda w: getPaired(w.samples, "resources/samples/")[0],
+        r2=lambda w: getPaired(w.samples, "resources/samples/")[1],
     output:
         r1="resources/samples/{samples}_1.fastq.gz", 
         r2="resources/samples/{samples}_2.fastq.gz",
@@ -219,8 +223,8 @@ rule rename_raw:
 
 rule rename_raw_input:
     input:
-        r1=lambda w: getPaired(w.samples, "forward", "resources/input/"),
-        r2=lambda w: getPaired(w.samples, "reverse", "resources/input/"),
+        r1=lambda w: getPaired(w.samples, "resources/input/")[0],
+        r2=lambda w: getPaired(w.samples, "resources/input/")[1],
     output:
         r1="resources/input/{samples}_1.fastq.gz", 
         r2="resources/input/{samples}_2.fastq.gz",

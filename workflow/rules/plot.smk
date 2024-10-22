@@ -24,7 +24,7 @@ rule plot_length:
 
 rule nucleotide_table:
     input:
-        lambda w: input4nucTable(w, config["meta"]),
+        lambda w: input4rule(w, config["meta"], "nucleotide_table"),
     output:
         dinuc="results/{method}/{samples}/{samples}_{build}_sorted_dinucleotideTable.txt",
         nuc="results/{method}/{samples}/{samples}_{build}_sorted_nucleotideTable.txt",
@@ -55,7 +55,7 @@ rule nucleotide_table:
 
 rule nucleotide_table_after_filt:
     input:
-        lambda w: input4nucTable(w, config["meta"], filtered=True),
+        lambda w: input4rule(w, config["meta"], "nucleotide_table", filtered = True),
     output:
         dinuc="results/{method}/{samples}/{samples}_{build}_sorted_filt_dinucleotideTable.txt",
         nuc="results/{method}/{samples}/{samples}_{build}_sorted_filt_nucleotideTable.txt",
@@ -267,7 +267,7 @@ rule plot_nuc_sim:
 
 rule bam_correlation:
     input:
-        lambda w: input4PCA(config["meta"], config["genome"]["build"]),
+        lambda w: input4rule(w, config["meta"], "bam_correlation"),
     output:
         out="results/readCounts.npz",
         raw_out="results/readCounts.tab",

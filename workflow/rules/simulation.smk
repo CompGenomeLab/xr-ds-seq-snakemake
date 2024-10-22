@@ -4,7 +4,7 @@ rule simulation_ds:
         bed=rules.comb_strands.output,
         genome=rules.genome_download.output,
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
-        inp_file=lambda w: getInput(w.samples, config["meta"], config["genome"]["build"]),
+        inp_file=lambda w: input4rule(w, config["meta"], "simulation_ds"),
     output:
         bed="results/{method}/{samples}/{samples}_{build}_DS_sim.bed",  
         fa="results/{method}/{samples}/{samples}_{build}_ds_sim.fa",
@@ -34,7 +34,7 @@ rule simulation_xr:
         bed=rules.sort_filter.output,
         genome=rules.genome_download.output,
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2", 
-        inp_file=lambda w: getInput(w.samples, config["meta"], config["genome"]["build"]),
+        inp_file=lambda w: input4rule(w, config["meta"], "simulation_xr"),
     output:
         bed="results/{method}/{samples}/{samples}_{build}_XR_sim.bed",
         fa="results/{method}/{samples}/{samples}_{build}_xr_sim.fa",

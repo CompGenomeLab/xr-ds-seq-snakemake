@@ -24,16 +24,14 @@ This repository contains xr-seq and damage-seq workflows.
     cd xr-ds-seq-snakemake
     ```
 
-- Next, you should create a conda environment with the defined packages. 
-    Install [mamba](https://mamba.readthedocs.io/en/latest/) 
-    and create the environment using mamba:
+- Next, you should create a conda environment with the defined packages:
 
     ```
-    conda install -c conda-forge mamba
-
-    mamba create -c bioconda -c conda-forge -c r -n repair snakemake=7.32.4 singularity=3.6.3
+    conda create -c conda-forge -c bioconda -n repair snakemake=8.24.0
 
     conda activate repair
+
+    pip install snakemake-executor-plugin-cluster-generic
     ```
 
 <br>

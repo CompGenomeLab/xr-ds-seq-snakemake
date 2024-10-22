@@ -16,9 +16,6 @@ meta:
     product: "CPD"
     simulation:
       enabled: True
-      input: 
-        name: "SRR5461463"
-        layout: "paired"
   NHF1_CPD_1h_DS_rep1:
     srr_id: "SRR5461433" 
     method: "DS"
@@ -35,11 +32,9 @@ meta:
     layout: "paired"
     product: "CPD"
     simulation:
-      enabled: True
-      input: 
-        name: "SRR5461463"
-        layout: "paired"
+      enabled: False
 
 genome:
-  build: "hg19"
-  link: "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/GRCh37.p13.genome.fa.gz"
+  build: "hg38"
+  link: "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_41/GRCh38.p13.genome.fa.gz"
+  

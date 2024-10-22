@@ -1,0 +1,12 @@
+jobs: 100
+
+# Configure for Snakemake >= 8.0
+cores: 4
+software-deployment-method: "conda"
+
+
+printshellcmds: True
+keep-going: True
+rerun-incomplete: True
+rerun-triggers: "mtime"
+
