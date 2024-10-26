@@ -6,26 +6,6 @@ import subprocess
 
 ################### Helper Functions ###########################################
 
-def getPaired(sample, sample_dir):
-
-    """
-    Finds the suffix of a given sample name.
-
-    Used rules: rename_raw, rename_raw_input 
-    """
-
-    pairedR1 = f"{sample_dir}{sample}_R1.fastq.gz"
-    paired1 = f"{sample_dir}{sample}_1.fastq.gz"
-    
-    if os.path.isfile(pairedR1):
-        return (pairedR1, pairedR1.replace("R1.fastq.gz", "R2.fastq.gz"))
-
-    elif os.path.isfile(paired1):
-        return (paired1, paired1.replace("1.fastq.gz", "2.fastq.gz"))
-
-    else:
-        return ""
-
 def getMethodParams(wildcards, metadata, parameter, XR, DS):
 
     """

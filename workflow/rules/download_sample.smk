@@ -205,8 +205,8 @@ rule sra_pe_input:
 
 rule rename_raw:
     input:
-        r1=lambda w: getPaired(w.samples, "resources/samples/")[0],
-        r2=lambda w: getPaired(w.samples, "resources/samples/")[1],
+        r1="resources/samples/{samples}_R1.fastq.gz", 
+        r2="resources/samples/{samples}_R2.fastq.gz",
     output:
         r1="resources/samples/{samples}_1.fastq.gz", 
         r2="resources/samples/{samples}_2.fastq.gz",
@@ -223,8 +223,8 @@ rule rename_raw:
 
 rule rename_raw_input:
     input:
-        r1=lambda w: getPaired(w.samples, "resources/input/")[0],
-        r2=lambda w: getPaired(w.samples, "resources/input/")[1],
+        r1="resources/input/{samples}_R1.fastq.gz", 
+        r2="resources/input/{samples}_R2.fastq.gz",
     output:
         r1="resources/input/{samples}_1.fastq.gz", 
         r2="resources/input/{samples}_2.fastq.gz",
