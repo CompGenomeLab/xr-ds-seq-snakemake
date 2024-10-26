@@ -1,3 +1,4 @@
+
 rule sra_se:
     output:
         "resources/samples/{samples}.fastq.gz", 

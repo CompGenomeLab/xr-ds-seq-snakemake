@@ -13,6 +13,9 @@ wildcard_constraints:
     build=config["genome"]["build"],
     method="XR|DS"
 
+ruleorder: rename_raw > sra_pe
+ruleorder: rename_raw_input > sra_pe_input
+
 rule all:
     input:
         lambda w: allInput(config["genome"]["build"], config["meta"]),
