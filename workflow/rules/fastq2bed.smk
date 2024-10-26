@@ -1,7 +1,7 @@
 
 rule cutadapt_se:
     input:
-        rules.sra_se.output,
+        "resources/samples/{samples}.fastq.gz",
     output:
         fastq=temp("results/{method}/{samples}/{samples}_cutadapt.fastq.gz"),
         qc=report("results/{method}/{samples}/{samples}_cutadapt.qc.txt", category="QC"),   
@@ -32,8 +32,8 @@ rule cutadapt_se:
 
 rule cutadapt_pe:
     input:
-        fq1=rules.sra_pe.output.read1, 
-        fq2=rules.sra_pe.output.read2,
+        fq1="resources/samples/{samples}_1.fastq.gz", 
+        fq2="resources/samples/{samples}_2.fastq.gz", 
     output:
         fastq1=temp("results/{method}/{samples}/{samples}_cutadapt_1.fastq.gz"),
         fastq2=temp("results/{method}/{samples}/{samples}_cutadapt_2.fastq.gz"),
@@ -77,7 +77,7 @@ rule bowtie2_se:
         extra="--seed 1 --reorder",
     threads: 32  
     log:
-        "logs/rule/bowtie2_se/{samples}_{build}_{method}.log",
+        report("logs/rule/bowtie2_se/{samples}_{build}_{method}.log", category="QC"),
     benchmark:
         "logs/rule/bowtie2_se/{samples}_{build}_{method}.benchmark.txt",
     conda:
@@ -111,7 +111,7 @@ rule bowtie2_pe:
         extra="-X 1000 --seed 1 --reorder",
     threads: 32  
     log:
-        "logs/rule/bowtie2_pe/{samples}_{build}_{method}.log",
+        report("logs/rule/bowtie2_pe/{samples}_{build}_{method}.log", category="QC"),
     benchmark:
         "logs/rule/bowtie2_pe/{samples}_{build}_{method}.benchmark.txt",
     conda:
@@ -145,7 +145,7 @@ rule bowtie2_se_input:
         extra="--seed 1 --reorder",
     threads: 32  
     log:
-        "logs/rule/bowtie2_se_input/{samples}_{build}.log",
+        report("logs/rule/bowtie2_se_input/{samples}_{build}.log", category="QC"),
     benchmark:
         "logs/rule/bowtie2_se_input/{samples}_{build}.benchmark.txt",
     conda:
@@ -179,7 +179,7 @@ rule bowtie2_pe_input:
         extra="-X 1000 --seed 1 --reorder",
     threads: 32  
     log:
-        "logs/rule/bowtie2_pe_input/{samples}_{build}.log",
+        report("logs/rule/bowtie2_pe_input/{samples}_{build}.log", category="QC"),
     benchmark:
         "logs/rule/bowtie2_pe_input/{samples}_{build}.benchmark.txt",
     conda:
