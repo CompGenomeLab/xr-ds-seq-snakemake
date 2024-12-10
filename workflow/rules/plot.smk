@@ -265,9 +265,39 @@ rule plot_nuc_sim:
         -l {log}
         """
 
+rule index_bam:
+    input:
+        "results/{method}/{samples}/{samples}_cutadapt_{lo}_{build}.bam",
+    output:
+        bam="results/{method}/{samples}/{samples}_cutadapt_{lo}_{build}_sorted.bam",
+        bai="results/{method}/{samples}/{samples}_cutadapt_{lo}_{build}_sorted.bam.bai",
+    params:
+        tmpdir="results/{method}/{samples}/",
+    threads: 16
+    log:
+        "logs/rule/index_bam/{samples}_{build}_{lo}_{method}.log",
+    benchmark:
+        "logs/rule/index_bam/{samples}_{build}_{lo}_{method}.benchmark.txt",
+    conda:
+        "../envs/bedtools.yaml"
+    shell:  
+        """
+        (echo "`date -R`: Index bam file..." &&
+        samtools sort {input} -o {output.bam} \
+        -@ {threads} -T {params.tmpdir} &&
+        echo "`date -R`: Success! Bam file is sorted." || 
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
+
+        (echo "`date -R`: Index bam file..." &&
+        samtools index {output.bam} {output.bai} &&
+        echo "`date -R`: Success! Bam file is sorted." || 
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) >> {log} 2>&1
+        """
+
 rule bam_correlation:
     input:
-        lambda w: input4rule(w, config["meta"], "bam_correlation"),
+        bam=lambda w: input4rule(w, config["meta"], "bam_correlation"),
+        bai=lambda w: input4rule(w, config["meta"], "bam_correlation_idx"),
     output:
         out="results/readCounts.npz",
         raw_out="results/readCounts.tab",
@@ -281,8 +311,8 @@ rule bam_correlation:
         """
         (echo "`date -R`: MultiBam summary..." &&
         multiBamSummary bins \
-        --bamfiles {input} \
-        --minMappingQuality 20 \
+        --bamfiles {input.bam} \
+        --minMappingQuality 0 \
         -out {output.out} --outRawCounts {output.raw_out} &&
         echo "`date -R`: Success!" || 
         {{ echo "`date -R`: Process failed..."; rm {output.out}; exit 1; }} ) > {log} 2>&1
