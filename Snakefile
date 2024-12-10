@@ -11,10 +11,12 @@ include: "workflow/rules/common.smk"
 
 wildcard_constraints:
     build=config["genome"]["build"],
-    method="XR|DS"
+    method="|".join(set(config["meta"][sample]["method"] for sample in config["meta"])),
 
 ruleorder: rename_raw > sra_pe
 ruleorder: rename_raw_input > sra_pe_input
+ruleorder: rename_raw > sra_se
+ruleorder: rename_raw_input > sra_se_input
 
 rule all:
     input:
