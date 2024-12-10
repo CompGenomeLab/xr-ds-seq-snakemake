@@ -42,7 +42,7 @@ def getSRR(wildcards, metadata):
 
     Used rules: sra_se, sra_pe
     """
-
+    
     if "srr_id" in metadata[wildcards.samples]:
         return metadata[wildcards.samples]["srr_id"]
     else:
@@ -80,7 +80,17 @@ def input4rule(wildcards, metadata, rule, filtered=False, build=config["genome"]
         for sample in metadata.keys():
             lo = "se" if metadata[sample]["layout"].lower() == "single" else "pe"
             method = metadata[sample]["method"].upper()
-            inputList.append(f"results/{method}/{sample}/{sample}_{build}_{lo}_sortedbyCoordinates.bam")
+            inputList.append(f"results/{method}/{sample}/{sample}_cutadapt_{lo}_{build}_sorted.bam")
+
+        return inputList
+
+    elif rule == "bam_correlation_idx":
+
+        inputList = []
+        for sample in metadata.keys():
+            lo = "se" if metadata[sample]["layout"].lower() == "single" else "pe"
+            method = metadata[sample]["method"].upper()
+            inputList.append(f"results/{method}/{sample}/{sample}_cutadapt_{lo}_{build}_sorted.bam.bai")
 
         return inputList
 
@@ -92,7 +102,7 @@ def input4rule(wildcards, metadata, rule, filtered=False, build=config["genome"]
         elif method == "DS":
             ext = "_sorted_filt_10.fa" if filtered else "_sorted_10.fa"
 
-        return "results/DS/{samples}/{samples}_{build}" + ext
+        return "results/{method}/{samples}/{samples}_{build}" + ext
 
     elif rule == "simulation_xr" or rule == "simulation_ds":
 
