@@ -220,13 +220,13 @@ def allInput(build, metadata):
             inputList.append(f"{sdir}/{sprefix}_sim_plus.bw")
             inputList.append(f"{sdir}/{sprefix}_sim_minus.bw")
     
-    if len(metadata.keys()) > 1:
+    # if len(metadata.keys()) > 1:
 
-        inputList.append(f"{sdir}/scatterplot_PearsonCorr_bigwigScores.pdf")
-        inputList.append(f"{sdir}/PearsonCorr_bigwigScores.tab")
-        inputList.append(f"{sdir}/heatmap_SpearmanCorr_readCounts.pdf")
-        inputList.append(f"{sdir}/SpearmanCorr_readCounts.tab")
-        inputList.append(f"{sdir}/PCA_readCounts.pdf")
+    #     inputList.append(f"{sdir}/scatterplot_PearsonCorr_bigwigScores.pdf")
+    #     inputList.append(f"{sdir}/PearsonCorr_bigwigScores.tab")
+    #     inputList.append(f"{sdir}/heatmap_SpearmanCorr_readCounts.pdf")
+    #     inputList.append(f"{sdir}/SpearmanCorr_readCounts.tab")
+    #     inputList.append(f"{sdir}/PCA_readCounts.pdf")
             
     #print(inputList)
     return inputList

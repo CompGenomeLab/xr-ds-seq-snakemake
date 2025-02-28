@@ -41,6 +41,7 @@ rule fastqc_pe:
         zip="results/processed_files/{samples}_{ext}_fastqc.zip", 
     wildcard_constraints:
         samples='|'.join([s for s in config["meta"].keys()]),
+        ext='R1|R2|1|2',
     params: 
         extra="",
         tmpdir="results/processed_files/{samples}_{ext}",

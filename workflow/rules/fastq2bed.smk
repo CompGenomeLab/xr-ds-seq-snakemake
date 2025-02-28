@@ -4,7 +4,7 @@ rule cutadapt_se:
         "resources/samples/{samples}.fastq.gz",
     output:
         fastq=temp("results/{method}/{samples}/{samples}_cutadapt.fastq.gz"),
-        qc=report("results/{method}/{samples}/{samples}_cutadapt.qc.txt", category="QC"),   
+        qc=report("results/{method}/{samples}/{samples}_cutadapt.qc.txt", category="QC"),  
     params:
         adapters=lambda w: getMethodParams(w, config["meta"], "adaptor", 
             config["XR"], config["DS"]),
