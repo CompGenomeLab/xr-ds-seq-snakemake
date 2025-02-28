@@ -1,0 +1,4 @@
+name: bwa
+dependencies:
+  - bioconda::bwa ==0.7.18  
+  - bioconda::samtools ==1.10
