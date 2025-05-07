@@ -10,7 +10,7 @@ rule cutadapt_se:
             config["XR"], config["DS"]),
         extra=lambda w: getMethodParams(w, config["meta"], "cutadapt", 
             config["XR"], config["DS"]),
-    threads: 32
+    threads: 16
     log:
         "logs/rule/cutadapt_se/{samples}_{method}.log",
     benchmark:
@@ -43,7 +43,7 @@ rule cutadapt_pe:
             config["XR"], config["DS"]),
         extra=lambda w: getMethodParams(w, config["meta"], "cutadapt", 
             config["XR"], config["DS"]),
-    threads: 32
+    threads: 16
     log:
         "logs/rule/cutadapt_pe/{samples}_{method}.log",
     benchmark:
@@ -75,7 +75,7 @@ rule bowtie2_se:
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         extra="--seed 1 --reorder",
-    threads: 32  
+    threads: 16  
     log:
         report("logs/rule/bowtie2_se/{samples}_{build}_{method}.log", category="QC"),
     benchmark:
@@ -109,7 +109,7 @@ rule bowtie2_pe:
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         extra="-X 1000 --seed 1 --reorder",
-    threads: 32  
+    threads: 16  
     log:
         report("logs/rule/bowtie2_pe/{samples}_{build}_{method}.log", category="QC"),
     benchmark:
@@ -143,7 +143,7 @@ rule bowtie2_se_input:
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         extra="--seed 1 --reorder",
-    threads: 32  
+    threads: 16  
     log:
         report("logs/rule/bowtie2_se_input/{samples}_{build}.log", category="QC"),
     benchmark:
@@ -177,7 +177,7 @@ rule bowtie2_pe_input:
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         extra="-X 1000 --seed 1 --reorder",
-    threads: 32  
+    threads: 16  
     log:
         report("logs/rule/bowtie2_pe_input/{samples}_{build}.log", category="QC"),
     benchmark:

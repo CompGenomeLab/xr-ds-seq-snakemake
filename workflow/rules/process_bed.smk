@@ -10,11 +10,11 @@ rule sort_filter:
         "logs/rule/sort_filter/{samples}_{build}_{method}.log",
     benchmark:
         "logs/rule/sort_filter/{samples}_{build}_{method}.benchmark.txt",
+    threads: 10,
     shell:  
         """
         (echo "`date -R`: Sorting and filtering bed file by chromosomes..." &&
-        sort -k1,1 -k2,2n -k3,3n {input} |&
-        egrep {params.filt} > {output} &&
+        sort -k1,1 -k2,2n -k3,3n {input} | egrep {params.filt} > {output} &&
         echo "`date -R`: Success! Bed file is filtered." || 
         {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }} ) > {log} 2>&1
         """

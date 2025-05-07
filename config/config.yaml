@@ -1,40 +1,251 @@
 meta: 
-  NHF1_CPD_1h_XR_rep1:
-    srr_id: "SRR3062593:SRR3062594:SRR3062595" 
+  # NHF1_CPD_1h_XR_rep1:
+  #   srr_id: "SRR3062593:SRR3062594:SRR3062595" 
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1_CPD_1h_XR_rep1_unmapped:
+  #   srr_id: "" 
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1_CPD_1h_XR_rep1_unmapped_masked:
+  #   srr_id: "" 
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1_CPD_1h_XR_rep1_unmapped_cutadapt_masked:
+  #   srr_id: "" 
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1_CPD_1h_XR_rep1_unmapped_cutadapt_TTmasked:
+  #   srr_id: "" 
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1_CPD_1h_XR_rep1_mapped_as0_T2C_damsite:
+  #   srr_id: "" 
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1_CPD_1h_XR_rep2:
+  #   srr_id: "SRR3062596:SRR3062597:SRR3062598" 
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1_64_1h_XR_rep1:
+  #   srr_id: "SRR3062637:SRR3062638" 
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "64"
+  #   simulation:
+  #     enabled: False
+  # NHF1_64_1h_XR_rep2:
+  #   srr_id: "SRR3062639:SRR3062640" 
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "64"
+  #   simulation:
+  #     enabled: False
+  # NHF1_CPD_1h_DS_rep1:
+  #   srr_id: "SRR5461433" 
+  #   method: "DS"
+  #   layout: "paired"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1_CPD_1h_DS_rep2:
+  #   srr_id: "SRR5461434" 
+  #   method: "DS"
+  #   layout: "paired"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1Cisp2hQ5_TATGAGTA_S14_L001_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1Cisp2hQ5_TATGAGTA_S14_L002_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1Cisp2hTaq_AGCGCTAG_S15_L001_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1Cisp2hTaq_AGCGCTAG_S15_L002_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1UV2h64Kappa_TCCGCTAA_S16_L001_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1UV2h64Kappa_TCCGCTAA_S16_L002_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1UV2h64Q5_GATATCGA_S17_L001_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1UV2h64Q5_GATATCGA_S17_L002_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1UV2h64Taq_ACACTAAG_S18_L001_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1UV2h64Taq_ACACTAAG_S18_L002_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1UV2hCPDKappa_GATCTATC_S19_L001_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1UV2hCPDKappa_GATCTATC_S19_L002_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1UV2hCPDQ5_CGCAGACG_S20_L001_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1UV2hCPDQ5_CGCAGACG_S20_L002_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1UV2hCPDTaq_GTGTCGGA_S21_L001_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  # NHF1UV2hCPDTaq_GTGTCGGA_S21_L002_R1_001:
+  #   method: "XR"
+  #   layout: "single"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
+  NHF1UV2hCPD_CTTATCGG_S12_R1_001:
     method: "XR"
     layout: "single"
-    product: "CPD"
-    simulation:
-      enabled: True
-      input: 
-        name: "SRR5461463"
-        layout: "paired"
-  NHF1_CPD_1h_XR_rep2:
-    srr_id: "SRR3062596:SRR3062597:SRR3062598" 
-    method: "XR"
-    layout: "single"
-    product: "CPD"
-    simulation:
-      enabled: True
-  NHF1_CPD_1h_DS_rep1:
-    srr_id: "SRR5461433" 
-    method: "DS"
-    layout: "paired"
-    product: "CPD"
-    simulation:
-      enabled: True
-      input: 
-        name: "SRR5461463"
-        layout: "paired"
-  NHF1_CPD_1h_DS_rep2:
-    srr_id: "SRR5461434" 
-    method: "DS"
-    layout: "paired"
     product: "CPD"
     simulation:
       enabled: False
+  NHF1UV12mCPD_GCAATGCA_S11_R1_001:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
+  NHF1UV4hCPD_TCCGCTAA_S13_R1_001:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
+  NHF1UV8hCPD_GATCTATC_S14_R1_001:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
+  NDDB2CPD2h_AGCGCTAG_S10_R1_001:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
+  NDDB2CPD30m_GTGTCGGA_S11_R1_001:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
+  NDDB2CPD4h_GATATCGA_S12_R1_001:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
+  NHF1CPD10m_CTTATCGG_S13_R1_001:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
+  NHF1CPD2h_GATCTATC_S14_R1_001:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
+  NHF1CPD30m_TCCGCTAA_S15_R1_001:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
+  NHF1CPD4h_AGCTCGCT_S16_R1_001:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
+  NHF1CPD8h_ACACTAAG_S17_R1_001:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
 
 genome:
   build: "hg38"
-  link: "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_41/GRCh38.p13.genome.fa.gz"
+  link: "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/GRCh38.p14.genome.fa.gz"
   

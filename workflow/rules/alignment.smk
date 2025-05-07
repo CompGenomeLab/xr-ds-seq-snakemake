@@ -31,7 +31,7 @@ rule cutadapt_se:
             config["XR"], config["DS"]),
         extra=lambda w: getMethodParams(w, config["meta"], "cutadapt", 
             config["XR"], config["DS"]),
-    threads: 32
+    threads: 16
     log:
         "logs/rule/cutadapt_se/{samples}_{method}.log",
     benchmark:
@@ -61,7 +61,7 @@ rule bowtie2_se:
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         extra="--seed 1 --reorder",
-    threads: 32  
+    threads: 16  
     log:
         report("logs/rule/bowtie2_se/{samples}_{build}_{method}.log", category="QC"),
     benchmark:
@@ -95,7 +95,7 @@ rule bowtie2_se_sensitive:
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         extra="--seed 1 --reorder --very-sensitive",
-    threads: 32  
+    threads: 16  
     log:
         report("logs/rule/bowtie2_se/{samples}_{build}_{method}_sensitive.log", category="QC"),
     benchmark:
@@ -130,7 +130,7 @@ rule bwa_se:
         bam="results/{method}/{samples}/{samples}_cutadapt_se_bwa_{build}.bam",
     params:
         "",
-    threads: 32,
+    threads: 16,
     log:
         "logs/rule/bwa_se/{samples}_{build}_{method}.log",
     benchmark:
@@ -162,7 +162,7 @@ rule bwa_se_sensitive1:
         bam="results/{method}/{samples}/{samples}_cutadapt_se_bwa_sensitive1_{build}.bam",
     params:
         "-l 15",
-    threads: 32,
+    threads: 16,
     log:
         "logs/rule/bwa_se/{samples}_{build}_{method}_sensitive1.log",
     benchmark:
@@ -194,7 +194,7 @@ rule bwa_se_sensitive2:
         bam="results/{method}/{samples}/{samples}_cutadapt_se_bwa_sensitive2_{build}.bam",
     params:
         "-n 3",
-    threads: 32,
+    threads: 16,
     log:
         "logs/rule/bwa_se/{samples}_{build}_{method}_sensitive2.log",
     benchmark:
@@ -226,7 +226,7 @@ rule bwa_se_sensitive3:
         bam="results/{method}/{samples}/{samples}_cutadapt_se_bwa_sensitive3_{build}.bam",
     params:
         "-e 0",
-    threads: 32,
+    threads: 16,
     log:
         "logs/rule/bwa_se/{samples}_{build}_{method}_sensitive3.log",
     benchmark:
@@ -258,7 +258,7 @@ rule bwa_se_sensitive4:
         bam="results/{method}/{samples}/{samples}_cutadapt_se_bwa_sensitive4_{build}.bam",
     params:
         "-k 3",
-    threads: 32,
+    threads: 16,
     log:
         "logs/rule/bwa_se/{samples}_{build}_{method}_sensitive4.log",
     benchmark:
@@ -290,7 +290,7 @@ rule bwa_se_sensitive5:
         bam="results/{method}/{samples}/{samples}_cutadapt_se_bwa_sensitive5_{build}.bam",
     params:
         "-l 15 -n 3 -e 0 -k 3",
-    threads: 32,
+    threads: 16,
     log:
         "logs/rule/bwa_se/{samples}_{build}_{method}_sensitive5.log",
     benchmark:

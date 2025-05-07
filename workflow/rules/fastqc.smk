@@ -33,6 +33,36 @@ rule fastqc_se:
         {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1 
         """
 
+rule fastqc_se_after_cutadapt:
+    input:
+        "results/XR/{samples}/{samples}_cutadapt.fastq.gz",
+    output:
+        html=report("results/processed_files/{samples}_cutadapt_fastqc.html", category="QC"),
+        zip="results/processed_files/{samples}_cutadapt_fastqc.zip",
+    wildcard_constraints:
+        samples='|'.join([s for s in config["meta"].keys()]),
+    params: 
+        extra="",
+        tmpdir="results/processed_files",
+    log:
+        "logs/rule/fastqc_se_after_cutadapt/{samples}_cutadapt.log",
+    benchmark:
+        "logs/rule/fastqc_se_after_cutadapt/{samples}_cutadapt.benchmark.txt",
+    threads: 16
+    conda:
+        "../envs/fastqc.yaml"
+    shell:
+        """
+        (echo "`date -R`: FastQC..." &&
+        fastqc \
+        {params.extra} \
+        -t {threads} \
+        --outdir {params.tmpdir} \
+        {input} &&
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1 
+        """
+
 rule fastqc_pe:
     input:
         "resources/samples/{samples}_{ext}.fastq.gz", 

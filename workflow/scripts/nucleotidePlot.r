@@ -7,6 +7,8 @@ library(dplyr)
 library(futile.logger)
 set.seed(1) 
 
+Sys.setlocale(locale = "en_GB.UTF-8")
+
 ######## Arguments ##########
 p <- arg_parser("producing di/nucleotide contents")
 p <- add_argument(p, "-i", help="input")
