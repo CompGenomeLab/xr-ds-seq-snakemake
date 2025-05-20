@@ -1,4 +1,3 @@
-
 rule cutadapt_se:
     input:
         "resources/samples/{samples}.fastq.gz",
@@ -65,6 +64,104 @@ rule cutadapt_pe:
         {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
         """
 
+rule process_fastq_T2C:
+    input:
+        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped.fastq"
+    output:
+        "results/{method}/{samples}/{samples}_T2C_{build}_cutadapt.fastq.gz"
+    log:
+        "logs/rule/process_fastq_T2C/{samples}_{build}_{method}.log",
+    shell:
+        "bash workflow/scripts/t2c_damsite.sh {input} {output} > {log} 2>&1"
+
+rule mask_positions:
+    input:
+        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped.fastq"
+    output:
+        "results/{method}/{samples}/{samples}_masked_{build}_cutadapt.fastq.gz"
+    log:
+        "logs/rule/mask_positions/{samples}_{build}_{method}.log",
+    shell:
+        """
+        ( paste - - - - < {input} | \
+        awk -F'\\t' '{{if($2!="") {{ \
+            len=length($2); \
+            $2=substr($2,1,len-8) "NN" substr($2,len-5); \
+            if(length($2)==len) {{ \
+                print $1"\\n"$2"\\n"$3"\\n"$4 \
+            }} \
+        }}}}' | \
+        gzip > {output} ) > {log} 2>&1
+        """
+
+rule bowtie2_se_T2C:
+    input:
+        sample=[rules.process_fastq_T2C.output],
+        bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
+    output:
+        sam=temp("results/{method}/{samples}/{samples}_T2C_cutadapt_se_{build}.sam"),
+        bam="results/{method}/{samples}/{samples}_T2C_cutadapt_se_{build}.bam",
+    params:
+        ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
+        extra="--seed 1 --reorder",
+    threads: 16  
+    log:
+        report("logs/rule/bowtie2_se_T2C/{samples}_{build}_{method}.log", category="QC"),
+    benchmark:
+        "logs/rule/bowtie2_se_T2C/{samples}_{build}_{method}.benchmark.txt",
+    conda:
+        "../envs/align.yaml"
+    shell:  
+        """
+        (echo "`date -R`: Aligning fastq file..." &&
+        bowtie2 \
+        --threads {threads} \
+        {params.extra} \
+        -x {params.ref_genome} \
+        -U {input.sample[0]} -S {output.sam} &&
+        echo "`date -R`: Success! Alignment is done." || 
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
+
+        (echo "`date -R`: Converting sam to bam..." &&
+        samtools view -Sbh -o {output.bam} {output.sam} &&
+        echo "`date -R`: Success! Conversion is done." || 
+        {{ echo "`date -R`: Process failed..."; rm {output.bam}; exit 1; }}  )  >> {log} 2>&1
+        """
+
+rule bowtie2_se_masked:
+    input:
+        sample=[rules.mask_positions.output],
+        bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
+    output:
+        sam=temp("results/{method}/{samples}/{samples}_masked_cutadapt_se_{build}.sam"),
+        bam="results/{method}/{samples}/{samples}_masked_cutadapt_se_{build}.bam",
+    params:
+        ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
+        extra="--seed 1 --reorder",
+    threads: 16  
+    log:
+        report("logs/rule/bowtie2_se_masked/{samples}_{build}_{method}.log", category="QC"),
+    benchmark:
+        "logs/rule/bowtie2_se_masked/{samples}_{build}_{method}.benchmark.txt",
+    conda:
+        "../envs/align.yaml"
+    shell:  
+        """
+        (echo "`date -R`: Aligning fastq file..." &&
+        bowtie2 \
+        --threads {threads} \
+        {params.extra} \
+        -x {params.ref_genome} \
+        -U {input.sample[0]} -S {output.sam} &&
+        echo "`date -R`: Success! Alignment is done." || 
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
+
+        (echo "`date -R`: Converting sam to bam..." &&
+        samtools view -Sbh -o {output.bam} {output.sam} &&
+        echo "`date -R`: Success! Conversion is done." || 
+        {{ echo "`date -R`: Process failed..."; rm {output.bam}; exit 1; }}  )  >> {log} 2>&1
+        """
+
 rule bowtie2_se:
     input:
         sample=[rules.cutadapt_se.output.fastq],
@@ -72,6 +169,7 @@ rule bowtie2_se:
     output:
         sam=temp("results/{method}/{samples}/{samples}_cutadapt_se_{build}.sam"),
         bam="results/{method}/{samples}/{samples}_cutadapt_se_{build}.bam",
+        unmapped="results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped.fastq",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
         extra="--seed 1 --reorder",
@@ -88,6 +186,7 @@ rule bowtie2_se:
         bowtie2 \
         --threads {threads} \
         {params.extra} \
+        --un {output.unmapped} \
         -x {params.ref_genome} \
         -U {input.sample[0]} -S {output.sam} &&
         echo "`date -R`: Success! Alignment is done." || 
