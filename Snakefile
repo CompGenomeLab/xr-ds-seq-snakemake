@@ -22,9 +22,10 @@ def input_rule(samplist):
     input_list = []
     for sample in samplist:
         #input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_hg38.bam")
-        input_list.append(f"results/XR/{sample}/{sample}_T2C_cutadapt_se_hg38.bam")
-        input_list.append(f"results/XR/{sample}/{sample}_masked_cutadapt_se_hg38.bam")
+        # input_list.append(f"results/XR/{sample}/{sample}_T2C_cutadapt_se_hg38.bam")
+        # input_list.append(f"results/XR/{sample}/{sample}_masked_cutadapt_se_hg38.bam")
         # input_list.append(f"results/XR/{sample}/{sample}_hg38_se_sortedbyCoordinates.bam")
+        input_list.append(f"results/XR/{sample}/{sample}_hg38_se_filtered_sortedbyCoordinates.bam")
         # input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_very_sensitive_hg38.bam")
         # input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_bwa_hg38.bam")
         # input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_bwa_sensitive1_hg38.bam")
@@ -34,7 +35,8 @@ def input_rule(samplist):
         # input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_bwa_sensitive5_hg38.bam")
         # input_list.append(f"results/processed_files/{sample}_fastqc.zip")
         # input_list.append(f"results/processed_files/{sample}_cutadapt_fastqc.zip")
-        # input_list.append(f"results/processed_files/{sample}_hg38_XR_dinucleotideTable.pdf")
+        # input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_hg38_unmapped_filtered_overrep_fastqc.zip")
+        input_list.append(f"results/processed_files/{sample}_hg38_XR_filtered_dinucleotideTable.pdf")
     return input_list
 
 samples = [

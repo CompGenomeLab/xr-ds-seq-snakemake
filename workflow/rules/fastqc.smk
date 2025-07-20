@@ -98,3 +98,39 @@ rule fastqc_pe:
         echo "`date -R`: Success!" || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1 
         """
+
+rule fastqc_unmapped:
+    input:
+        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped.fastq"
+    output:
+        html=report("results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped_fastqc.html", category="QC"),
+        zip="results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped_fastqc.zip"
+    log:
+        "logs/rule/fastqc_unmapped/{samples}_{build}_{method}.log"
+    conda:
+        "../envs/fastqc.yaml"
+    shell:
+        """
+        (echo "`date -R`: Running FastQC on unmapped reads..." &&
+        fastqc {input} -o $(dirname {output.html}) -t {threads} &&
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
+        """
+
+rule fastqc_unmapped_filtered:
+    input:
+        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped_filtered_overrep.fastq"
+    output:
+        html=report("results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped_filtered_overrep_fastqc.html", category="QC"),
+        zip="results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped_filtered_overrep_fastqc.zip"
+    log:
+        "logs/rule/fastqc_unmapped_filtered/{samples}_{build}_{method}.log"
+    conda:
+        "../envs/fastqc.yaml"
+    shell:
+        """
+        (echo "`date -R`: Running FastQC on unmapped reads..." &&
+        fastqc {input} -o $(dirname {output.html}) -t {threads} &&
+        echo "`date -R`: Success!" || 
+        {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
+        """

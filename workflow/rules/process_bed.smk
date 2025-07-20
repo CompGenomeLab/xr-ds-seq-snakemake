@@ -1,4 +1,24 @@
 
+rule sort_filter_filtered:
+    input:
+        rules.bam2bed_se_filtered.output.bed,
+    output:
+        "results/{method}/{samples}/{samples}_{build}_filtered_sorted_chr.bed",
+    params:
+        filt=config["filter"],
+    log:
+        "logs/rule/sort_filter_filtered/{samples}_{build}_{method}.log",
+    benchmark:
+        "logs/rule/sort_filter_filtered/{samples}_{build}_{method}.benchmark.txt",
+    threads: 10,
+    shell:  
+        """
+        (echo "`date -R`: Sorting and filtering bed file by chromosomes..." &&
+        sort -k1,1 -k2,2n -k3,3n {input} | egrep {params.filt} > {output} &&
+        echo "`date -R`: Success! Bed file is filtered." || 
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }} ) > {log} 2>&1
+        """
+
 rule sort_filter:
     input:
         lambda w: input4rule(w, config["meta"], "sort_filter"),
@@ -19,6 +39,27 @@ rule sort_filter:
         {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }} ) > {log} 2>&1
         """
 
+rule length_distribution_filtered:
+    input:
+        rules.sort_filter_filtered.output
+    output:
+        "results/{method}/{samples}/{samples}_{build}_filtered_length_distribution.txt",
+    log:
+        "logs/rule/length_distribution_filtered/{samples}_{build}_{method}.log",
+    benchmark:
+        "logs/rule/length_distribution_filtered/{samples}_{build}_{method}.benchmark.txt",
+    shell:  
+        """
+        (echo "`date -R`: Calculating the read length distribution..." &&
+        awk '{{print $3-$2}}' {input} |&
+        sort -k1,1n |& 
+        uniq -c |& 
+        sed 's/\\s\\s*/ /g' |&
+        awk '{{print $2"\\t"$1}}' > {output} &&
+        echo "`date -R`: Success! Length distribution is calculated." || 
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
+        """
+
 rule length_distribution:
     input:
         rules.sort_filter.output
@@ -37,6 +78,28 @@ rule length_distribution:
         sed 's/\\s\\s*/ /g' |&
         awk '{{print $2"\\t"$1}}' > {output} &&
         echo "`date -R`: Success! Length distribution is calculated." || 
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
+        """
+
+rule length_mode_filtered:
+    input:
+        bed=rules.sort_filter_filtered.output,
+        ld=rules.length_distribution_filtered.output,
+    output:
+        "results/{method}/{samples}/{samples}_{build}_filtered_lengthMode.bed",
+    log:
+        "logs/rule/length_mode_filtered/{samples}_{build}_{method}.log",
+    benchmark:
+        "logs/rule/length_mode_filtered/{samples}_{build}_{method}.benchmark.txt",
+    shell:  
+        """
+        length="$(awk -v m=0 '{{if(m<$2){{m=$2;l=$1}}}}END{{print l}}' \
+        {input.ld})" 
+
+        (echo "`date -R`: Filtering the reads by the lengths..." &&
+        awk -v num="$length" '{{ if ($3-$2 == num) {{ print }} }}' {input.bed} \
+        > {output} &&
+        echo "`date -R`: Success! Reads are filtered." || 
         {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
         """
 
@@ -204,6 +267,30 @@ rule bed2fasta_ds:
         -s &&
         echo "`date -R`: Success! {input.minus} is converted." || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  ) >> {log} 2>&1
+        """
+
+rule bed2fasta_xr_filtered:
+    input:
+        bed=rules.length_mode_filtered.output,
+        genome=rules.genome_download.output,
+    output:
+        temp("results/{method}/{samples}/{samples}_{build}_filtered_lengthMode.fa"),
+    log:
+        "logs/rule/bed2fasta_xr_filtered/{samples}_{build}_{method}.log",
+    benchmark:
+        "logs/rule/bed2fasta_xr_filtered/{samples}_{build}_{method}.benchmark.txt",
+    conda:
+        "../envs/bedtools.yaml"
+    shell:
+        """
+        (echo "`date -R`: Converting {input.bed} to fasta format..." &&
+        bedtools getfasta \
+        -fi {input.genome} \
+        -bed {input.bed} \
+        -fo {output} \
+        -s &&
+        echo "`date -R`: Success! {input.bed} is converted." || 
+        {{ echo "`date -R`: Process failed..."; rm {output}; exit 1; }}  ) > {log} 2>&1
         """
 
 rule bed2fasta_xr:
