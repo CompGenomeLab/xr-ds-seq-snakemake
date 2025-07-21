@@ -16,7 +16,7 @@ rule simulation_ds:
     benchmark:
         "logs/rule/simulation_ds/{samples}_{build}_{method}.benchmark.txt",
     conda:
-        "../envs/simulation.yaml"
+        "../envs/preprocess.yaml"
     shell:
         """
         workflow/scripts/simulation.sh \
@@ -46,7 +46,7 @@ rule simulation_xr:
     benchmark:
         "logs/rule/simulation_xr/{samples}_{build}_{method}.benchmark.txt",
     conda:
-        "../envs/simulation.yaml"
+        "../envs/preprocess.yaml"
     shell:
         """
         workflow/scripts/simulation.sh \

@@ -1,7 +1,0 @@
-name: simulation
-dependencies:
-  - bioconda::bedtools =2.29.0
-  - bioconda::bowtie2 ==2.4.1  
-  - bioconda::samtools ==1.10
-  - conda-forge::tbb ==2020.2
-  - bioconda::boquila ==0.6.0

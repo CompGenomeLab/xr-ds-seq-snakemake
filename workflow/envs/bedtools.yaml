@@ -1,4 +1,0 @@
-name: bedtools
-dependencies:
-  - bioconda::samtools ==1.10
-  - bioconda::bedtools =2.29.0

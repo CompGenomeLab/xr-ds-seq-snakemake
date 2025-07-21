@@ -33,7 +33,7 @@ rule genome_build:
         extra="", 
         name="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
     conda:
-        "../envs/align.yaml" 
+        "../envs/preprocess.yaml" 
     threads: 
         16
     shell: 
@@ -57,7 +57,7 @@ rule genome_indexing:
     benchmark:
         "logs/rule/genome_indexing/{build}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:
         """
         (echo "`date -R`: Creating fai file..." &&

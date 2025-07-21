@@ -16,15 +16,12 @@ echo "`date -R`: Success! $1 is converted." ||
 if [[ "$3" == *.ron ]];
 then
 
-    #echo "Ron" 
-
     ( echo "`date -R`: Simulating reads according to reference genome..." &&
     boquila \
     --fasta $1.fa \
     --bed $5 \
     --ref $2 \
     --seed 1 \
-    --sens 2 \
     --kmer 2 \
     --regions $3 \
     > $6 &&
@@ -41,7 +38,6 @@ else
     --inseqFasta \
     --inseq $3 \
     --seed 1 \
-    --sens 2 \
     --kmer 2 \
     > $6 &&
     { echo "`date -R`: Success! Simulation is done."; rm $1.fa; }  || 

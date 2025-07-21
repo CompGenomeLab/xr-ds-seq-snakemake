@@ -279,7 +279,7 @@ rule index_bam:
     benchmark:
         "logs/rule/index_bam/{samples}_{build}_{lo}_{method}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:  
         """
         (echo "`date -R`: Index bam file..." &&
@@ -306,7 +306,7 @@ rule bam_correlation:
     benchmark:
         "logs/rule/bam_correlation/bam_correlation.benchmark.txt",
     conda:
-        "../envs/bam_correlation.yaml"
+        "../envs/deeptools.yaml"
     shell:  
         """
         (echo "`date -R`: MultiBam summary..." &&

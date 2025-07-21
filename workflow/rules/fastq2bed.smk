@@ -81,7 +81,7 @@ rule bowtie2_se:
     benchmark:
         "logs/rule/bowtie2_se/{samples}_{build}_{method}.benchmark.txt",
     conda:
-        "../envs/align.yaml"
+        "../envs/preprocess.yaml"
     shell:  
         """
         (echo "`date -R`: Aligning fastq file..." &&
@@ -115,7 +115,7 @@ rule bowtie2_pe:
     benchmark:
         "logs/rule/bowtie2_pe/{samples}_{build}_{method}.benchmark.txt",
     conda:
-        "../envs/align.yaml"
+        "../envs/preprocess.yaml"
     shell:  
         """
         (echo "`date -R`: Aligning fastq files..." &&
@@ -149,7 +149,7 @@ rule bowtie2_se_input:
     benchmark:
         "logs/rule/bowtie2_se_input/{samples}_{build}.benchmark.txt",
     conda:
-        "../envs/align.yaml"
+        "../envs/preprocess.yaml"
     shell:  
         """
         (echo "`date -R`: Aligning fastq file..." &&
@@ -183,7 +183,7 @@ rule bowtie2_pe_input:
     benchmark:
         "logs/rule/bowtie2_pe_input/{samples}_{build}.benchmark.txt",
     conda:
-        "../envs/align.yaml"
+        "../envs/preprocess.yaml"
     shell:  
         """
         (echo "`date -R`: Aligning fastq files..." &&
@@ -215,7 +215,7 @@ rule sort_rmPG_se:
     benchmark:
         "logs/rule/sort_rmPG_se/{samples}_{method}_{build}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:
         """
         (echo "`date -R`: Parsing the headers..." &&
@@ -244,7 +244,7 @@ rule sort_rmPG_pe:
     benchmark:
         "logs/rule/sort_rmPG_pe/{samples}_{method}_{build}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:
         """
         (echo "`date -R`: Parsing the headers excluding the @PG headers..." &&
@@ -328,7 +328,7 @@ rule bam2bed_se:
     benchmark:
         "logs/rule/bam2bed_se/{samples}_{build}_{method}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:  
         """
         (echo "`date -R`: Sorting (coordinates) bam file..." &&
@@ -366,7 +366,7 @@ rule bam2bed_pe:
     benchmark:
         "logs/rule/bam2bed_pe/{samples}_{build}_{method}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:  
         """
         (echo "`date -R`: Sorting (name) bam file..." &&
@@ -415,7 +415,7 @@ rule bam2bed_se_input:
     benchmark:
         "logs/rule/bam2bed_se_input/{samples}_{build}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:  
         """
         (echo "`date -R`: Sorting (coordinates) bam file..." &&
@@ -452,7 +452,7 @@ rule bam2bed_pe_input:
     benchmark:
         "logs/rule/bam2bed_pe_input/{samples}_{build}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:  
         """
         (echo "`date -R`: Sorting (name) bam file..." &&

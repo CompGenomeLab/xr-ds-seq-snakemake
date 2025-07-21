@@ -1,13 +1,9 @@
-jobs: 100
+jobs: 1000
 
-# Configure for Snakemake >= 8.0
 executor: "cluster-generic"
 cluster-generic-submit-cmd: "sbatch -A {resources.account} -p {resources.partition} -J {rule}.job --qos {resources.partition} --cpus-per-task={threads} -e logs/cluster/{rule}_%A.err --output=/dev/null" 
 software-deployment-method: "conda"
 
-# Configure for Snakemake < 8.0
-# cluster: "sbatch -A {resources.account} -p {resources.partition} -J {rule}.job --qos {resources.partition} --cpus-per-task={threads} -e logs/cluster/{rule}_%A.err --output=/dev/null"   
-# use-conda: True
 
 printshellcmds: True
 keep-going: True

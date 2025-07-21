@@ -121,7 +121,7 @@ rule reposition:
     benchmark:
         "logs/rule/reposition/{samples}_{build}_{method}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:  
         """
         (echo "`date -R`: Centering {input.plus} at damage site..." &&
@@ -170,7 +170,7 @@ rule bed2fasta_ds:
     benchmark:
         "logs/rule/bed2fasta_ds/{samples}_{build}_{method}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:
         """
         (echo "`date -R`: Combine files..." &&
@@ -217,7 +217,7 @@ rule bed2fasta_xr:
     benchmark:
         "logs/rule/bed2fasta_xr/{samples}_{build}_{method}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:
         """
         (echo "`date -R`: Converting {input.bed} to fasta format..." &&
@@ -241,7 +241,7 @@ rule bed2fasta_input:
     benchmark:
         "logs/rule/bed2fasta_input/{samples}_{build}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:
         """
         (echo "`date -R`: Converting {input.bed} to fasta format..." &&
@@ -267,7 +267,7 @@ rule bed2fasta_ds_after_filt:
     benchmark:
         "logs/rule/bed2fasta_ds_after_filt/{samples}_{build}_{method}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:
         """
         (echo "`date -R`: Combine files..." &&
@@ -341,7 +341,7 @@ rule genomecov_ds:
     benchmark:
         "logs/rule/genomecov_ds/{samples}_{build}_{method}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:  
         """
         (echo "`date -R`: Calculating genome coverage of {input.p_bed}..." &&
@@ -380,7 +380,7 @@ rule genomecov_xr:
     benchmark:
         "logs/rule/genomecov_xr/{samples}_{build}_{method}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:  
         """
         (echo "`date -R`: Calculating genome coverage of {input.p_bed}..." &&
@@ -419,7 +419,7 @@ rule genomecov_sim:
     benchmark:
         "logs/rule/genomecov_sim/{samples}_{build}_{method}.benchmark.txt",
     conda:
-        "../envs/bedtools.yaml"
+        "../envs/preprocess.yaml"
     shell:  
         """
         (echo "`date -R`: Calculating genome coverage of {input.p_bed}..." &&

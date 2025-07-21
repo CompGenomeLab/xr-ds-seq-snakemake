@@ -27,12 +27,25 @@ This repository contains xr-seq and damage-seq workflows.
 - Next, you should create a conda environment with the defined packages:
 
     ```
-    conda create -c conda-forge -c bioconda -n repair snakemake=8.24.0
+    conda create -c conda-forge -c bioconda -n xr_ds snakemake=9.8.0
 
-    conda activate repair
+    conda activate xr_ds
 
     pip install snakemake-executor-plugin-cluster-generic
     ```
+| Note: This workflow was developed and tested with conda version 25.5.1. For reproducibility, we used the following channel order and strict channel priority. This is not mandatory, but documents the configuration used for this workflow. |  
+| --- |
+When you run `conda config --show`, you should see:
+
+```yaml
+channel_priority: strict
+channels:
+  - conda-forge
+  - bioconda
+  - r
+  - anaconda
+  - defaults
+```
 
 <br>
 
@@ -119,8 +132,8 @@ meta:
         layout: "paired"
 
 genome:
-  build: "hg19"
-  link: "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/GRCh37.p13.genome.fa.gz"
+  build: "hg38"
+  link: "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_48/GRCh38.p14.genome.fa.gz"
 ```
 
 - `meta`: contains the name of each sample w/o the extension.
@@ -211,12 +224,12 @@ genome:
 After adjusting the configuration file, you can run the workflow 
 from `xr-ds-seq-snakemake` directory.
 
-    snakemake --use-conda --use-singularity --cores 64 --keep-going --rerun-incomplete -pr 
+    snakemake --use-conda --cores 64 --keep-going --rerun-incomplete -pr 
 
 
 | Note: To run the workflow on [Slurm Workload Manager](https://slurm.schedmd.com/srun.html) as set of jobs, `--profile` flag must be provided instead of `--cores`: |  
 | --- |
-    snakemake --use-conda --use-singularity --profile config/slurm --keep-going --rerun-incomplete -pr
+    snakemake --profile config/slurm
 
 An example of Slurm configuration file can be found in `config/slurm/config.yaml`.
 
