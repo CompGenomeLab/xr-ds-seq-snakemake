@@ -27,9 +27,9 @@ This repository contains xr-seq and damage-seq workflows.
 - Next, you should create a conda environment with the defined packages:
 
     ```
-    conda create -c conda-forge -c bioconda -n xr_ds snakemake=9.8.0
+    conda create -c conda-forge -c bioconda -n snakemake snakemake=9.8.0
 
-    conda activate xr_ds
+    conda activate snakemake
 
     pip install snakemake-executor-plugin-cluster-generic
     ```
