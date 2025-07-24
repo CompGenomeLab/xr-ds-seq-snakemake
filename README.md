@@ -35,15 +35,13 @@ This repository contains xr-seq and damage-seq workflows.
     ```
 | Note: This workflow was developed and tested with conda version 25.5.1. For reproducibility, we used the following channel order and strict channel priority. This is not mandatory, but documents the configuration used for this workflow. |  
 | --- |
-When you run `conda config --show`, you should see:
+When you run `conda config --show`, you should see the order below:
 
 ```yaml
 channel_priority: strict
 channels:
   - conda-forge
   - bioconda
-  - r
-  - anaconda
   - defaults
 ```
 
@@ -224,7 +222,7 @@ genome:
 After adjusting the configuration file, you can run the workflow 
 from `xr-ds-seq-snakemake` directory.
 
-    snakemake --use-conda --cores 64 --keep-going --rerun-incomplete -pr 
+    snakemake --use-conda --cores <user_defined_cores> --keep-going --rerun-incomplete -pr 
 
 
 | Note: To run the workflow on [Slurm Workload Manager](https://slurm.schedmd.com/srun.html) as set of jobs, `--profile` flag must be provided instead of `--cores`: |  
@@ -232,6 +230,10 @@ from `xr-ds-seq-snakemake` directory.
     snakemake --profile config/slurm
 
 An example of Slurm configuration file can be found in `config/slurm/config.yaml`.
+
+`--profile` flag can be used to run the pipeline without [Slurm Workload Manager](https://slurm.schedmd.com/srun.html). For this purpose, we have also provided a configuration file at `config/run/config.yaml`, which can be used as follows:
+    
+    snakemake --profile config/run
 
 <br>
 

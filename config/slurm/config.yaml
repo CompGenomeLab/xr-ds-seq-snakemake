@@ -10,20 +10,20 @@ keep-going: True
 rerun-incomplete: True
 rerun-triggers: "mtime"
 
-set-resources: [
-  bowtie2_se:partition='mid_investor', 
-  bowtie2_pe:partition='mid_investor',
-  bowtie2_se_input:partition='mid_investor', 
-  bowtie2_pe_input:partition='mid_investor',
-  bam2bed_se:partition='mid_investor',
-  bam2bed_pe:partition='mid_investor',
-  bam2bed_se_input:partition='mid_investor',
-  bam2bed_pe_input:partition='mid_investor',
-  simulation_ds:partition='mid_investor',
-  simulation_xr:partition='mid_investor',
-  ]
+# set-resources: [
+#   bowtie2_se:partition='mid_investor', 
+#   bowtie2_pe:partition='mid_investor',
+#   bowtie2_se_input:partition='mid_investor', 
+#   bowtie2_pe_input:partition='mid_investor',
+#   bam2bed_se:partition='mid_investor',
+#   bam2bed_pe:partition='mid_investor',
+#   bam2bed_se_input:partition='mid_investor',
+#   bam2bed_pe_input:partition='mid_investor',
+#   simulation_ds:partition='mid_investor',
+#   simulation_xr:partition='mid_investor',
+#   ]
 
 
-default-resources: [account='investor', partition='short_investor']
+# default-resources: [account='investor', partition='short_investor']
 # default-resources: [account='investor', partition='mem']
-# default-resources: [account='mdbf', partition='mid_mdbf']
+default-resources: [account='mdbf', partition='short_mdbf']
