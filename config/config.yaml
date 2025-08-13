@@ -1,38 +1,72 @@
 meta: 
-  NHF1_CPD_1h_XR_rep1:
-    srr_id: "SRR3062593:SRR3062594:SRR3062595" 
+  test_xr_single_cpd_sim_input_paired:
+    srr_id: "" 
     method: "XR"
     layout: "single"
     product: "CPD"
     simulation:
       enabled: True
       input: 
-        name: "SRR5461463"
+        name: "input_data"
         layout: "paired"
-  NHF1_CPD_1h_XR_rep2:
-    srr_id: "SRR3062596:SRR3062597:SRR3062598" 
+  test_xr_single_cpd_sim_input_single:
+    srr_id: "" 
     method: "XR"
     layout: "single"
     product: "CPD"
     simulation:
       enabled: True
-  NHF1_CPD_1h_DS_rep1:
-    srr_id: "SRR5461433" 
-    method: "DS"
-    layout: "paired"
+      input: 
+        name: "input_data"
+        layout: "single"
+  test_xr_single_cpd_sim:
+    srr_id: "" 
+    method: "XR"
+    layout: "single"
     product: "CPD"
     simulation:
       enabled: True
-      input: 
-        name: "SRR5461463"
-        layout: "paired"
-  NHF1_CPD_1h_DS_rep2:
-    srr_id: "SRR5461434" 
-    method: "DS"
-    layout: "paired"
+  test_xr_single_cpd:
+    srr_id: "" 
+    method: "XR"
+    layout: "single"
     product: "CPD"
     simulation:
       enabled: False
+  # test_ds_paired_cpd_sim_input_paired:
+  #   srr_id: "" 
+  #   method: "DS"
+  #   layout: "paired"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: True
+  #     input: 
+  #       name: "input_data"
+  #       layout: "paired"
+  # test_ds_paired_cpd_sim_input_single:
+  #   srr_id: "" 
+  #   method: "DS"
+  #   layout: "paired"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: True
+  #     input: 
+  #       name: "input_data"
+  #       layout: "single"
+  # test_ds_paired_cpd_sim:
+  #   srr_id: "" 
+  #   method: "DS"
+  #   layout: "paired"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: True
+  # test_ds_paired_cpd:
+  #   srr_id: "" 
+  #   method: "DS"
+  #   layout: "paired"
+  #   product: "CPD"
+  #   simulation:
+  #     enabled: False
 
 genome:
   build: "hg38"

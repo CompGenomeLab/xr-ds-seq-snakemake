@@ -28,3 +28,5 @@ report*
 .java
 .cache
 .ncbi/
+
+.tests/unit/bed2fasta_xr/data/resources/ref_genomes/hg38/genome_hg38.fa
