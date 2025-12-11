@@ -1,0 +1,4 @@
+name: fastx-collapser
+dependencies:
+  - bioconda::fastx_toolkit =0.0.14
+

@@ -22,36 +22,26 @@ def input_rule(samplist):
     input_list = []
     for sample in samplist:
         #input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_hg38.bam")
-        # input_list.append(f"results/XR/{sample}/{sample}_T2C_cutadapt_se_hg38.bam")
         # input_list.append(f"results/XR/{sample}/{sample}_masked_cutadapt_se_hg38.bam")
         # input_list.append(f"results/XR/{sample}/{sample}_hg38_se_sortedbyCoordinates.bam")
-        input_list.append(f"results/XR/{sample}/{sample}_hg38_se_filtered_sortedbyCoordinates.bam")
-        # input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_very_sensitive_hg38.bam")
-        # input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_bwa_hg38.bam")
-        # input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_bwa_sensitive1_hg38.bam")
-        # input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_bwa_sensitive2_hg38.bam")
-        # input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_bwa_sensitive3_hg38.bam")
-        # input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_bwa_sensitive4_hg38.bam")
-        # input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_bwa_sensitive5_hg38.bam")
+        input_list.append(f"results/XR/{sample}/{sample}_hg38.bam")
         # input_list.append(f"results/processed_files/{sample}_fastqc.zip")
         # input_list.append(f"results/processed_files/{sample}_cutadapt_fastqc.zip")
         # input_list.append(f"results/XR/{sample}/{sample}_cutadapt_se_hg38_unmapped_filtered_overrep_fastqc.zip")
-        input_list.append(f"results/processed_files/{sample}_hg38_XR_filtered_dinucleotideTable.pdf")
+        # input_list.append(f"results/processed_files/{sample}_hg38_XR_filtered_dinucleotideTable.pdf")
     return input_list
 
+
 samples = [
-    "NHF1UV2hCPD_CTTATCGG_S12_R1_001",
-    "NHF1UV4hCPD_TCCGCTAA_S13_R1_001",
-    "NHF1UV8hCPD_GATCTATC_S14_R1_001",
-    "NDDB2CPD2h_AGCGCTAG_S10_R1_001",
-    "NDDB2CPD4h_GATATCGA_S12_R1_001",
-    "NHF1CPD2h_GATCTATC_S14_R1_001",
-    "NHF1CPD4h_AGCTCGCT_S16_R1_001",
-    "NDDB2CPD30m_GTGTCGGA_S11_R1_001",
-    "NHF1CPD10m_CTTATCGG_S13_R1_001",
-    "NHF1CPD30m_TCCGCTAA_S15_R1_001",
-    "NHF1CPD8h_ACACTAAG_S17_R1_001"
-    ]
+"CSBUVB2hHirtTaq_GATATCGA_S1",
+"CSBUVC2hHirtTaq_AGCTCGCT_S2",
+"DDB2UVB2hHirtTaq_GTGTCGGA_S3",  
+"DDB2UVC2hHirtTaq_TCCGCTAA_S4",  
+"NHF1UVB2hHirtTaq_ACACTAAG_S5",
+"NHF1UVC2hHirtTaq_CTTATCGG_S6",
+"XPCUVB2hHirtTaq_AGCGCTAG_S19",
+"XPCUVC2hHirtTaq_GATCTATC_S20",
+]
 
 rule all:
     input:
@@ -68,7 +58,7 @@ include: "workflow/rules/download_sample.smk"
 include: "workflow/rules/fastqc.smk"
 
 # Adaptor handling, mapping, quality trimming, and converting to bed
-include: "workflow/rules/fastq2bed.smk"
+include: "workflow/rules/fastq2bed_alt.smk"
 #include: "workflow/rules/alignment.smk"
 
 # Sorting, filtering, calculating length dist., filtering damage-seq samples by

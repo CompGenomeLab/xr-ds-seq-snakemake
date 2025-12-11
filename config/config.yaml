@@ -1,244 +1,244 @@
-meta: 
-  # NHF1_CPD_1h_XR_rep1:
-  #   srr_id: "SRR3062593:SRR3062594:SRR3062595" 
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1_CPD_1h_XR_rep1_unmapped:
-  #   srr_id: "" 
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1_CPD_1h_XR_rep1_unmapped_masked:
-  #   srr_id: "" 
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1_CPD_1h_XR_rep1_unmapped_cutadapt_masked:
-  #   srr_id: "" 
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1_CPD_1h_XR_rep1_unmapped_cutadapt_TTmasked:
-  #   srr_id: "" 
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1_CPD_1h_XR_rep1_mapped_as0_T2C_damsite:
-  #   srr_id: "" 
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1_CPD_1h_XR_rep2:
-  #   srr_id: "SRR3062596:SRR3062597:SRR3062598" 
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1_64_1h_XR_rep1:
-  #   srr_id: "SRR3062637:SRR3062638" 
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "64"
-  #   simulation:
-  #     enabled: False
-  # NHF1_64_1h_XR_rep2:
-  #   srr_id: "SRR3062639:SRR3062640" 
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "64"
-  #   simulation:
-  #     enabled: False
-  # NHF1_CPD_1h_DS_rep1:
-  #   srr_id: "SRR5461433" 
-  #   method: "DS"
-  #   layout: "paired"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1_CPD_1h_DS_rep2:
-  #   srr_id: "SRR5461434" 
-  #   method: "DS"
-  #   layout: "paired"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1Cisp2hQ5_TATGAGTA_S14_L001_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1Cisp2hQ5_TATGAGTA_S14_L002_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1Cisp2hTaq_AGCGCTAG_S15_L001_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1Cisp2hTaq_AGCGCTAG_S15_L002_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1UV2h64Kappa_TCCGCTAA_S16_L001_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1UV2h64Kappa_TCCGCTAA_S16_L002_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1UV2h64Q5_GATATCGA_S17_L001_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1UV2h64Q5_GATATCGA_S17_L002_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1UV2h64Taq_ACACTAAG_S18_L001_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1UV2h64Taq_ACACTAAG_S18_L002_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1UV2hCPDKappa_GATCTATC_S19_L001_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1UV2hCPDKappa_GATCTATC_S19_L002_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1UV2hCPDQ5_CGCAGACG_S20_L001_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1UV2hCPDQ5_CGCAGACG_S20_L002_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1UV2hCPDTaq_GTGTCGGA_S21_L001_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  # NHF1UV2hCPDTaq_GTGTCGGA_S21_L002_R1_001:
-  #   method: "XR"
-  #   layout: "single"
-  #   product: "CPD"
-  #   simulation:
-  #     enabled: False
-  NHF1UV2hCPD_CTTATCGG_S12_R1_001:
+meta:  
+  CSBUVB2hHirtTaq_GATATCGA_S1:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
+  CSBUVC2hHirtTaq_AGCTCGCT_S2:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
+  DDB2UVB2hHirtTaq_GTGTCGGA_S3:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False   
+  DDB2UVC2hHirtTaq_TCCGCTAA_S4:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False  
+  NHF1UVB2hHirtTaq_ACACTAAG_S5:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False 
+  NHF1UVC2hHirtTaq_CTTATCGG_S6:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False  
+  R124hBrdU100_ATGAGGCC_S7:
+    method: "XR"
+    layout: "single"
+    # product: "CPD"
+    simulation:
+      enabled: False
+  R124hBrdU200_ACTAAGAT_S8:
+    method: "XR"
+    layout: "single"
+    # product: "CPD"
+    simulation:
+      enabled: False  
+  R124hBrdU50_GCAGAATT_S9:
+    method: "XR"
+    layout: "single"
+    # product: "CPD"
+    simulation:
+      enabled: False   
+  R224hBrdU20_TTGGACTC_S10:
+    method: "XR"
+    layout: "single"
+    # product: "CPD"
+    simulation:
+      enabled: False    
+  NDDB2CPD2h_AGCGCTAG_S10:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False  
+  NHF1UV12mCPD_GCAATGCA_S11:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False  
+  R2G0HU64_CATAGAGT_S11:
+    method: "XR"
+    layout: "single"
+    # product: "64pp"
+    simulation:
+      enabled: False    
+  NDDB2CPD30m_GTGTCGGA_S11:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False 
+  NHF1UV2hCPD_CTTATCGG_S12:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False  
+  R2G0HUCPD_TCTCTACT_S12:
+    method: "XR"
+    layout: "single"
+    # product: "CPD"
+    simulation:
+      enabled: False  
+  NDDB2CPD4h_GATATCGA_S12:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False  
+  NHF1CPD10m_CTTATCGG_S13: 
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False    
+  NHF1Cisp2hKappa_AGCTCGCT_S13:
+    method: "XR"
+    layout: "single"
+    product: "Cisplatin"
+    simulation:
+      enabled: False   
+  R2G0noHU64_ACAGGCGC_S13:
+    method: "XR"
+    layout: "single"
+    # product: "64pp"
+    simulation:
+      enabled: False   
+  NHF1UV4hCPD_TCCGCTAA_S13:
     method: "XR"
     layout: "single"
     product: "CPD"
     simulation:
       enabled: False
-  NHF1UV12mCPD_GCAATGCA_S11_R1_001:
+  R2G0noHUCPD_TGCGAGAC_S14:
+    method: "XR"
+    layout: "single"
+    # product: "CPD"
+    simulation:
+      enabled: False    
+  NHF1Cisp2hQ5_TATGAGTA_S14:
+    method: "XR"
+    layout: "single"
+    product: "Cisplatin"
+    simulation:
+      enabled: False 
+  NHF1CPD2h_GATCTATC_S14:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False 
+  NHF1UV8hCPD_GATCTATC_S14:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False   
+  R2mixHU64_GCAATGCA_S15:
+    method: "XR"
+    layout: "single"
+    simulation:
+      enabled: False     
+  NHF1Cisp2hTaq_AGCGCTAG_S15:
+    method: "XR"
+    layout: "single"
+    product: "Cisplatin"
+    simulation:
+      enabled: False   
+  NHF1CPD30m_TCCGCTAA_S15:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False  
+  R2mixHUCPD_CCAAGTCT_S16:
+    method: "XR"
+    layout: "single"
+    # product: "CPD"
+    simulation:
+      enabled: False  
+  NHF1CPD4h_AGCTCGCT_S16:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False   
+  NHF1UV2h64Kappa_TCCGCTAA_S16:
+    method: "XR"
+    layout: "single"
+    product: "64pp"
+    simulation:
+      enabled: False  
+  R2mixnoHU64_ATGGCATG_S17:
+    method: "XR"
+    layout: "single"
+    # product: "64pp"
+    simulation:
+      enabled: False  
+  NHF1UV2h64Q5_GATATCGA_S17:
+    method: "XR"
+    layout: "single"
+    product: "64pp"
+    simulation:
+      enabled: False    
+  NHF1CPD8h_ACACTAAG_S17:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False   
+  NHF1UV2h64Taq_ACACTAAG_S18:
+    method: "XR"
+    layout: "single"
+    product: "64pp"
+    simulation:
+      enabled: False    
+  R2mixnoHUCPD_CTCTCGTC_S18:
+    method: "XR"
+    layout: "single"
+    # product: "CPD"
+    simulation:
+      enabled: False  
+  XPCUVB2hHirtTaq_AGCGCTAG_S19:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False   
+  NHF1UV2hCPDKappa_GATCTATC_S19:
+    method: "XR"
+    layout: "single"
+    product: "CPD"
+    simulation:
+      enabled: False     
+  XPCUVC2hHirtTaq_GATCTATC_S20:
     method: "XR"
     layout: "single"
     product: "CPD"
     simulation:
       enabled: False    
-  NHF1UV4hCPD_TCCGCTAA_S13_R1_001:
+  NHF1UV2hCPDQ5_CGCAGACG_S20:
     method: "XR"
     layout: "single"
     product: "CPD"
     simulation:
-      enabled: False    
-  NHF1UV8hCPD_GATCTATC_S14_R1_001:
-    method: "XR"
-    layout: "single"
-    product: "CPD"
-    simulation:
-      enabled: False    
-  NDDB2CPD2h_AGCGCTAG_S10_R1_001:
-    method: "XR"
-    layout: "single"
-    product: "CPD"
-    simulation:
-      enabled: False    
-  NDDB2CPD30m_GTGTCGGA_S11_R1_001:
-    method: "XR"
-    layout: "single"
-    product: "CPD"
-    simulation:
-      enabled: False    
-  NDDB2CPD4h_GATATCGA_S12_R1_001:
-    method: "XR"
-    layout: "single"
-    product: "CPD"
-    simulation:
-      enabled: False    
-  NHF1CPD10m_CTTATCGG_S13_R1_001:
-    method: "XR"
-    layout: "single"
-    product: "CPD"
-    simulation:
-      enabled: False    
-  NHF1CPD2h_GATCTATC_S14_R1_001:
-    method: "XR"
-    layout: "single"
-    product: "CPD"
-    simulation:
-      enabled: False    
-  NHF1CPD30m_TCCGCTAA_S15_R1_001:
-    method: "XR"
-    layout: "single"
-    product: "CPD"
-    simulation:
-      enabled: False    
-  NHF1CPD4h_AGCTCGCT_S16_R1_001:
-    method: "XR"
-    layout: "single"
-    product: "CPD"
-    simulation:
-      enabled: False    
-  NHF1CPD8h_ACACTAAG_S17_R1_001:
+      enabled: False      
+  NHF1UV2hCPDTaq_GTGTCGGA_S21:
     method: "XR"
     layout: "single"
     product: "CPD"

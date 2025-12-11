@@ -64,46 +64,80 @@ rule cutadapt_pe:
         {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
         """
 
+rule fastx_collapser_se:
+    input:
+        fastq=rules.cutadapt_se.output.fastq,
+    output:
+        fasta="results/{method}/{samples}/{samples}_cutadapt_collapsed.fasta.gz",
+    log:
+        "logs/rule/fastx_collapser_se/{samples}_{method}.log",
+    benchmark:
+        "logs/rule/fastx_collapser_se/{samples}_{method}.benchmark.txt",
+    conda:
+        "../envs/fastx_collapser.yaml"
+    shell:
+        """
+        (echo "`date -R`: Collapsing duplicate reads (FASTQ level)..." &&
+        gunzip -c {input.fastq} | \
+        fastx_collapser -v | \
+        gzip > {output.fasta} &&
+        echo "`date -R`: Success! Reads are collapsed." || 
+        {{ echo "`date -R`: Process failed..."; rm -f {output.fasta}; exit 1; }}  ) > {log} 2>&1
+        """
+
+
 rule process_fastq_T2C:
     input:
-        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped_filtered_overrep.fastq"
+        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_filtered_overrep_collapsed_unmapped.fasta"
     output:
-        "results/{method}/{samples}/{samples}_T2C_{build}_cutadapt.fastq.gz"
+        "results/{method}/{samples}/{samples}_T2C_{build}_cutadapt.fasta.gz"
     log:
         "logs/rule/process_fastq_T2C/{samples}_{build}_{method}.log",
     shell:
-        "bash workflow/scripts/t2c_damsite.sh {input} {output} > {log} 2>&1"
+        """
+        (echo "`date -R`: Converting TT to CC across reads..." &&
+        python workflow/scripts/tt_to_cc_converter.py {input} {output} &&
+        echo "`date -R`: Success!") > {log} 2>&1
+        """
 
 rule mask_positions:
     input:
-        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped_filtered_overrep.fastq"
+        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped_filtered_overrep.fasta"
     output:
         "results/{method}/{samples}/{samples}_masked_{build}_cutadapt.fastq.gz"
     log:
         "logs/rule/mask_positions/{samples}_{build}_{method}.log",
     shell:
         """
-        ( paste - - - - < {input} | \
-        awk -F'\\t' '{{if($2!="") {{ \
-            len=length($2); \
-            $2=substr($2,1,len-8) "NN" substr($2,len-5); \
-            if(length($2)==len) {{ \
-                print $1"\\n"$2"\\n"$3"\\n"$4 \
+        ( awk '{{if(NR%2==1) {{header=$0}} else {{ \
+            seq=$0; \
+            len=length(seq); \
+            if(len>=10) {{ \
+                new_seq=substr(seq,1,len-8) "NN" substr(seq,len-5); \
+                if(length(new_seq)==len) {{ \
+                    print header; \
+                    print new_seq; \
+                    print "+"; \
+                    for(i=1;i<=len;i++) printf "I"; \
+                    print "" \
+                }} \
             }} \
-        }}}}' | \
+        }}}}' {input} | \
         gzip > {output} ) > {log} 2>&1
         """
 
+
 rule bowtie2_se_filtered:
     input:
-        sample=["results/{method}/{samples}/{samples}_cutadapt_se_filtered_overrep.fastq"],
+        sample=["results/{method}/{samples}/{samples}_cutadapt_se_filtered_overrep_collapsed.fasta.gz"],
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
     output:
         sam=temp("results/{method}/{samples}/{samples}_filt_cutadapt_se_{build}.sam"),
         bam="results/{method}/{samples}/{samples}_filt_cutadapt_se_{build}.bam",
+        unmapped="results/{method}/{samples}/{samples}_cutadapt_se_{build}_filtered_overrep_collapsed_unmapped.fasta",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
-        extra="--seed 1 --reorder",
+        extra="--seed 1 --reorder -f",
     threads: 16  
     log:
         report("logs/rule/bowtie2_se_filtered/{samples}_{build}_{method}.log", category="QC"),
@@ -118,6 +152,7 @@ rule bowtie2_se_filtered:
         --threads {threads} \
         {params.extra} \
         -x {params.ref_genome} \
+        --un {output.unmapped} \
         -U {input.sample[0]} -S {output.sam} &&
         echo "`date -R`: Success! Alignment is done." || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
@@ -137,7 +172,7 @@ rule bowtie2_se_T2C:
         bam="results/{method}/{samples}/{samples}_T2C_cutadapt_se_{build}.bam",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
-        extra="--seed 1 --reorder",
+        extra="--seed 1 --reorder -f",
     threads: 16  
     log:
         report("logs/rule/bowtie2_se_T2C/{samples}_{build}_{method}.log", category="QC"),
@@ -198,15 +233,15 @@ rule bowtie2_se_masked:
 
 rule bowtie2_se:
     input:
-        sample=[rules.cutadapt_se.output.fastq],
+        sample=[rules.fastx_collapser_se.output.fasta],
         bowtie2="resources/ref_genomes/{build}/Bowtie2/genome_{build}.1.bt2",
     output:
         sam=temp("results/{method}/{samples}/{samples}_cutadapt_se_{build}.sam"),
         bam="results/{method}/{samples}/{samples}_cutadapt_se_{build}.bam",
-        unmapped="results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped.fastq",
+        unmapped="results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped.fasta",
     params:
         ref_genome="resources/ref_genomes/{build}/Bowtie2/genome_{build}",
-        extra="--seed 1 --reorder",
+        extra="--seed 1 --reorder -f",
     threads: 16  
     log:
         report("logs/rule/bowtie2_se/{samples}_{build}_{method}.log", category="QC"),
@@ -334,6 +369,10 @@ rule bowtie2_pe_input:
         {{ echo "`date -R`: Process failed..."; rm {output.bam}; exit 1; }}  )  >> {log} 2>&1
         """
 
+'''
+Legacy header-cleaning/sorting steps are disabled while we rely on
+FASTQ-level deduplication. Retain these rules for reference.
+
 rule sort_rmPG_se_filtered:
     input:
         rules.bowtie2_se_filtered.output.bam,
@@ -420,6 +459,12 @@ rule sort_rmPG_pe:
         echo "`date -R`: Success!" || 
         {{ echo "`date -R`: Process failed..."; rm {output.sort}; exit 1; }}  ) >> {log} 2>&1
         """
+'''
+
+'''
+Picard-based duplicate removal is temporarily disabled while we switch
+to FASTQ-level collapsing (fastx_collapser). The original rules are kept
+below for reference and can be restored if needed.
 
 rule mark_duplicates_se_filtered:
     input:
@@ -498,10 +543,11 @@ rule mark_duplicates_pe:
         echo "`date -R`: Success!" || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
         """
+'''
 
 rule bam2bed_se_filtered:
     input:
-        rules.mark_duplicates_se_filtered.output.bam,
+        rules.bowtie2_se_filtered.output.bam,
     output:
         bed="results/{method}/{samples}/{samples}_{build}_se_filtered.bed",
         bam="results/{method}/{samples}/{samples}_{build}_se_filtered_sortedbyCoordinates.bam",
@@ -538,7 +584,7 @@ rule bam2bed_se_filtered:
 
 rule bam2bed_se:
     input:
-        rules.mark_duplicates_se.output.bam,
+        rules.bowtie2_se.output.bam,
     output:
         bed="results/{method}/{samples}/{samples}_{build}_se.bed",
         bam="results/{method}/{samples}/{samples}_{build}_se_sortedbyCoordinates.bam",
@@ -575,7 +621,7 @@ rule bam2bed_se:
 
 rule bam2bed_pe:
     input:
-        rules.mark_duplicates_pe.output.bam,
+        rules.bowtie2_pe.output.bam,
     output:
         bed="results/{method}/{samples}/{samples}_{build}_pe.bed",
         bam=temp("results/{method}/{samples}/{samples}_{build}_sorted.bam"),
@@ -712,16 +758,21 @@ rule bam2bed_pe_input:
 
 rule filter_adapter_reads:
     input:
-        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped.fastq"
+        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped.fasta"
     output:
-        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped_filtered.fastq"
+        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped_filtered.fasta"
     log:
         "logs/rule/filter_adapter_reads/{samples}_{build}_{method}.log"
     shell:
         """
         (echo "`date -R`: Filtering out adapter reads..." &&
-        paste - - - - < {input} | \
-        awk -F'\\t' '{{if(index($2, "TGGAATTCTCGGGTGCCAA") == 0) {{print $1"\\n"$2"\\n"$3"\\n"$4}}}}' > {output} &&
+        awk '{{if(NR%2==1) {{header=$0}} else {{ \
+            seq=$0; \
+            if(index(seq, "TGGAATTCTCGGGTGCCAA") == 0) {{
+                print header; \
+                print seq \
+            }} \
+        }}}}' {input} > {output} &&
         echo "`date -R`: Success!" || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
         """
@@ -767,42 +818,71 @@ rule filter_overrepresented:
         paste - - - - | \
         awk -F'\\t' -v seqfile={input.sequences} '
         BEGIN {{while((getline seq < seqfile) > 0) seqs[seq]=1}}
-        {{keep=1; \
-            for(s in seqs) {{ \
-                if($2 == s) {{ \
-                    keep=0; \
-                    break \
-                }} \
-            }}; \
-            if(keep) print $1"\\n"$2"\\n"$3"\\n"$4 \
+        {{
+            keep=1;
+            for(s in seqs) {{
+                if($2 == s) {{
+                    keep=0;
+                    break
+                }}
+            }}
+            if(keep && length($2) > 0)
+                print $1"\\n"$2"\\n"$3"\\n"$4
         }}' > {output} &&
         echo "`date -R`: Success!" || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
         """
 
+rule fastx_collapser_se_filtered:
+    input:
+        fastq=rules.filter_overrepresented.output,
+    output:
+        fasta="results/{method}/{samples}/{samples}_cutadapt_se_filtered_overrep_collapsed.fasta.gz",
+    log:
+        "logs/rule/fastx_collapser_se_filtered/{samples}_{method}.log",
+    benchmark:
+        "logs/rule/fastx_collapser_se_filtered/{samples}_{method}.benchmark.txt",
+    conda:
+        "../envs/fastx_collapser.yaml"
+    shell:
+        """
+        (echo "`date -R`: Collapsing duplicate reads (filtered FASTQ)..." &&
+        cat {input.fastq} | \
+        fastx_collapser -v | \
+        gzip > {output.fasta} &&
+        echo "`date -R`: Success! Reads are collapsed." || 
+        {{ echo "`date -R`: Process failed..."; rm -f {output.fasta}; exit 1; }}  ) > {log} 2>&1
+        """
+
 rule filter_overrepresented_unmapped:
     input:
-        fastq="results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped.fastq",
+        fasta="results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped.fasta",
         sequences="results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped_overrepresented.txt"
     output:
-        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped_filtered_overrep.fastq"
+        "results/{method}/{samples}/{samples}_cutadapt_se_{build}_unmapped_filtered_overrep.fasta"
     log:
         "logs/rule/filter_overrepresented_unmapped/{samples}_{build}_{method}.log"
     shell:
         """
         (echo "`date -R`: Filtering out reads that exactly match overrepresented sequences..." &&
-        paste - - - - < {input.fastq} | \
-        awk -F'\\t' -v seqfile={input.sequences} '
+        awk -v seqfile={input.sequences} '
         BEGIN {{while((getline seq < seqfile) > 0) seqs[seq]=1}}
-        {{keep=1; \
-            for(s in seqs) {{ \
-                if($2 == s) {{ \
-                    keep=0; \
-                    break \
-                }} \
-            }}; \
-            if(keep) print $1"\\n"$2"\\n"$3"\\n"$4 \
-        }}' > {output} &&
+        {{
+            if(NR%2==1) {{header=$0}} else {{
+                seq=$0;
+                keep=1;
+                for(s in seqs) {{
+                    if(seq == s) {{
+                        keep=0;
+                        break
+                    }}
+                }}
+                if(keep && length(seq) > 0) {{
+                    print header;
+                    print seq
+                }}
+            }}
+        }}' {input.fasta} > {output} &&
         echo "`date -R`: Success!" || 
         {{ echo "`date -R`: Process failed..."; exit 1; }}  )  > {log} 2>&1
         """
