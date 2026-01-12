@@ -28,3 +28,8 @@ report*
 .java
 .cache
 .ncbi/
+
+combine_lane.sh
+snakemake.sh
+
+g4_config/
