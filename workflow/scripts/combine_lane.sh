@@ -20,9 +20,9 @@ sample=${filelist[$SLURM_ARRAY_TASK_ID]}
 echo "Processing sample: $sample"
 echo "Sample slurm array ID: $SLURM_ARRAY_TASK_ID"
 
-zcat $sample_path/${sample}_L001_R1_001.fastq.gz $sample_path/${sample}_L002_R1_001.fastq.gz > $output_path/${sample}.fastq
+zcat $sample_path/${sample}_L001_R1_001.fastq.gz $sample_path/${sample}_L002_R1_001.fastq.gz > $output_path/${sample}_R1.fastq
 
-gzip $output_path/${sample}.fastq
+gzip $output_path/${sample}_R1.fastq
 
 rm $sample_path/${sample}_L001_R1_001.fastq.gz
 rm $sample_path/${sample}_L002_R1_001.fastq.gz

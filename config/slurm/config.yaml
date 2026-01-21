@@ -2,12 +2,8 @@ jobs: 100
 
 # Configure for Snakemake >= 8.0
 executor: "cluster-generic"
-cluster-generic-submit-cmd: "sbatch -A {resources.account} -p {resources.partition} -J {rule}.job --qos {resources.account} --cpus-per-task={threads} -e logs/cluster/{rule}_%A.err --output=/dev/null" 
+cluster-generic-submit-cmd: "sbatch -A {resources.account} -p {resources.partition} -J {rule}.job --qos {resources.qos} --cpus-per-task={threads} -e logs/cluster/{rule}_%A.err --output=/dev/null" 
 software-deployment-method: "conda"
-
-# Configure for Snakemake < 8.0
-# cluster: "sbatch -A {resources.account} -p {resources.partition} -J {rule}.job --qos {resources.partition} --cpus-per-task={threads} -e logs/cluster/{rule}_%A.err --output=/dev/null"   
-# use-conda: True
 
 printshellcmds: True
 keep-going: True
@@ -27,9 +23,7 @@ rerun-triggers: "mtime"
 #   simulation_xr:partition='mid_mdbf',
 #   ]
 
-
-# default-resources: [account='investor', partition='short_investor']
-# default-resources: [account='investor', partition='mem']
-# default-resources: [account='mdbf', partition='mid_mdbf']
-# default-resources: [account='users', partition='mid_mdbf']
-default-resources: [account='adelab', partition='genomics']
+# default-resources: [account='investor', partition='mid_investor', qos="mid_investor"]
+#default-resources: [account='users', partition='long_mdbf', qos="long_mdbf"]
+# default-resources: [account='mdbf', partition='mid_mdbf', qos="mid_mdbf"]
+default-resources: [account='adelab', partition='genomics', qos="adelab"]
