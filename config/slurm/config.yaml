@@ -1,9 +1,9 @@
-jobs: 1000
+jobs: 100
 
+# Configure for Snakemake >= 8.0
 executor: "cluster-generic"
-cluster-generic-submit-cmd: "sbatch -A {resources.account} -p {resources.partition} -J {rule}.job --qos {resources.partition} --cpus-per-task={threads} -e logs/cluster/{rule}_%A.err --output=/dev/null" 
+cluster-generic-submit-cmd: "sbatch -A {resources.account} -p {resources.partition} -J {rule}.job --qos {resources.qos} --cpus-per-task={threads} -e logs/cluster/{rule}_%A.err --output=/dev/null" 
 software-deployment-method: "conda"
-
 
 printshellcmds: True
 keep-going: True
@@ -11,19 +11,19 @@ rerun-incomplete: True
 rerun-triggers: "mtime"
 
 # set-resources: [
-#   bowtie2_se:partition='mid_investor', 
-#   bowtie2_pe:partition='mid_investor',
-#   bowtie2_se_input:partition='mid_investor', 
-#   bowtie2_pe_input:partition='mid_investor',
-#   bam2bed_se:partition='mid_investor',
-#   bam2bed_pe:partition='mid_investor',
-#   bam2bed_se_input:partition='mid_investor',
-#   bam2bed_pe_input:partition='mid_investor',
-#   simulation_ds:partition='mid_investor',
-#   simulation_xr:partition='mid_investor',
+#   bowtie2_se:partition='mid_mdbf', 
+#   bowtie2_pe:partition='mid_mdbf',
+#   bowtie2_se_input:partition='mid_mdbf', 
+#   bowtie2_pe_input:partition='mid_mdbf',
+#   bam2bed_se:partition='mid_mdbf',
+#   bam2bed_pe:partition='mid_mdbf',
+#   bam2bed_se_input:partition='mid_mdbf',
+#   bam2bed_pe_input:partition='mid_mdbf',
+#   simulation_ds:partition='mid_mdbf',
+#   simulation_xr:partition='mid_mdbf',
 #   ]
 
-
-# default-resources: [account='investor', partition='short_investor']
-# default-resources: [account='investor', partition='mem']
-default-resources: [account='mdbf', partition='short_mdbf']
+# default-resources: [account='investor', partition='mid_investor', qos="mid_investor"]
+#default-resources: [account='users', partition='long_mdbf', qos="long_mdbf"]
+# default-resources: [account='mdbf', partition='mid_mdbf', qos="mid_mdbf"]
+default-resources: [account='adelab', partition='genomics', qos="adelab"]
